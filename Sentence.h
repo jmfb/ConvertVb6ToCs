@@ -27,6 +27,11 @@ public:
 		return nodes.front()->GetPosition();
 	}
 
+	const Sentence& AsSentence() const final
+	{
+		return *this;
+	}
+
 	const std::string& GetName() const
 	{
 		return name;
