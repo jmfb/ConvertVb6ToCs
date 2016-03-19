@@ -12,11 +12,11 @@
 //	| "public" "static" "function" id <parameter-clause-opt> <as-array-specifier-opt>
 //	| "private" "static" "function" id <parameter-clause-opt> <as-array-specifier-opt>
 //	| "friend" "static" "function" id <parameter-clause-opt> <as-array-specifier-opt>;
-class FunctionStatement
+class VbFunctionStatement
 {
 public:
-	FunctionStatement(const Sentence& sentence)
-		: FunctionStatement(SentenceParser::Parse(sentence,
+	VbFunctionStatement(const Sentence& sentence)
+		: VbFunctionStatement(SentenceParser::Parse(sentence,
 			OptionalToken("public", "private", "friend"),
 			OptionalToken("static"),
 			RequiredToken(),
@@ -28,7 +28,7 @@ public:
 
 private:
 	template <typename Tuple>
-	FunctionStatement(const Tuple& result)
+	VbFunctionStatement(const Tuple& result)
 		: access(ParseAccess(std::get<0>(result))),
 		isStatic(std::get<1>(result)),
 		type(ParseType(std::get<2>(result))),

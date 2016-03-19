@@ -36,8 +36,12 @@ void CompileGrammarToBinaryTransitionTable()
 	std::cout << "done." << std::endl;
 }
 
+#include "VbLine.h"
+#include "VbStatement.h"
 #include "VbFunctionStatement.h"
 #include "VbEndStatement.h"
+#include "VbIfStatement.h"
+#include "VbLetStatement.h"
 
 void Dump(const Sentence& translationUnit)
 {
@@ -69,37 +73,33 @@ void Dump(const Sentence& translationUnit)
 		if (declaration.GetNodes().size() == 1)
 			continue; //Every declaration must end with a newline.  Single token declarations are therefore empty and can be skipped.
 		//TODO: Scan past line-label (only valid within a function definition, statement may exist after label on the same line)
-		auto& vbLine = declaration.GetNodes().front()->AsSentence();
-		if (vbLine.GetName() != "vb-line")
-			throw std::runtime_error("Should be a vb-line.");
-		//<vb-line> =
-		//	<statement>
-		//	| <statement> ':' <compound-statement-opt>
-		//	| ':' <compound-statement-opt>;
-		if (vbLine.GetNodes().size() != 1)
-			throw std::runtime_error("Compound statements not yet supported.");
-		auto& statement = vbLine.GetNodes().front()->AsSentence();
-		if (statement.GetName() != "statement")
-			throw std::runtime_error("Should be statement.");
-		if (statement.GetNodes().size() != 1)
-			throw std::runtime_error("Statement should have exactly one child.");
-		auto& statementType = statement.GetNodes().front()->AsSentence();
 
-		/*
-		if-statement
-		let-statement
-		*/
-
-		if (statementType.GetName() == "function-statement")
+		VbLine vbLine{ declaration.GetNodes().front()->AsSentence() };
+		if (vbLine.statement)
 		{
-			FunctionStatement function{ statementType };
-			std::cout << "Function: " << ToString(function.access) << (function.isStatic ? " Static" : "") << " " << ToString(function.type) << " " << function.name << std::endl;
+			VbStatement statement{ *vbLine.statement };
+			if (statement.statement.GetName() == "function-statement")
+			{
+				VbFunctionStatement function{ statement.statement };
+				std::cout << "Function: " << ToString(function.access) << (function.isStatic ? " Static" : "") << " " << ToString(function.type) << " " << function.name << std::endl;
+			}
+			else if (statement.statement.GetName() == "if-statement")
+			{
+				VbIfStatement ifStatement{ statement.statement };
+				std::cout << "If" << std::endl;
+			}
+			else if (statement.statement.GetName() == "end-statement")
+			{
+				VbEndStatement end{ statement.statement };
+				std::cout << ToString(end.type) << std::endl;
+			}
+			else if (statement.statement.GetName() == "let-statement")
+			{
+				VbLetStatement let{ statement.statement };
+				std::cout << "Let" << std::endl;
+			}
 		}
-		else if (statementType.GetName() == "end-statement")
-		{
-			EndStatement end{ statementType };
-			std::cout << ToString(end.type) << std::endl;
-		}
+		//TODO: something with compound statement
 	}
 }
 

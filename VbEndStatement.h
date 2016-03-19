@@ -12,11 +12,11 @@
 //	| "if"
 //	| <id.select>
 //	| "with";
-class EndStatement
+class VbEndStatement
 {
 public:
-	EndStatement(const Sentence& sentence)
-		: EndStatement(SentenceParser::Parse(sentence,
+	VbEndStatement(const Sentence& sentence)
+		: VbEndStatement(SentenceParser::Parse(sentence,
 			RequiredToken("end"),
 			OptionalSentence("end-keyword")))
 	{
@@ -24,7 +24,7 @@ public:
 
 private:
 	template <typename Tuple>
-	EndStatement(const Tuple& result)
+	VbEndStatement(const Tuple& result)
 		: type(ParseType(std::get<1>(result)))
 	{
 	}

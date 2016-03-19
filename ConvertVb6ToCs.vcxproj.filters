@@ -207,6 +207,18 @@
     <ClInclude Include="VbFunctionStatement.h">
       <Filter>VisualBasic Code Model</Filter>
     </ClInclude>
+    <ClInclude Include="VbIfStatement.h">
+      <Filter>VisualBasic Code Model</Filter>
+    </ClInclude>
+    <ClInclude Include="VbLetStatement.h">
+      <Filter>VisualBasic Code Model</Filter>
+    </ClInclude>
+    <ClInclude Include="VbLine.h">
+      <Filter>VisualBasic Code Model</Filter>
+    </ClInclude>
+    <ClInclude Include="VbStatement.h">
+      <Filter>VisualBasic Code Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">

@@ -198,9 +198,13 @@
     <ClInclude Include="VbFunctionAccess.h" />
     <ClInclude Include="VbFunctionStatement.h" />
     <ClInclude Include="VbFunctionType.h" />
+    <ClInclude Include="VbIfStatement.h" />
+    <ClInclude Include="VbLetStatement.h" />
+    <ClInclude Include="VbLine.h" />
     <ClInclude Include="VbPreProcessor.h" />
     <ClInclude Include="VbPreTokenFactory.h" />
     <ClInclude Include="VbPreTokenStream.h" />
+    <ClInclude Include="VbStatement.h" />
     <ClInclude Include="VbTokenFactory.h" />
     <ClInclude Include="VbTokenStream.h" />
   </ItemGroup>
