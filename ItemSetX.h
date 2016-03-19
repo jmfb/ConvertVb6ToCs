@@ -55,7 +55,7 @@ public:
 		ItemSetX retval;
 		for (auto& item : items)
 			if (item.IsNext(pitem))
-				retval.items.push_back({ item.nonTerminal, item.production, item.index + 1 });
+				retval.items.push_back({ item.nonTerminal, *item.production, item.index + 1 });
 		return retval;
 	}
 	std::vector<ProductionItem> CalculateUniqueNext() const
@@ -75,7 +75,7 @@ public:
 	std::size_t FindSubItem(const Production& production, std::size_t dot) const
 	{
 		for (auto index = 0ul; index < items.size(); ++index)
-			if (items[index].production == production && items[index].index == dot)
+			if (items[index].production == &production && items[index].index == dot)
 				return index;
 		throw std::logic_error("Missing child production...");
 	}

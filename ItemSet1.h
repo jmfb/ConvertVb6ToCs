@@ -36,14 +36,14 @@ public:
 			if (item.HasNonTerminalSuffix(suffix))
 			{
 				std::vector<Terminal> followers;
-				if ((item.index + 1) >= item.production.items.size())
+				if ((item.index + 1) >= item.production->items.size())
 					followers.push_back(Terminal::EndOfFile());
 				else
 				{
 					auto emptyCount = 0ul;
-					for (auto next = item.index + 1; next < item.production.items.size(); ++next)
+					for (auto next = item.index + 1; next < item.production->items.size(); ++next)
 					{
-						auto& pitem = item.production.items[next];
+						auto& pitem = item.production->items[next];
 						if (pitem.isTerminal)
 						{
 							auto iter = std::find(followers.begin(), followers.end(), pitem.terminal);
@@ -75,7 +75,7 @@ public:
 								break;
 						}
 					}
-					if (emptyCount == (item.production.items.size() - item.index - 1))
+					if (emptyCount == (item.production->items.size() - item.index - 1))
 						followers.push_back(Terminal::EndOfFile());
 				}
 

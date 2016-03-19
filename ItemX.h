@@ -16,7 +16,7 @@ public:
 		const std::string& nonTerminal,
 		const Production& production,
 		std::size_t index)
-		: nonTerminal(nonTerminal), production(production), index(index)
+		: nonTerminal(nonTerminal), production(&production), index(index)
 	{
 	}
 	ItemX(const ItemX& rhs) = default;
@@ -27,19 +27,19 @@ public:
 	bool HasNonTerminalSuffix(std::string& suffix) const
 	{
 		// A -> a.Bb
-		if (index >= production.items.size() || !production.items[index].isNonTerminal)
+		if (index >= production->items.size() || !production->items[index].isNonTerminal)
 			return false;
-		suffix = production.items[index].nonTerminal;
+		suffix = production->items[index].nonTerminal;
 		return true;
 	}
 	bool IsNext(const ProductionItem& item) const
 	{
-		return index < production.items.size() && production.items[index] == item;
+		return index < production->items.size() && production->items[index] == item;
 	}
 	ProductionItem GetNext() const
 	{
-		if (index < production.items.size())
-			return production.items[index];
+		if (index < production->items.size())
+			return production->items[index];
 		return{};
 	}
 	bool AddLookAhead(const Terminal& terminal)
@@ -62,13 +62,13 @@ public:
 	{
 		std::ostringstream out;
 		out << "[" << nonTerminal << " -> ";
-		for (auto index = 0ul; index < production.items.size(); ++index)
+		for (auto index = 0ul; index < production->items.size(); ++index)
 		{
 			if (index == this->index)
 				out << ". ";
-			out << production.items[index].ToString();
+			out << production->items[index].ToString();
 		}
-		if (this->index >= production.items.size())
+		if (this->index >= production->items.size())
 			out << ". ";
 		out << ", ";
 		for (auto& terminal : lookAhead)
@@ -92,7 +92,7 @@ public:
 
 public:
 	std::string nonTerminal;
-	Production production;
+	const Production* production;
 	std::size_t index;
 	std::vector<Terminal> lookAhead;
 	std::vector<ItemXPropogate> propogate;

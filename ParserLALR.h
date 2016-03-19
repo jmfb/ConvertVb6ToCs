@@ -46,7 +46,7 @@ public:
 			ItemSet1 itemset1;
 			for (auto& item0 : itemset0.items)
 				for (auto& terminal : item0.lookAhead)
-					itemset1.AddItem({ item0.nonTerminal, item0.production, item0.index, terminal });
+					itemset1.AddItem({ item0.nonTerminal, *item0.production, item0.index, terminal });
 			itemset1 = itemset1.Closure(g);
 
 			//Repeat normal LR(1) transition table construction
@@ -57,14 +57,14 @@ public:
 				{
 					if (item.nonTerminal == augmentedStart)
 					{
-						if (item.production.items.size() == 1 &&
-							item.production.items[0].isNonTerminal &&
-							item.production.items[0].nonTerminal == start)
+						if (item.production->items.size() == 1 &&
+							item.production->items[0].isNonTerminal &&
+							item.production->items[0].nonTerminal == start)
 							entry.AddAction(Terminal::EndOfFile(), {}, resolver);
 					}
 					else
 					{
-						entry.AddAction(item.follow, { item.nonTerminal, item.production }, resolver);
+						entry.AddAction(item.follow, { item.nonTerminal, *item.production }, resolver);
 					}
 				}
 				else

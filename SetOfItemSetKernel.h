@@ -87,7 +87,7 @@ private:
 
 				//Introduce a LookAhead terminal and calculate closure
 				ItemSet1 itemset1;
-				itemset1.AddItem({ item0.nonTerminal, item0.production, item0.index, Terminal::LookAhead() });
+				itemset1.AddItem({ item0.nonTerminal, *item0.production, item0.index, Terminal::LookAhead() });
 				auto closure = itemset1.Closure(grammar);
 
 				//for each [A->s.Xt,?] in closure([B->q.r,#])
@@ -99,7 +99,7 @@ private:
 					{
 						//Determine got(I,X) (index of [A->sX.t])
 						auto next = gotos[index][grammar_symbol.ToString()];
-						auto subitem = data[next].FindSubItem(item1.production, item1.index + 1);
+						auto subitem = data[next].FindSubItem(*item1.production, item1.index + 1);
 						if (item1.follow == Terminal::LookAhead())
 						{
 							// [A->s.Xt,#] then propagate from this to [A->sX.t]
