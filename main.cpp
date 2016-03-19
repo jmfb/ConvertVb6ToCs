@@ -62,6 +62,34 @@ const char* ToString(EndType value)
 	throw std::runtime_error("Invalid EndType");
 }
 
+void IsSentence(const Sentence& sentence, const std::string& name, std::size_t minSize, std::size_t maxSize)
+{
+	if (sentence.GetName() != name)
+		throw std::runtime_error("Should be: " + name);
+	if (sentence.GetNodes().size() < minSize)
+		throw std::runtime_error("Not enough nodes.");
+	if (sentence.GetNodes().size() > maxSize)
+		throw std::runtime_error("Too few nodes.");
+}
+
+void IsToken(const Sentence& sentence, std::size_t index, const std::string& value)
+{
+	if (index >= sentence.GetNodes().size())
+		throw std::runtime_error("Index past end of sentence.");
+	auto& token = sentence.GetNodes()[index]->AsToken();
+	if (token != value)
+		throw std::runtime_error("Expected: " + value);
+}
+
+template <typename Enum>
+Enum ToEnum(const Token& token, const std::map<std::string, Enum>& map)
+{
+	for (auto& entry : map)
+		if (token == entry.first)
+			return entry.second;
+	throw std::runtime_error("Invalid enum value.");
+}
+
 EndType ToEndType(const Sentence& sentence)
 {
 	//<end-statement> =
@@ -74,36 +102,22 @@ EndType ToEndType(const Sentence& sentence)
 	//	| "if"
 	//	| <id.select>
 	//	| "with";
-	if (sentence.GetName() != "end-statement")
-		throw std::runtime_error("Should be end-statement.");
-	if (sentence.GetNodes().empty())
-		throw std::runtime_error("Should not be empty.");
-	if (sentence.GetNodes().size() > 2)
-		throw std::runtime_error("Should be no more than 2 nodes.");
-	auto& end = sentence.GetNodes().front()->AsToken();
-	if (end != "end")
-		throw std::runtime_error("Should be 'end'.");
+	IsSentence(sentence, "end-statement", 1, 2);
+	IsToken(sentence, 0, "end");
 	if (sentence.GetNodes().size() == 1)
 		return EndType::Program;
 	auto& endKeyword = sentence.GetNodes().back()->AsSentence();
-	if (endKeyword.GetName() != "end-keyword")
-		throw std::runtime_error("Should be end-keyword.");
-	if (endKeyword.GetNodes().size() != 1)
-		throw std::runtime_error("Should be 1 node.");
+	IsSentence(endKeyword, "end-keyword", 1, 1);
 	auto& keyword = endKeyword.GetNodes().front()->AsToken();
-	if (keyword == "sub")
-		return EndType::Sub;
-	if (keyword == "function")
-		return EndType::Function;
-	if (keyword == "property")
-		return EndType::Property;
-	if (keyword == "if")
-		return EndType::If;
-	if (keyword == "select")
-		return EndType::Select;
-	if (keyword == "with")
-		return EndType::With;
-	throw std::runtime_error("Invalid end keyword.");
+	return ToEnum<EndType>(keyword,
+	{
+		{ "sub", EndType::Sub },
+		{ "function", EndType::Function },
+		{ "property", EndType::Property },
+		{ "if", EndType::If },
+		{ "select", EndType::Select },
+		{ "with", EndType::With }
+	});
 }
 
 void Dump(const Sentence& translationUnit)
