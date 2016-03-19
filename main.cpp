@@ -36,89 +36,8 @@ void CompileGrammarToBinaryTransitionTable()
 	std::cout << "done." << std::endl;
 }
 
-enum class EndType
-{
-	If,
-	Select,
-	With,
-	Program,
-	Sub,
-	Function,
-	Property
-};
-
-const char* ToString(EndType value)
-{
-	switch (value)
-	{
-	case EndType::If: return "End If";
-	case EndType::Select: return "End Select";
-	case EndType::With: return "End With";
-	case EndType::Program: return "End";
-	case EndType::Sub: return "End Sub";
-	case EndType::Function: return "End Function";
-	case EndType::Property: return "End Property";
-	}
-	throw std::runtime_error("Invalid EndType");
-}
-
-void IsSentence(const Sentence& sentence, const std::string& name, std::size_t minSize, std::size_t maxSize)
-{
-	if (sentence.GetName() != name)
-		throw std::runtime_error("Should be: " + name);
-	if (sentence.GetNodes().size() < minSize)
-		throw std::runtime_error("Not enough nodes.");
-	if (sentence.GetNodes().size() > maxSize)
-		throw std::runtime_error("Too few nodes.");
-}
-
-void IsToken(const Sentence& sentence, std::size_t index, const std::string& value)
-{
-	if (index >= sentence.GetNodes().size())
-		throw std::runtime_error("Index past end of sentence.");
-	auto& token = sentence.GetNodes()[index]->AsToken();
-	if (token != value)
-		throw std::runtime_error("Expected: " + value);
-}
-
-template <typename Enum>
-Enum ToEnum(const Token& token, const std::map<std::string, Enum>& map)
-{
-	for (auto& entry : map)
-		if (token == entry.first)
-			return entry.second;
-	throw std::runtime_error("Invalid enum value.");
-}
-
-EndType ToEndType(const Sentence& sentence)
-{
-	//<end-statement> =
-	//	"end" <end-keyword-opt>;
-	//<end-keyword> =
-	//	#<id.type> and "enum" handled specially by begin statement
-	//	"sub"
-	//	| "function"
-	//	| <id.property>
-	//	| "if"
-	//	| <id.select>
-	//	| "with";
-	IsSentence(sentence, "end-statement", 1, 2);
-	IsToken(sentence, 0, "end");
-	if (sentence.GetNodes().size() == 1)
-		return EndType::Program;
-	auto& endKeyword = sentence.GetNodes().back()->AsSentence();
-	IsSentence(endKeyword, "end-keyword", 1, 1);
-	auto& keyword = endKeyword.GetNodes().front()->AsToken();
-	return ToEnum<EndType>(keyword,
-	{
-		{ "sub", EndType::Sub },
-		{ "function", EndType::Function },
-		{ "property", EndType::Property },
-		{ "if", EndType::If },
-		{ "select", EndType::Select },
-		{ "with", EndType::With }
-	});
-}
+#include "VbFunctionStatement.h"
+#include "VbEndStatement.h"
 
 void Dump(const Sentence& translationUnit)
 {
@@ -167,18 +86,19 @@ void Dump(const Sentence& translationUnit)
 		auto& statementType = statement.GetNodes().front()->AsSentence();
 
 		/*
-		function-statement
 		if-statement
 		let-statement
-		end-statement
-		let-statement
-		end-statement
 		*/
 
-		if (statementType.GetName() == "end-statement")
+		if (statementType.GetName() == "function-statement")
 		{
-			auto endType = ToEndType(statementType);
-			std::cout << ToString(endType) << std::endl;
+			FunctionStatement function{ statementType };
+			std::cout << "Function: " << ToString(function.access) << (function.isStatic ? " Static" : "") << " " << ToString(function.type) << " " << function.name << std::endl;
+		}
+		else if (statementType.GetName() == "end-statement")
+		{
+			EndStatement end{ statementType };
+			std::cout << ToString(end.type) << std::endl;
 		}
 	}
 }

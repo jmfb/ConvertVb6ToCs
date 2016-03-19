@@ -20,6 +20,11 @@ public:
 		return token.GetPosition();
 	}
 
+	bool IsToken() const final
+	{
+		return true;
+	}
+
 	const Token& AsToken() const final
 	{
 		return token;

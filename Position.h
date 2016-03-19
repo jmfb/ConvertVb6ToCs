@@ -5,6 +5,7 @@
 class Position
 {
 public:
+	Position() = default;
 	Position(const std::string& source, int line, int column)
 		: source(source), line(line), column(column)
 	{
@@ -36,6 +37,6 @@ public:
 
 private:
 	std::string source;
-	int line;
-	int column;
+	int line = 0;
+	int column = 0;
 };

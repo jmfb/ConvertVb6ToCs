@@ -8,6 +8,7 @@
 class Token
 {
 public:
+	Token() = default;
 	Token(const Position& position, TokenType type, const std::string& value, bool caseSensitive)
 		: position(position), type(type), value(value), caseSensitive(caseSensitive)
 	{
@@ -58,7 +59,7 @@ public:
 
 private:
 	Position position;
-	TokenType type;
+	TokenType type = TokenType::EndOfFile;
 	std::string value;
-	bool caseSensitive;
+	bool caseSensitive = true;
 };

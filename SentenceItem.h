@@ -29,9 +29,17 @@ public:
 	virtual void Simplify()
 	{
 	}
+	virtual bool IsSentence() const
+	{
+		return false;
+	}
 	virtual const Sentence& AsSentence() const
 	{
 		throw std::runtime_error("Not a sentence.");
+	}
+	virtual bool IsToken() const
+	{
+		return false;
 	}
 	virtual const Token& AsToken() const
 	{

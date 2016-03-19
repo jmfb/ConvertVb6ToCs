@@ -7,6 +7,7 @@
 class Sentence : public SentenceItem
 {
 public:
+	Sentence() = default;
 	Sentence(const std::string& name)
 		: name(name)
 	{
@@ -25,6 +26,11 @@ public:
 		if (nodes.empty())
 			return{ "", 0, 0 };
 		return nodes.front()->GetPosition();
+	}
+
+	bool IsSentence() const final
+	{
+		return true;
 	}
 
 	const Sentence& AsSentence() const final

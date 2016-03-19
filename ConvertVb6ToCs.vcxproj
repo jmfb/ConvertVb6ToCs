@@ -159,6 +159,7 @@
     <ClInclude Include="ItemX.h" />
     <ClInclude Include="ItemXPropogate.h" />
     <ClInclude Include="NonTerminal.h" />
+    <ClInclude Include="optional.h" />
     <ClInclude Include="ParserLALR.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="PreDirectiveType.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="ProductionItem.h" />
     <ClInclude Include="Sentence.h" />
     <ClInclude Include="SentenceItem.h" />
+    <ClInclude Include="SentenceParser.h" />
     <ClInclude Include="SentenceToken.h" />
     <ClInclude Include="SetOfItemSetKernel.h" />
     <ClInclude Include="String.h" />
@@ -191,6 +193,11 @@
     <ClInclude Include="TransitionType.h" />
     <ClInclude Include="VbCharStream.h" />
     <ClInclude Include="VbConflictResolver.h" />
+    <ClInclude Include="VbEndStatement.h" />
+    <ClInclude Include="VbEndType.h" />
+    <ClInclude Include="VbFunctionAccess.h" />
+    <ClInclude Include="VbFunctionStatement.h" />
+    <ClInclude Include="VbFunctionType.h" />
     <ClInclude Include="VbPreProcessor.h" />
     <ClInclude Include="VbPreTokenFactory.h" />
     <ClInclude Include="VbPreTokenStream.h" />

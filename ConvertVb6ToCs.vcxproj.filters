@@ -7,17 +7,11 @@
     <Filter Include="IO">
       <UniqueIdentifier>{b2ddc9c2-8b89-4cb9-84db-e5dcc0028a25}</UniqueIdentifier>
     </Filter>
-    <Filter Include="VisualBasic">
-      <UniqueIdentifier>{2fbbf733-e907-4ec8-803e-fed86347ebb1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PreProcessor">
       <UniqueIdentifier>{60f6a2e4-832c-43f1-81cd-14f6e69655a8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tokens">
       <UniqueIdentifier>{92d78753-51fe-42b9-ad09-239796a7a989}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="String">
-      <UniqueIdentifier>{c3e4b7ab-2bc6-4b49-a22b-cbd0c1b8021b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sentences">
       <UniqueIdentifier>{832a5b09-4048-44b5-a357-20d78e6ebf49}</UniqueIdentifier>
@@ -27,6 +21,15 @@
     </Filter>
     <Filter Include="Parser">
       <UniqueIdentifier>{4fc70970-2eaf-42b8-a4d8-75e0db0f71bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{c3e4b7ab-2bc6-4b49-a22b-cbd0c1b8021b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualBasic Parser">
+      <UniqueIdentifier>{2fbbf733-e907-4ec8-803e-fed86347ebb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualBasic Code Model">
+      <UniqueIdentifier>{3a1d9e6b-6d7f-4c89-bd5c-81df50810d98}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -40,7 +43,7 @@
       <Filter>IO</Filter>
     </ClInclude>
     <ClInclude Include="VbCharStream.h">
-      <Filter>VisualBasic</Filter>
+      <Filter>VisualBasic Parser</Filter>
     </ClInclude>
     <ClInclude Include="PreDirectiveType.h">
       <Filter>PreProcessor</Filter>
@@ -58,7 +61,7 @@
       <Filter>PreProcessor</Filter>
     </ClInclude>
     <ClInclude Include="VbPreTokenFactory.h">
-      <Filter>VisualBasic</Filter>
+      <Filter>VisualBasic Parser</Filter>
     </ClInclude>
     <ClInclude Include="PreTokenStream.h">
       <Filter>PreProcessor</Filter>
@@ -85,28 +88,28 @@
       <Filter>PreProcessor</Filter>
     </ClInclude>
     <ClInclude Include="VbPreTokenStream.h">
-      <Filter>VisualBasic</Filter>
+      <Filter>VisualBasic Parser</Filter>
     </ClInclude>
     <ClInclude Include="VbPreProcessor.h">
-      <Filter>VisualBasic</Filter>
+      <Filter>VisualBasic Parser</Filter>
     </ClInclude>
     <ClInclude Include="TokenType.h">
       <Filter>Tokens</Filter>
     </ClInclude>
     <ClInclude Include="VbTokenFactory.h">
-      <Filter>VisualBasic</Filter>
+      <Filter>VisualBasic Parser</Filter>
     </ClInclude>
     <ClInclude Include="Token.h">
       <Filter>Tokens</Filter>
     </ClInclude>
     <ClInclude Include="String.h">
-      <Filter>String</Filter>
+      <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="TokenStream.h">
       <Filter>Tokens</Filter>
     </ClInclude>
     <ClInclude Include="VbTokenStream.h">
-      <Filter>VisualBasic</Filter>
+      <Filter>VisualBasic Parser</Filter>
     </ClInclude>
     <ClInclude Include="SentenceItem.h">
       <Filter>Sentences</Filter>
@@ -175,7 +178,7 @@
       <Filter>Parser</Filter>
     </ClInclude>
     <ClInclude Include="VbConflictResolver.h">
-      <Filter>VisualBasic</Filter>
+      <Filter>VisualBasic Parser</Filter>
     </ClInclude>
     <ClInclude Include="BinaryWriter.h">
       <Filter>IO</Filter>
@@ -183,19 +186,40 @@
     <ClInclude Include="BinaryReader.h">
       <Filter>IO</Filter>
     </ClInclude>
+    <ClInclude Include="optional.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SentenceParser.h">
+      <Filter>Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbEndType.h">
+      <Filter>VisualBasic Code Model</Filter>
+    </ClInclude>
+    <ClInclude Include="VbFunctionAccess.h">
+      <Filter>VisualBasic Code Model</Filter>
+    </ClInclude>
+    <ClInclude Include="VbFunctionType.h">
+      <Filter>VisualBasic Code Model</Filter>
+    </ClInclude>
+    <ClInclude Include="VbEndStatement.h">
+      <Filter>VisualBasic Code Model</Filter>
+    </ClInclude>
+    <ClInclude Include="VbFunctionStatement.h">
+      <Filter>VisualBasic Code Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">
       <Filter>Language</Filter>
     </Text>
     <Text Include="VbGrammar.txt">
-      <Filter>VisualBasic</Filter>
+      <Filter>VisualBasic Parser</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="VbGrammar.bin">
-      <Filter>VisualBasic</Filter>
+      <Filter>VisualBasic Parser</Filter>
     </None>
   </ItemGroup>
 </Project>
