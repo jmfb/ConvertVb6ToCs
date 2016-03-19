@@ -177,6 +177,12 @@
     <ClInclude Include="VbConflictResolver.h">
       <Filter>VisualBasic</Filter>
     </ClInclude>
+    <ClInclude Include="BinaryWriter.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryReader.h">
+      <Filter>IO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">
@@ -188,5 +194,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="VbGrammar.bin">
+      <Filter>VisualBasic</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -145,6 +145,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryReader.h" />
+    <ClInclude Include="BinaryWriter.h" />
     <ClInclude Include="Char.h" />
     <ClInclude Include="CharStream.h" />
     <ClInclude Include="ConflictResolution.h" />
@@ -201,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="VbGrammar.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,6 +2,8 @@
 #include "Terminal.h"
 #include "TransitionAction.h"
 #include "ConflictResolver.h"
+#include "BinaryReader.h"
+#include "BinaryWriter.h"
 #include <string>
 #include <map>
 #include <vector>
@@ -13,6 +15,7 @@
 class TransitionList
 {
 public:
+	TransitionList() = default;
 	TransitionList(std::size_t index)
 		: index(index)
 	{
@@ -72,6 +75,44 @@ public:
 		return iter->second;
 	}
 
+	void Write(BinaryWriter& writer) const
+	{
+		writer.Write(index);
+		writer.Write(actions.size());
+		for (auto& item : actions)
+		{
+			item.first.Write(writer);
+			item.second.Write(writer);
+		}
+		writer.Write(gotos.size());
+		for (auto& item : gotos)
+		{
+			writer.Write(item.first);
+			writer.Write(item.second);
+		}
+	}
+
+	void Read(BinaryReader& reader)
+	{
+		index = reader.ReadSize();
+		auto actionCount = reader.ReadSize();
+		for (auto index = 0u; index < actionCount; ++index)
+		{
+			Terminal terminal;
+			terminal.Read(reader);
+			TransitionAction action;
+			action.Read(reader);
+			actions.insert({ terminal, action });
+		}
+		auto gotoCount = reader.ReadSize();
+		for (auto index = 0u; index < gotoCount; ++index)
+		{
+			auto nonTerminal = reader.ReadString();
+			auto state = reader.ReadSize();
+			gotos.insert({ nonTerminal, state });
+		}
+	}
+
 private:
 	TransitionAction ResolveMultipleTransitions(const Token& token, const std::vector<std::pair<Terminal, TransitionAction>>& matchingActions)
 	{
@@ -89,7 +130,7 @@ private:
 	}
 
 private:
-	std::size_t index;
+	std::size_t index = 0;
 	std::map<Terminal, TransitionAction> actions;
 	std::map<std::string, std::size_t> gotos;
 };

@@ -3,6 +3,8 @@
 #include "Sentence.h"
 #include "SentenceToken.h"
 #include "TokenStream.h"
+#include "BinaryReader.h"
+#include "BinaryWriter.h"
 #include <vector>
 #include <stack>
 #include <stdexcept>
@@ -59,6 +61,20 @@ public:
 			throw std::runtime_error("Top of stack should be sentence.");
 		sentences.top()->Simplify();
 		return *sentences.top();
+	}
+
+	void Write(BinaryWriter& writer) const
+	{
+		writer.Write(table.size());
+		for (auto& item : table)
+			item.Write(writer);
+	}
+
+	void Read(BinaryReader& reader)
+	{
+		table.resize(reader.ReadSize());
+		for (auto& item : table)
+			item.Read(reader);
 	}
 
 public:

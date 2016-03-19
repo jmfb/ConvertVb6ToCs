@@ -1,6 +1,8 @@
 #pragma once
 #include "TokenType.h"
 #include "Token.h"
+#include "BinaryReader.h"
+#include "BinaryWriter.h"
 #include <string>
 #include <sstream>
 
@@ -44,6 +46,18 @@ public:
 	bool operator<(const Terminal& rhs) const
 	{
 		return type < rhs.type || (type == rhs.type && value < rhs.value);
+	}
+
+	void Write(BinaryWriter& writer) const
+	{
+		writer.Write(static_cast<std::size_t>(type));
+		writer.Write(value);
+	}
+
+	void Read(BinaryReader& reader)
+	{
+		type = static_cast<TokenType>(reader.ReadSize());
+		value = reader.ReadString();
 	}
 
 	std::string ToString() const

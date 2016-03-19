@@ -19,20 +19,32 @@ static const auto source = R"x(
 	End Sub
 )x";
 
+void CompileGrammarToBinaryTransitionTable()
+{
+	std::cout << "Loading grammar text...";
+	std::ifstream in{ R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.txt)" };
+	std::stringstream buffer;
+	in >> buffer.rdbuf();
+	std::cout << "done." << std::endl;
+
+	std::cout << "Starting to load transition table" << std::endl;
+	auto transitionTable = ParserLALR::Generate(buffer.str(), "translation-unit", VbConflictResolver{});
+	std::cout << "Done loading transition table" << std::endl;
+
+	std::cout << "Saving binary...";
+	transitionTable.Write(BinaryWriter{ std::ofstream{ R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.bin)", std::ios::binary } });
+	std::cout << "done." << std::endl;
+}
+
 int main(int argc, char** argv)
 {
 	try
 	{
-		std::cout << "Loading grammar text...";
-		std::ifstream in{ R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.txt)" };
-		std::stringstream buffer;
-		in >> buffer.rdbuf();
+		std::cout << "Loading binary...";
+		TransitionTable transitionTable;
+		transitionTable.Read(BinaryReader{ std::ifstream{ R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.bin)", std::ios::binary } });
 		std::cout << "done." << std::endl;
 
-		std::cout << "Starting to load transition table" << std::endl;
-		auto transitionTable = ParserLALR::Generate(buffer.str(), "translation-unit", VbConflictResolver{});
-		std::cout << "Done loading transition table" << std::endl;
-		
 		std::cout << "Parsing source...";
 		auto sentence = transitionTable.Parse(VbTokenStream{ "source", source });
 		std::cout << "done." << std::endl;

@@ -1,6 +1,8 @@
 #pragma once
 #include "TransitionType.h"
 #include "Production.h"
+#include "BinaryReader.h"
+#include "BinaryWriter.h"
 #include <string>
 #include <cstdlib>
 
@@ -60,6 +62,22 @@ public:
 	bool operator!=(const TransitionAction& rhs) const
 	{
 		return !operator==(rhs);
+	}
+
+	void Write(BinaryWriter& writer) const
+	{
+		writer.Write(static_cast<std::size_t>(type));
+		writer.Write(state);
+		writer.Write(nonTerminal);
+		writer.Write(productionItemCount);
+	}
+
+	void Read(BinaryReader& reader)
+	{
+		type = static_cast<TransitionType>(reader.ReadSize());
+		state = reader.ReadSize();
+		nonTerminal = reader.ReadString();
+		productionItemCount = reader.ReadSize();
 	}
 
 private:
