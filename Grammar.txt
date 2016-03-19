@@ -1,0 +1,50 @@
+BNF for language to define grammars:
+========================================================================================
+grammar = non-terminal-seq-opt;
+non-terminal-seq = non-terminal non-terminal-seq-opt;
+non-terminal = non-terminal-name '=' production-list ';';
+non-terminal-name = '<' {any characters but >} '>';
+production-list = production | production-list '|' production;
+production = production-item-seq | '@';
+production-item-seq = production-item production-item-seq-opt;
+production-item = "id" | "val" | keyword | operator | non-terminal-name;
+keyword = '"' {any characters but "} '"';
+operator = '\'' {any characters but '} '\'';
+single-line-comment = '#' {any characters but \n} '\n';
+block-comment = '#' '#' {any characters but ##} '#' '#';
+
+Additional non-terminal name parsing logic:
+========================================================================================
+Prefix of "id-" indicates an identifier instead of a non-terminal.  Only useful for "id-opt" syntax.
+Prefix of "op-{any characters but -}-" refers to an operator instead of a non-terminal.
+Prefix of "key-{any characters but -}-" refers to a keyword instead of a non-terminal.
+Prefix of "id.value" will match on an identifier of the given value only.
+Suffix of "-opt" indicates non-terminal item is optional.  Will automatically generate the non-terminal "name-opt = name | @;".
+
+Example Grammar Definition (demonstrating all supported language features with comments)
+========================================================================================
+#This is just a commented line that goes until the newline.
+<translation-unit> =         #Non-terminal definitions read until the semicolon, not newline.
+     <declaration-seq-opt>;  #Semicolon indicates the end of this non-terminal
+#Note: "<declaration-seq-opt> = <declaration-seq> | @;" is automatically generated.
+<declaration-seq> =      #This non-terminal defined 2 productions.
+     <declaration>       #It is good practice to always put productions on their own line.
+     | <declaration-seq> <declaration>;  #Second production starts after '|' operator.
+<declaration> = <class-declaration> | <variable-declaration>;
+<class-declaration> =
+     <key-partial-opt>       #Partial class keyword is optional
+     "class"                 #Class keyword required
+     id                      #Matches any identifier
+     '{'                     #Open brace
+     <declaration-seq-opt>   #The declarations declared here will be declared in the
+                             #scope of the class we've just declared.
+     '}'                     #Close brace
+     ';'                     #class declaration is terminated by semicolon operator.
+<variable-declaration> = <type> id ';';
+<type> = <simple-type> | <class-type>;
+<simple-type> = "int"
+## Commented out this entire block in order to simplify and demonstrate block comment
+     | "bool"
+     | "float"
+## ; #Block comment immediately ends at matched ## so the previous semicolon is "in".
+<class-type> = id;

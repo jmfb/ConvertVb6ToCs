@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="IO">
+      <UniqueIdentifier>{b2ddc9c2-8b89-4cb9-84db-e5dcc0028a25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualBasic">
+      <UniqueIdentifier>{2fbbf733-e907-4ec8-803e-fed86347ebb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PreProcessor">
+      <UniqueIdentifier>{60f6a2e4-832c-43f1-81cd-14f6e69655a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tokens">
+      <UniqueIdentifier>{92d78753-51fe-42b9-ad09-239796a7a989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="String">
+      <UniqueIdentifier>{c3e4b7ab-2bc6-4b49-a22b-cbd0c1b8021b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sentences">
+      <UniqueIdentifier>{832a5b09-4048-44b5-a357-20d78e6ebf49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Language">
+      <UniqueIdentifier>{aeec7e88-516a-4252-b3a9-b1473e63a909}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parser">
+      <UniqueIdentifier>{4fc70970-2eaf-42b8-a4d8-75e0db0f71bc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Char.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="Position.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="CharStream.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCharStream.h">
+      <Filter>VisualBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="PreDirectiveType.h">
+      <Filter>PreProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="PreIfType.h">
+      <Filter>PreProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="PreToken.h">
+      <Filter>PreProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="PreTokenType.h">
+      <Filter>PreProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="PreTokenLine.h">
+      <Filter>PreProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="VbPreTokenFactory.h">
+      <Filter>VisualBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="PreTokenStream.h">
+      <Filter>PreProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="PreLine.h">
+      <Filter>PreProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="PreLineSource.h">
+      <Filter>PreProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="PreLineEvaluator.h">
+      <Filter>PreProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="PreLineDirective.h">
+      <Filter>PreProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="PreIfBlock.h">
+      <Filter>PreProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="PreLineIf.h">
+      <Filter>PreProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="PreProcessor.h">
+      <Filter>PreProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="VbPreTokenStream.h">
+      <Filter>VisualBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="VbPreProcessor.h">
+      <Filter>VisualBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="TokenType.h">
+      <Filter>Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="VbTokenFactory.h">
+      <Filter>VisualBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="Token.h">
+      <Filter>Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="String.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="TokenStream.h">
+      <Filter>Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="VbTokenStream.h">
+      <Filter>VisualBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="SentenceItem.h">
+      <Filter>Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="SentenceToken.h">
+      <Filter>Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="Sentence.h">
+      <Filter>Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="Terminal.h">
+      <Filter>Language</Filter>
+    </ClInclude>
+    <ClInclude Include="ProductionItem.h">
+      <Filter>Language</Filter>
+    </ClInclude>
+    <ClInclude Include="Production.h">
+      <Filter>Language</Filter>
+    </ClInclude>
+    <ClInclude Include="Grammar.h">
+      <Filter>Language</Filter>
+    </ClInclude>
+    <ClInclude Include="NonTerminal.h">
+      <Filter>Language</Filter>
+    </ClInclude>
+    <ClInclude Include="GrammarParser.h">
+      <Filter>Language</Filter>
+    </ClInclude>
+    <ClInclude Include="ConflictResolution.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="ConflictResolver.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="TransitionType.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="TransitionAction.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="TransitionList.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="TransitionTable.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="Item1.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemSet1.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemXPropogate.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemX.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemSetX.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="ParserLALR.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="SetOfItemSetKernel.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="VbConflictResolver.h">
+      <Filter>VisualBasic</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Grammar.txt">
+      <Filter>Language</Filter>
+    </Text>
+    <Text Include="VbGrammar.txt">
+      <Filter>VisualBasic</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+  </ItemGroup>
+</Project>

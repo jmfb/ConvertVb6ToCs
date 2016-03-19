@@ -1,0 +1,717 @@
+#==============================================================================
+#== Translation Unit
+#==============================================================================
+<translation-unit> =
+    <translation-header-opt> 
+    <declaration-list-opt>;
+<translation-header> =
+    <class-header>
+    | <module-header>
+    | <form-header>;
+<declaration-list> =
+    <declaration> <declaration-list'>;
+<declaration-list'> =
+    <declaration> <declaration-list'>
+    | @;
+<declaration> =
+    <attribute>
+    | <line-label> <vb-line-opt> '\n'
+    | <vb-line> '\n'
+    | '\n';
+<line-label> =
+    id ':'      #Ambiguity resolution via ConflictResolver
+    | val ':';
+<vb-line> =
+    <statement>
+    | <statement> ':' <compound-statement-opt>
+    | ':' <compound-statement-opt>;
+<compound-statement> =
+    <statement> <compound-statement'>
+    | ':' <compound-statement'>;
+<compound-statement'> =
+    ':' <statement> <compound-statement'>
+    | ':'
+    | @;
+
+#==============================================================================
+#== Class Header
+#==============================================================================
+<class-header> =
+    <id.version> val <id.class> '\n' <setting-block> <attribute-list>;
+<setting-block> =
+    <id.begin> '\n' <setting-list-opt> "end" '\n';
+<setting-list> =
+    <setting> <setting-list-opt>;
+<setting> =
+    <l-value> '=' <setting-value> '\n';
+<setting-value> =
+    <expression>
+    | val ':' val
+    | val ':' id
+    | '$' val ':' val
+    | '$' val ':' id;
+<attribute-list> =
+    <attribute> <attribute-list'>;
+<attribute-list'> =
+    <attribute> <attribute-list'>
+    | @;
+<attribute> =
+    <id.attribute> <qualified-id> '=' <expression> '\n';
+
+#==============================================================================
+#== Module Header
+#==============================================================================
+<module-header> =
+    <attribute-list>;
+
+#==============================================================================
+#== Form Header
+#==============================================================================
+<form-header> =
+    <id.version> val '\n' <object-list-opt> <begin-block> <attribute-list>;
+<begin-block> =
+    <id.begin> <qualified-id> id '\n' <block-body-opt> "end" '\n';
+<block-body> =
+    <block-item> <block-body'>;
+<block-body'> =
+    <block-item> <block-body'>
+    | @;
+<block-item> =
+    <setting>
+    | <begin-block>
+    | <begin-property>;
+<begin-property> =
+    <id.beginproperty> id <property-array-suffix-opt> <property-guid-opt> '\n' <block-body-opt> <id.endproperty> '\n';
+<property-array-suffix> =
+    '(' val ')';
+<property-guid> =
+    val; # {guid} : Only spot '{' ... '}' value can be used.
+<object-list> =
+    <object-item> <object-list'>;
+<object-list'> =
+    <object-item> <object-list'>
+    | @;
+<object-item> =
+    <id.object> '=' val ';' val '\n';
+
+#==============================================================================
+#== Literals
+#==============================================================================
+<literal> =
+    val
+    | "true"
+    | "false"
+    | "empty"
+    | "nothing"
+    | "null";
+
+#==============================================================================
+#== Qualified Identifiers
+#==============================================================================
+<qualified-id> =
+    id <qualified-suffix-opt>
+    | <ws-dot> id <qualified-suffix-opt>;
+<qualified-suffix> =
+    <dot> id <qualified-suffix'>;
+<qualified-suffix'> =
+    <dot> id <qualified-suffix'>
+    | @;
+<dot> =
+    '.'
+    | '!';  #Special ADO recordset operator "rs!name" -> "rs.Fields.Items("name").Value"
+<ws-dot> =
+    ' .'
+    | ' !';
+<l-value-list> =
+    <l-value> <l-value-list'>;
+<l-value-list'> =
+    ',' <l-value> <l-value-list'>
+    | @;
+<l-value> =
+    id <l-value-suffix-opt>
+    | <ws-dot> id <l-value-suffix-opt>
+    | "me" <l-value-suffix-opt>;
+<l-value-suffix> =
+    <l-value-terminal> <l-value-suffix'>;
+<l-value-suffix'> =
+    <l-value-terminal> <l-value-suffix'>
+    | @;
+<l-value-terminal> =
+    <dot> id
+    | <expression-clause>;
+
+#==============================================================================
+#== Type Specifiers
+#==============================================================================
+<type-specifier> =
+    <qualified-id>
+    | <simple-type>;
+<simple-type> =
+    "byte"
+    | "boolean"
+    | "integer"
+    | "long"
+    | "currency"
+    | "single"
+    | "double"
+    | <id.date>
+    | "string"
+    | "string" '*' val
+    | "string" '*' <qualified-id>
+    | <id.object>
+    | "variant";
+<as-specifier> =
+    "as" <type-specifier>;
+<as-new-specifier> =
+    "as" <key-new-opt> <type-specifier>;
+<as-array-specifier> =
+    "as" <type-specifier> <array-specifier-opt>;
+
+#==============================================================================
+#== Statements
+#==============================================================================
+<statement> =
+    #Option Statements
+    <option-explicit-statement>
+    | <option-base-statement>
+    | <option-compare-statement>
+    | <option-private-statement>
+    #If Statements
+    | <if-statement>
+    | <else-statement>
+    | <elseif-statement>
+    | <end-statement>
+    #Call and Let Statements
+    | <call-statement>
+    | <let-statement>
+    #Set Statements
+    | <set-statement>
+    | <lset-statement>
+    | <rset-statement>
+    #Local Function Statements
+    | <const-statement>
+    | <dim-statement>
+    | <with-statement>
+    #Array Statements
+    | <redim-statement>
+    | <erase-statement>
+    #Error Handling Statements
+    | <on-error-statement>
+    | <resume-statement>
+    | <error-statement>
+    | <stop-statement>
+    #Loop Statements (For, Do, While)
+    | <for-statement>
+    | <for-each-statement>
+    | <next-statement>
+    | <exit-statement>
+    | <do-statement>
+    | <loop-statement>
+    | <while-statement>
+    | <wend-statement>
+    #Control Statements (Select, GoSub, Goto)
+    | <select-statement>
+    | <case-statement>
+    | <gosub-statement>
+    | <return-statement>
+    | <goto-statement>
+    | <on-statement>
+    #Module Level Statements (Properties and Methods)
+    | <public-statement>
+    | <private-statement>
+    | <static-statement>
+    | <declare-statement>
+    | <sub-statement>
+    | <function-statement>
+    | <property-get-statement>
+    | <property-let-statement>
+    | <property-set-statement>
+    | <implements-statement>
+    #Enum and Type Statements
+    | <enum-statement>
+    | <type-statement>
+    #Global type definition (based on variable names)
+    | <define-type-statement>
+    #Event Statements
+    | <event-statement>
+    | <raise-event-statement>
+    #Misc. Statements (Mid(...) = ..., Randomize)
+    | <mid-statement>
+    #File I/O Statements
+    | <get-statement>
+    | <line-input-statement>
+    | <lock-statement>
+    | <unlock-statement>
+#<name-statement> causes the following ambiguity:
+#   Name(x) = 5     -> <l-value[<id.name> <l-value-suffix[(x)]>]> ...
+#   Name (x) As Y   -> <id.name> <expression[(x)]> ...
+#    | <name-statement>
+    | <open-statement>
+    | <put-statement>
+    | <seek-statement>
+    | <write-statement>
+;
+
+<define-type-statement> =
+    <define-type-keyword> <letter-range-list>;
+
+<declare-statement> =
+    <declare-sub-statement>
+    | <declare-function-statement>;
+<declare-sub-statement> =
+    "public" "declare" "sub" id <id.lib> val <declare-alias-opt> <parameter-clause-opt>
+    | "private" "declare" "sub" id <id.lib> val <declare-alias-opt> <parameter-clause-opt>
+    | "declare" "sub" id <id.lib> val <declare-alias-opt> <parameter-clause-opt>;
+<declare-function-statement> =
+    "public" "declare" "function" id <id.lib> val <declare-alias-opt> <parameter-clause-opt> <as-array-specifier-opt>
+    | "private" "declare" "function" id <id.lib> val <declare-alias-opt> <parameter-clause-opt> <as-array-specifier-opt>
+    | "declare" "function" id <id.lib> val <declare-alias-opt> <parameter-clause-opt> <as-array-specifier-opt>;
+
+<const-statement> =
+    "private" "const" <constant-definition-list>
+    | "public" "const" <constant-definition-list>
+    | <id.global> "const" <constant-definition-list>
+    | "const" <constant-definition-list>;
+<dim-statement> =
+    "dim" <dim-definition-list>;
+<static-statement> =
+    "static" <dim-definition-list>;
+<public-statement> =
+    "public" <dim-definition-list>
+    | <id.global> <dim-definition-list>;
+<private-statement> =
+    "private" <dim-definition-list>;
+<redim-statement> =
+    "redim" <key-preserve-opt> <redim-definition-list>;
+
+<property-get-statement> =
+    <id.property> "get" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "static" <id.property> "get" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "public" <id.property> "get" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "private" <id.property> "get" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "friend" <id.property> "get" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "public" "static" <id.property> "get" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "private" "static" <id.property> "get" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "friend" "static" <id.property> "get" id <parameter-clause-opt> <as-array-specifier-opt>;
+<property-let-statement> =
+    <id.property> "let" id <parameter-clause>
+    | "static" <id.property> "let" id <parameter-clause>
+    | "public" <id.property> "let" id <parameter-clause>
+    | "private" <id.property> "let" id <parameter-clause>
+    | "friend" <id.property> "let" id <parameter-clause>
+    | "public" "static" <id.property> "let" id <parameter-clause>
+    | "private" "static" <id.property> "let" id <parameter-clause>
+    | "friend" "static" <id.property> "let" id <parameter-clause>;
+<property-set-statement> =
+    <id.property> "set" id <parameter-clause>
+    | "static" <id.property> "set" id <parameter-clause>
+    | "public" <id.property> "set" id <parameter-clause>
+    | "private" <id.property> "set" id <parameter-clause>
+    | "friend" <id.property> "set" id <parameter-clause>
+    | "public" "static" <id.property> "set" id <parameter-clause>
+    | "private" "static" <id.property> "set" id <parameter-clause>
+    | "friend" "static" <id.property> "set" id <parameter-clause>;
+
+<function-statement> =
+    "function" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "static" "function" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "public" "function" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "private" "function" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "friend" "function" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "public" "static" "function" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "private" "static" "function" id <parameter-clause-opt> <as-array-specifier-opt>
+    | "friend" "static" "function" id <parameter-clause-opt> <as-array-specifier-opt>;
+<sub-statement> =
+    "sub" id <parameter-clause-opt>
+    | "static" "sub" id <parameter-clause-opt>
+    | "public" "sub" id <parameter-clause-opt>
+    | "private" "sub" id <parameter-clause-opt>
+    | "friend" "sub" id <parameter-clause-opt>
+    | "public" "static" "sub" id <parameter-clause-opt>
+    | "private" "static" "sub" id <parameter-clause-opt>
+    | "friend" "static" "sub" id <parameter-clause-opt>;
+
+<do-statement> =
+    "do" <loop-condition-opt>;
+<loop-statement> =
+    "loop" <loop-condition-opt>;
+
+<statement-separator> =
+    ':'
+    | '\n';
+<enum-statement> =
+    "enum" id <statement-separator> <enum-member-list-opt> "end" "enum"
+    | "public" "enum" id <statement-separator> <enum-member-list-opt> "end" "enum"
+    | "private" "enum" id <statement-separator> <enum-member-list-opt> "end" "enum";
+<enum-member-list> =
+    <enum-member> <enum-member-list'>;
+<enum-member-list'> =
+    <enum-member> <enum-member-list'>
+    | @;
+<enum-member> =
+    <statement-separator>
+    | id <statement-separator>
+    | id '=' <expression> <statement-separator>;
+
+<event-statement> =
+    "event" id <parameter-clause-opt>
+    | "public" "event" id <parameter-clause-opt>;
+
+<for-each-statement> =
+    "for" "each" <l-value> "in" <expression>;
+<for-statement> =
+    "for" <l-value> '=' <expression> "to" <expression> <step-clause-opt>;
+<step-clause> =
+    <id.step> <expression>;
+<next-statement> =
+    <id.next> <l-value-opt>;
+
+<if-statement> =
+    "if" <expression> "then" <compound-statement> <else-statement-opt>
+    | "if" <expression> "then";
+<elseif-statement> =
+    "elseif" <expression> "then";
+<else-statement> =
+    "else" <compound-statement-opt>;
+
+<implements-statement> =
+    "implements" <qualified-id>;
+<option-base-statement> =
+    "option" <id.base> val;
+<option-compare-statement> =
+    "option" <id.compare> <option-compare-key>;
+<option-explicit-statement> =
+    "option" <id.explicit>;
+<option-private-statement> =
+    "option" "private" <id.module>;
+
+<select-statement> =
+    <id.select> "case" <expression>;
+<case-statement> =
+    "case" <case-clause>;
+<case-clause> =
+    "else"
+    | <case-expression-list>;
+<case-expression-list> =
+    <case-expression> <case-expression-list'>;
+<case-expression-list'> =
+    ',' <case-expression> <case-expression-list'>
+    | @;
+<case-expression> =
+    "is" <relational-op> <expression>
+    | <expression> "to" <expression>
+    | <expression>;
+<relational-op> =
+    '>=' | '<=' | '>' | '<' | '<>' | '=';
+
+<type-statement> =
+    <id.type> id <statement-separator> <type-definition-list> "end" <id.type>
+    | "public" <id.type> id <statement-separator> <type-definition-list> "end" <id.type>
+    | "private" <id.type> id <statement-separator> <type-definition-list> "end" <id.type>;
+<type-definition-list> =
+    <type-definition> <type-definition-list'>;
+<type-definition-list'> =
+    <type-definition> <type-definition-list'>
+    | @;
+<type-definition> =
+    <statement-separator>
+    | id <array-suffix-opt> <as-specifier> <statement-separator>;
+
+<while-statement> =
+    "while" <expression>;
+<wend-statement> =
+    "wend";
+<with-statement> =
+    "with" <l-value>;
+
+<call-statement> =
+    "call" "me" '.' <call-suffix>
+    | "call" <ws-dot> <call-suffix>
+    | "call" <call-suffix>
+    | <l-value> <expression-list-opt>;
+<call-suffix> =
+    <call-terminal> <call-suffix'>;
+<call-suffix'> =
+    <dot> <call-terminal> <call-suffix'>
+    | @;
+<call-terminal> =
+    id
+    | id <expression-clause>;
+
+<let-statement> =
+    "let" <l-value> '=' <expression>
+    | <l-value> '=' <expression>;
+
+<end-statement> =
+    "end" <end-keyword-opt>;
+<end-keyword> =
+    #<id.type> and "enum" handled specially by begin statement
+    "sub"
+    | "function"
+    | <id.property>
+    | "if"
+    | <id.select>
+    | "with";
+
+<erase-statement> =
+    "erase" <l-value-list>;
+<error-statement> =
+    "error" <expression>;
+
+<exit-statement> =
+    "exit" <exit-keyword>;
+<exit-keyword> =
+    "do"
+    | "for"
+    | "function"
+    | <id.property>
+    | "sub";
+
+<get-statement> =
+    "get" <expression> ',' <expression-opt> ',' <l-value>;
+<gosub-statement> =
+    "gosub" <expression>;
+<return-statement> =
+    "return";
+<goto-statement> =
+    <id.goto> <expression>;
+<line-input-statement> =
+    "line input" <expression> ',' <l-value>;
+<lock-statement> =
+    <id.lock> <expression> <lock-range-opt>;
+<unlock-statement> =
+    "unlock" <expression> <lock-range-opt>;
+<lset-statement> =
+    "lset" <l-value> '=' <expression>;
+<mid-statement> =
+    <id.mid> <expression-clause> '=' <expression>;
+<name-statement> =
+    <id.name> <expression> "as" <expression>;
+<on-error-statement> =
+    "on" "error" <id.goto> <expression>
+    | "on" "error" "resume" <id.next>;
+
+<on-statement> =
+    "on" <expression> <id.goto> <label-list>
+    | "on" <expression> "gosub" <label-list>;
+<label-list> =
+    <label> <label-list'>;
+<label-list'> =
+    ',' <label> <label-list'>
+    | @;
+<label> =
+    id
+    | val;
+
+<open-statement> =
+    <id.open> <expression> "for" <open-mode> <open-access-opt> <open-lock-opt> "as" <expression> <open-len-specifier-opt>;
+<put-statement> =
+    "put" <expression> ',' <expression-opt> ',' <expression>;
+<raise-event-statement> =
+    "raiseevent" <qualified-id> <expression-clause-opt>;
+<resume-statement> =
+    "resume"
+    | "resume" <id.next>
+    | "resume" <expression>;
+<rset-statement> =
+    "rset" <l-value> '=' <expression>;
+<seek-statement> =
+    "seek" <expression> ',' <expression>;
+<set-statement> =
+    "set" <l-value> '=' <expression>;
+<stop-statement> =
+    "stop";
+<write-statement> =
+    "write" <expression> ',' <expression-list-opt>;
+
+#==============================================================================
+#== Expressions
+#==============================================================================
+<expression-list> =
+    <pass-by-opt> id ':=' <expression> <expression-list'>
+    | <pass-by-opt> <expression> <expression-list'>
+    | <expression-list''> <expression-list'>;
+<expression-list'> =
+    <expression-list''> <expression-list'>
+    | @;
+<expression-list''> =
+    <expression-separator>
+    | <expression-separator> <pass-by-opt> id ':=' <expression>
+    | <expression-separator> <pass-by-opt> <expression>;
+<expression-separator> =
+    ','
+    | ';';  #Tabbed column separator for Print statements
+<expression> =
+    <or-expression>;
+<primary-expression> =
+    id
+    | <ws-dot> id
+    | "me"
+    | <literal>
+    | ' (' <expression> ')'
+    | ' (' <expression> ',' <expression> ')';   #Special case 'coordinate' expression for Line statements
+<postfix-expression> =
+    <primary-expression>
+    | <postfix-expression> <dot> id
+    | <postfix-expression> <expression-clause>;
+<unary-expression> =
+    <postfix-expression>
+    | "new" <qualified-id>
+    | "addressof" <qualified-id>
+    | "typeof" <l-value> "is" <qualified-id>
+    | "string" <expression-clause>
+    | "len" <expression-clause>
+    | "not" <unary-expression>
+    | '-' <unary-expression>
+    | '#' <unary-expression>;
+<multiplicative-expression> =
+    <unary-expression>
+    | <multiplicative-expression> '*' <unary-expression>
+    | <multiplicative-expression> '/' <unary-expression>
+    | <multiplicative-expression> '\' <unary-expression>
+    | <multiplicative-expression> "mod" <unary-expression>
+    | <multiplicative-expression> '^' <unary-expression>;
+<additive-expression> =
+    <multiplicative-expression>
+    | <additive-expression> '+' <multiplicative-expression>
+    | <additive-expression> '-' <multiplicative-expression>
+    | <additive-expression> '&' <multiplicative-expression>;
+<relational-expression> =
+    <additive-expression>
+    | <relational-expression> '>=' <additive-expression>
+    | <relational-expression> '>' <additive-expression>
+    | <relational-expression> '<=' <additive-expression>
+    | <relational-expression> '<' <additive-expression>;
+<equality-expression> =
+    <relational-expression>
+    | <equality-expression> '=' <relational-expression>
+    | <equality-expression> '<>' <relational-expression>
+    | <equality-expression> "imp" <relational-expression>
+    | <equality-expression> "eqv" <relational-expression>
+    | <equality-expression> "is" <relational-expression>
+    | <equality-expression> "like" <relational-expression>;
+<and-expression> =
+    <equality-expression>
+    | <and-expression> "and" <equality-expression>;
+<xor-expression> =
+    <and-expression>
+    | <xor-expression> "xor" <and-expression>;
+<or-expression> =
+    <xor-expression>
+    | <or-expression> "or" <xor-expression>;
+
+#==============================================================================
+#== Miscellaneous
+#==============================================================================
+
+<option-compare-key> =
+    <id.binary>
+    | <id.text>
+    | <id.database>;
+
+<open-mode> =
+    <id.append>
+    | <id.binary>
+    | <id.input>
+    | <id.output>
+    | <id.random>;
+<open-access> =
+    <id.access> <open-access-key>;
+<open-access-key> =
+    <id.read>
+    | "write"
+    | <id.read> "write";
+<open-lock> =
+    "shared"
+    | <id.lock> <id.read>
+    | <id.lock> "write"
+    | <id.lock> <id.read> "write";
+<open-len-specifier> =
+    "len" '=' <expression>;
+
+<lock-range> =
+    ',' <expression> <lock-range-to-opt>;
+<lock-range-to> =
+    "to" <expression>;
+
+<loop-condition> =
+    <loop-condition-keyword> <expression>;
+<loop-condition-keyword> =
+    "while"
+    | "until";
+
+<dim-definition-list> =
+    <dim-definition> <dim-definition-list'>;
+<dim-definition-list'> =
+    ',' <dim-definition> <dim-definition-list'>
+    | @;
+<dim-definition> =
+    <key-withevents-opt> id <array-suffix-opt> <as-new-specifier-opt>;
+<redim-definition-list> =
+    <redim-definition> <redim-definition-list'>;
+<redim-definition-list'> =
+    ',' <redim-definition> <redim-definition-list'>
+    | @;
+<redim-definition> =
+    <qualified-id> '(' <subscript-list> ')' <as-specifier-opt>;
+<array-suffix> =
+    '(' <subscript-list-opt> ')';
+<subscript-list> =
+    <subscript> <subscript-list'>;
+<subscript-list'> =
+    ',' <subscript> <subscript-list'>
+    | @;
+<subscript> =
+    <expression>
+    | <expression> "to" <expression>;
+
+<define-type-keyword> =
+    "defbool"
+    | "defbyte"
+    | "defint"
+    | "deflng"
+    | "defcur"
+    | "defsng"
+    | "defdbl"
+    | "defdate"
+    | "defstr"
+    | "defobj"
+    | "defvar";
+<letter-range-list> =
+    <letter-range> <letter-range-list'>;
+<letter-range-list'> =
+    ',' <letter-range> <letter-range-list'>
+    | @;
+<letter-range> =
+    id
+    | id '-' id;
+
+<declare-alias> =
+    <id.alias> val;
+<parameter-clause> =
+    '(' <parameter-list-opt> ')'
+    | ' (' <parameter-list-opt> ')';
+<expression-clause> =
+    '(' <expression-list-opt> ')';
+<parameter-list> =
+    <parameter> <parameter-list'>;
+<parameter-list'> =
+    ',' <parameter> <parameter-list'>
+    | @;
+<parameter> =
+    <key-optional-opt> <pass-by-opt> <key-paramarray-opt> id <array-specifier-opt> <as-specifier-opt> <default-value-opt>;
+<array-specifier> =
+    '(' ')';
+<default-value> =
+    '=' <expression>;
+<pass-by> =
+    "byref"
+    | "byval";
+
+<constant-definition-list> =
+    <constant-definition> <constant-definition-list'>;
+<constant-definition-list'> =
+    ',' <constant-definition> <constant-definition-list'>
+    | @;
+<constant-definition> =
+    id <as-specifier-opt> '=' <expression>;
