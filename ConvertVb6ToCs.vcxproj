@@ -113,7 +113,7 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -197,6 +197,7 @@
     <ClInclude Include="TransitionTable.h" />
     <ClInclude Include="TransitionType.h" />
     <ClInclude Include="VbCharStream.h" />
+    <ClInclude Include="VbCompoundStatement.h" />
     <ClInclude Include="VbConflictResolver.h" />
     <ClInclude Include="VbDeclaration.h" />
     <ClInclude Include="VbEndStatement.h" />
@@ -207,6 +208,7 @@
     <ClInclude Include="VbIfStatement.h" />
     <ClInclude Include="VbLetStatement.h" />
     <ClInclude Include="VbLine.h" />
+    <ClInclude Include="VbLineLabel.h" />
     <ClInclude Include="VbPreProcessor.h" />
     <ClInclude Include="VbPreTokenFactory.h" />
     <ClInclude Include="VbPreTokenStream.h" />
