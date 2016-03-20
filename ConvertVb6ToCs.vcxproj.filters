@@ -31,6 +31,12 @@
     <Filter Include="VisualBasic Code Model">
       <UniqueIdentifier>{3a1d9e6b-6d7f-4c89-bd5c-81df50810d98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="VisualBasic Code Model\Sentences">
+      <UniqueIdentifier>{65a8da1c-c00c-4a08-ad10-0eb6b636583b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualBasic Code Model\Model">
+      <UniqueIdentifier>{8ec456a0-1b8e-4055-b7ff-a690eb5eb84b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Char.h">
@@ -193,31 +199,52 @@
       <Filter>Sentences</Filter>
     </ClInclude>
     <ClInclude Include="VbEndType.h">
-      <Filter>VisualBasic Code Model</Filter>
-    </ClInclude>
-    <ClInclude Include="VbFunctionAccess.h">
-      <Filter>VisualBasic Code Model</Filter>
+      <Filter>VisualBasic Code Model\Model</Filter>
     </ClInclude>
     <ClInclude Include="VbFunctionType.h">
-      <Filter>VisualBasic Code Model</Filter>
+      <Filter>VisualBasic Code Model\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="VbFunctionAccess.h">
+      <Filter>VisualBasic Code Model\Model</Filter>
     </ClInclude>
     <ClInclude Include="VbEndStatement.h">
-      <Filter>VisualBasic Code Model</Filter>
+      <Filter>VisualBasic Code Model\Sentences</Filter>
     </ClInclude>
     <ClInclude Include="VbFunctionStatement.h">
-      <Filter>VisualBasic Code Model</Filter>
+      <Filter>VisualBasic Code Model\Sentences</Filter>
     </ClInclude>
     <ClInclude Include="VbIfStatement.h">
-      <Filter>VisualBasic Code Model</Filter>
+      <Filter>VisualBasic Code Model\Sentences</Filter>
     </ClInclude>
     <ClInclude Include="VbLetStatement.h">
-      <Filter>VisualBasic Code Model</Filter>
+      <Filter>VisualBasic Code Model\Sentences</Filter>
     </ClInclude>
     <ClInclude Include="VbLine.h">
-      <Filter>VisualBasic Code Model</Filter>
+      <Filter>VisualBasic Code Model\Sentences</Filter>
     </ClInclude>
     <ClInclude Include="VbStatement.h">
-      <Filter>VisualBasic Code Model</Filter>
+      <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionalSentenceListAccessor.h">
+      <Filter>Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="RequiredSentenceAccessor.h">
+      <Filter>Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionalSentenceAccessor.h">
+      <Filter>Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="RequiredTokenAccessor.h">
+      <Filter>Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionalTokenAccessor.h">
+      <Filter>Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbTranslationUnit.h">
+      <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbDeclaration.h">
+      <Filter>VisualBasic Code Model\Sentences</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

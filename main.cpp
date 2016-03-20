@@ -36,6 +36,8 @@ void CompileGrammarToBinaryTransitionTable()
 	std::cout << "done." << std::endl;
 }
 
+#include "VbTranslationUnit.h"
+#include "VbDeclaration.h"
 #include "VbLine.h"
 #include "VbStatement.h"
 #include "VbFunctionStatement.h"
@@ -43,38 +45,17 @@ void CompileGrammarToBinaryTransitionTable()
 #include "VbIfStatement.h"
 #include "VbLetStatement.h"
 
-void Dump(const Sentence& translationUnit)
+void Dump(const Sentence& sentence)
 {
-	//<translation-unit> =
-	//	<translation-header-opt>
-	//	<declaration-list-opt>;
-	if (translationUnit.GetName() != "translation-unit")
-		throw std::runtime_error("Top level item should be translation-unit");
-	if (translationUnit.GetNodes().empty())
-		return; //There is no declaration list
-	//TODO: support optional translation-header
-	if (translationUnit.GetNodes().size() > 1)
-		throw std::runtime_error("Translation unit should contain a single declaration list.");
-	auto& declarationList = translationUnit.GetNodes().front()->AsSentence();
-	if (declarationList.GetName() != "declaration-list")
-		throw std::runtime_error("Should be a declaration-list.");
-	//<declaration-list> =
-	//	<declaration> <declaration-list'>;
-	for (auto& node : declarationList.GetNodes())
+	VbTranslationUnit translationUnit{ sentence };
+	if (!translationUnit.declarationList)
+		return;
+	for (auto& declarationSentence : *translationUnit.declarationList)
 	{
-		auto& declaration = node->AsSentence();
-		if (declaration.GetName() != "declaration")
-			throw std::runtime_error("Should be a declaration.");
-		//<declaration> =
-		//	<attribute>
-		//	| <line-label> <vb-line-opt> '\n'
-		//	| <vb-line> '\n'
-		//	| '\n';
-		if (declaration.GetNodes().size() == 1)
-			continue; //Every declaration must end with a newline.  Single token declarations are therefore empty and can be skipped.
-		//TODO: Scan past line-label (only valid within a function definition, statement may exist after label on the same line)
-
-		VbLine vbLine{ declaration.GetNodes().front()->AsSentence() };
+		VbDeclaration declaration{ declarationSentence };
+		if (!declaration.vbLine)
+			continue;
+		VbLine vbLine{ *declaration.vbLine };
 		if (vbLine.statement)
 		{
 			VbStatement statement{ *vbLine.statement };

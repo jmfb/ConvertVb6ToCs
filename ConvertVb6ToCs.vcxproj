@@ -160,6 +160,9 @@
     <ClInclude Include="ItemXPropogate.h" />
     <ClInclude Include="NonTerminal.h" />
     <ClInclude Include="optional.h" />
+    <ClInclude Include="OptionalSentenceAccessor.h" />
+    <ClInclude Include="OptionalSentenceListAccessor.h" />
+    <ClInclude Include="OptionalTokenAccessor.h" />
     <ClInclude Include="ParserLALR.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="PreDirectiveType.h" />
@@ -177,6 +180,8 @@
     <ClInclude Include="PreTokenType.h" />
     <ClInclude Include="Production.h" />
     <ClInclude Include="ProductionItem.h" />
+    <ClInclude Include="RequiredSentenceAccessor.h" />
+    <ClInclude Include="RequiredTokenAccessor.h" />
     <ClInclude Include="Sentence.h" />
     <ClInclude Include="SentenceItem.h" />
     <ClInclude Include="SentenceParser.h" />
@@ -193,6 +198,7 @@
     <ClInclude Include="TransitionType.h" />
     <ClInclude Include="VbCharStream.h" />
     <ClInclude Include="VbConflictResolver.h" />
+    <ClInclude Include="VbDeclaration.h" />
     <ClInclude Include="VbEndStatement.h" />
     <ClInclude Include="VbEndType.h" />
     <ClInclude Include="VbFunctionAccess.h" />
@@ -207,6 +213,7 @@
     <ClInclude Include="VbStatement.h" />
     <ClInclude Include="VbTokenFactory.h" />
     <ClInclude Include="VbTokenStream.h" />
+    <ClInclude Include="VbTranslationUnit.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt" />

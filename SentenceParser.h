@@ -1,14 +1,16 @@
 #pragma once
-#include "Token.h"
 #include "Sentence.h"
 #include "optional.h"
+#include "OptionalTokenAccessor.h"
+#include "RequiredTokenAccessor.h"
+#include "OptionalSentenceAccessor.h"
+#include "RequiredSentenceAccessor.h"
+#include "OptionalSentenceListAccessor.h"
 #include <string>
 #include <map>
-#include <set>
 #include <stdexcept>
 #include <cstdlib>
 #include <tuple>
-#include <initializer_list>
 
 class SentenceParser
 {
@@ -65,113 +67,3 @@ private:
 		return std::tuple_cat(std::make_tuple(part), parts);
 	}
 };
-
-class OptionalTokenAccessor
-{
-public:
-	OptionalTokenAccessor(const std::initializer_list<std::string>& values)
-		: values(values)
-	{
-	}
-
-	optional<Token> operator()(const Sentence& sentence, std::size_t index) const
-	{
-		if (index >= sentence.GetNodes().size() || !sentence.GetNodes()[index]->IsToken())
-			return{};
-		auto& token = sentence.GetNodes()[index]->AsToken();
-		for (auto& value : values)
-			if (token == value)
-				return token;
-		return{};
-	}
-
-private:
-	std::set<std::string> values;
-};
-
-template <typename... String>
-inline OptionalTokenAccessor OptionalToken(String... values)
-{
-	return{ values... };
-}
-
-class RequiredTokenAccessor
-{
-public:
-	RequiredTokenAccessor(const std::string& value)
-		: value(value)
-	{
-	}
-
-	Token operator()(const Sentence& sentence, std::size_t index) const
-	{
-		if (index >= sentence.GetNodes().size())
-			throw std::runtime_error("Index outside of sentence.");
-		auto& token = sentence.GetNodes()[index]->AsToken();
-		if (!value.empty() && token != value)
-			throw std::runtime_error("Expected " + value);
-		return token;
-	}
-
-private:
-	std::string value;
-};
-
-inline RequiredTokenAccessor RequiredToken(const std::string& value = "")
-{
-	return{ value };
-}
-
-class OptionalSentenceAccessor
-{
-public:
-	OptionalSentenceAccessor(const std::string& name)
-		: name(name)
-	{
-	}
-
-	optional<Sentence> operator()(const Sentence& sentence, std::size_t index) const
-	{
-		if (index >= sentence.GetNodes().size() || !sentence.GetNodes()[index]->IsSentence())
-			return{};
-		auto& child = sentence.GetNodes()[index]->AsSentence();
-		if (name.empty() || child.GetName() == name)
-			return child;
-		return{};
-	}
-
-private:
-	std::string name;
-};
-
-inline OptionalSentenceAccessor OptionalSentence(const std::string& name = "")
-{
-	return{ name };
-}
-
-class RequiredSentenceAccessor
-{
-public:
-	RequiredSentenceAccessor(const std::string& name)
-		: name(name)
-	{
-	}
-
-	Sentence operator()(const Sentence& sentence, std::size_t index) const
-	{
-		if (index >= sentence.GetNodes().size())
-			throw std::runtime_error("Index out of sentence.");
-		auto& child = sentence.GetNodes()[index]->AsSentence();
-		if (name.empty() || child.GetName() == name)
-			return child;
-		throw std::runtime_error("Expected: " + name);
-	}
-
-private:
-	std::string name;
-};
-
-inline RequiredSentenceAccessor RequiredSentence(const std::string& name = "")
-{
-	return{ name };
-}
