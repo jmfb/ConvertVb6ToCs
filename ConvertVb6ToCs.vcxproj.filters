@@ -252,6 +252,15 @@
     <ClInclude Include="VbCompoundStatement.h">
       <Filter>VisualBasic Code Model\Sentences</Filter>
     </ClInclude>
+    <ClInclude Include="VbLiteral.h">
+      <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbDotType.h">
+      <Filter>VisualBasic Code Model\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="VbQualifiedId.h">
+      <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">

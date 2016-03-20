@@ -47,6 +47,8 @@ void CompileGrammarToBinaryTransitionTable()
 #include "VbEndStatement.h"
 #include "VbIfStatement.h"
 #include "VbLetStatement.h"
+#include "VbLiteral.h"
+#include "VbQualifiedId.h"
 
 void DumpStatement(const Sentence& sentence)
 {

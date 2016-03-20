@@ -200,6 +200,7 @@
     <ClInclude Include="VbCompoundStatement.h" />
     <ClInclude Include="VbConflictResolver.h" />
     <ClInclude Include="VbDeclaration.h" />
+    <ClInclude Include="VbDotType.h" />
     <ClInclude Include="VbEndStatement.h" />
     <ClInclude Include="VbEndType.h" />
     <ClInclude Include="VbFunctionAccess.h" />
@@ -209,9 +210,11 @@
     <ClInclude Include="VbLetStatement.h" />
     <ClInclude Include="VbLine.h" />
     <ClInclude Include="VbLineLabel.h" />
+    <ClInclude Include="VbLiteral.h" />
     <ClInclude Include="VbPreProcessor.h" />
     <ClInclude Include="VbPreTokenFactory.h" />
     <ClInclude Include="VbPreTokenStream.h" />
+    <ClInclude Include="VbQualifiedId.h" />
     <ClInclude Include="VbStatement.h" />
     <ClInclude Include="VbTokenFactory.h" />
     <ClInclude Include="VbTokenStream.h" />
