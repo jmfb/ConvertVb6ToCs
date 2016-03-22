@@ -261,6 +261,18 @@
     <ClInclude Include="VbQualifiedId.h">
       <Filter>VisualBasic Code Model\Sentences</Filter>
     </ClInclude>
+    <ClInclude Include="VbAttribute.h">
+      <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbModuleHeader.h">
+      <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="RequiredSentenceListAccessor.h">
+      <Filter>Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbTranslationHeader.h">
+      <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">

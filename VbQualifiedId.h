@@ -29,6 +29,21 @@ public:
 	{
 	}
 
+	std::string ToSimpleName() const
+	{
+		if (wsDot)
+			throw std::runtime_error("Simple name may not be within With block.");
+		std::ostringstream out;
+		out << id.GetValue();
+		for (auto& part : suffix)
+		{
+			if (part.first != VbDotType::Dot)
+				throw std::runtime_error("Bang separator not allowed in simple names.");
+			out << "." << part.second.GetValue();
+		}
+		return out.str();
+	}
+
 private:
 	template <typename Tuple>
 	VbQualifiedId(const Tuple& result)

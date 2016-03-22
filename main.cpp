@@ -38,6 +38,9 @@ void CompileGrammarToBinaryTransitionTable()
 }
 
 #include "VbTranslationUnit.h"
+#include "VbTranslationHeader.h"
+#include "VbModuleHeader.h"
+#include "VbAttribute.h"
 #include "VbDeclaration.h"
 #include "VbLine.h"
 #include "VbLineLabel.h"
@@ -78,7 +81,22 @@ void DumpStatement(const Sentence& sentence)
 void Dump(const Sentence& sentence)
 {
 	VbTranslationUnit translationUnit{ sentence };
-	//TODO: translation-header
+	if (translationUnit.translationHeader)
+	{
+		VbTranslationHeader translationHeader{ *translationUnit.translationHeader };
+		if (translationHeader.moduleHeader)
+		{
+			VbModuleHeader moduleHeader{ *translationHeader.moduleHeader };
+			for (auto& attributeSentence : moduleHeader.attributes)
+			{
+				VbAttribute attribute{ attributeSentence };
+				VbQualifiedId name{ attribute.name };
+				std::cout << "Module Attribute: " << name.ToSimpleName() << std::endl;
+				//TODO: expression
+			}
+		}
+		//TODO: form/class header
+	}
 	if (!translationUnit.declarationList)
 		return;
 	for (auto& declarationSentence : *translationUnit.declarationList)
@@ -103,20 +121,31 @@ void Dump(const Sentence& sentence)
 	}
 }
 
+void Process(const std::string& name, const std::string& source)
+{
+	std::cout << "Loading binary...";
+	TransitionTable transitionTable;
+	transitionTable.Read(BinaryReader{ std::ifstream{ R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.bin)", std::ios::binary } });
+	std::cout << "done." << std::endl;
+
+	std::cout << "Parsing source...";
+	auto sentence = transitionTable.Parse(VbTokenStream{ name, source });
+	std::cout << "done." << std::endl;
+
+	Dump(sentence);
+}
+
 int main(int argc, char** argv)
 {
 	try
 	{
-		std::cout << "Loading binary...";
-		TransitionTable transitionTable;
-		transitionTable.Read(BinaryReader{ std::ifstream{ R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.bin)", std::ios::binary } });
-		std::cout << "done." << std::endl;
+		//Process("source", source);
 
-		std::cout << "Parsing source...";
-		auto sentence = transitionTable.Parse(VbTokenStream{ "source", source });
-		std::cout << "done." << std::endl;
-
-		Dump(sentence);
+		auto fileName = R"(c:\save\code\tests\DSHECommon\basGlobals.bas)";
+		std::ifstream in{ fileName };
+		std::stringstream buffer;
+		in >> buffer.rdbuf();
+		Process(fileName, buffer.str());
 	}
 	catch (const std::exception& exception)
 	{

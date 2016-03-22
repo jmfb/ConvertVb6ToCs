@@ -6,6 +6,7 @@
 #include "OptionalSentenceAccessor.h"
 #include "RequiredSentenceAccessor.h"
 #include "OptionalSentenceListAccessor.h"
+#include "RequiredSentenceListAccessor.h"
 #include <string>
 #include <map>
 #include <stdexcept>
