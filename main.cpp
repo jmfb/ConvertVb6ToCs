@@ -53,27 +53,42 @@ void CompileGrammarToBinaryTransitionTable()
 #include "VbLiteral.h"
 #include "VbQualifiedId.h"
 
+#include "VbExpression.h"
+#include "VbXorExpression.h"
+#include "VbOrExpression.h"
+#include "VbAndExpression.h"
+#include "VbMultiplicativeExpression.h"
+#include "VbAdditiveExpression.h"
+#include "VbEqualityExpression.h"
+#include "VbRelationalExpression.h"
+#include "VbUnaryExpression.h"
+#include "VbPostfixExpression.h"
+#include "VbPrimaryExpression.h"
+
 void DumpStatement(const Sentence& sentence)
 {
 	VbStatement statement{ sentence };
-	if (statement.statement.GetName() == "function-statement")
+	if (statement.functionStatement)
 	{
-		VbFunctionStatement function{ statement.statement };
-		std::cout << "Function: " << ToString(function.access) << (function.isStatic ? " Static" : "") << " " << ToString(function.type) << " " << function.name << std::endl;
+		VbFunctionStatement functionStatement{ *statement.functionStatement };
+		std::cout << "Function: " << ToString(functionStatement.access)
+			<< (functionStatement.isStatic ? " Static" : "")
+			<< " " << ToString(functionStatement.type)
+			<< " " << functionStatement.name << std::endl;
 	}
-	else if (statement.statement.GetName() == "if-statement")
+	else if (statement.ifStatement)
 	{
-		VbIfStatement ifStatement{ statement.statement };
+		VbIfStatement ifStatement{ *statement.ifStatement };
 		std::cout << "If" << std::endl;
 	}
-	else if (statement.statement.GetName() == "end-statement")
+	else if (statement.endStatement)
 	{
-		VbEndStatement end{ statement.statement };
+		VbEndStatement end{ *statement.endStatement };
 		std::cout << ToString(end.type) << std::endl;
 	}
-	else if (statement.statement.GetName() == "let-statement")
+	else if (statement.letStatement)
 	{
-		VbLetStatement let{ statement.statement };
+		VbLetStatement let{ *statement.letStatement };
 		std::cout << "Let" << std::endl;
 	}
 }

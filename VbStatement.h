@@ -86,18 +86,190 @@ class VbStatement
 {
 public:
 	VbStatement(const Sentence& sentence)
-		: VbStatement(SentenceParser::Parse(sentence,
-			RequiredSentence()))
 	{
+		std::tie(
+			optionExplicitStatement,
+			optionBaseStatement,
+			optionCompareStatement,
+			optionPrivateStatement,
+			ifStatement,
+			elseStatement,
+			elseifStatement,
+			endStatement,
+			callStatement,
+			letStatement,
+			setStatement,
+			lsetStatement,
+			rsetStatement,
+			constStatement,
+			dimStatement,
+			withStatement,
+			redimStatement,
+			eraseStatement,
+			onErrorStatement,
+			resumeStatement,
+			errorStatement,
+			stopStatement,
+			forStatement,
+			forEachStatement,
+			nextStatement,
+			exitStatement,
+			doStatement,
+			loopStatement,
+			whileStatement,
+			wendStatement,
+			selectStatement,
+			caseStatement,
+			gosubStatement,
+			returnStatement,
+			gotoStatement,
+			onStatement,
+			publicStatement,
+			privateStatement,
+			staticStatement,
+			declareStatement,
+			subStatement,
+			functionStatement,
+			propertyGetStatement,
+			propertyLetStatement,
+			propertySetStatement,
+			implementsStatement,
+			enumStatement,
+			typeStatement,
+			defineTypeStatement,
+			eventStatement,
+			raiseEventStatement,
+			midStatement,
+			getStatement,
+			lineInputStatement,
+			lockStatement,
+			unlockStatement,
+			openStatement,
+			putStatement,
+			seekStatement,
+			writeStatement) =
+			SentenceParser::Parse(
+				sentence,
+				OptionalSentence("option-explicit-statement"),
+				OptionalSentence("option-base-statement"),
+				OptionalSentence("option-compare-statement"),
+				OptionalSentence("option-private-statement"),
+				OptionalSentence("if-statement"),
+				OptionalSentence("else-statement"),
+				OptionalSentence("elseif-statement"),
+				OptionalSentence("end-statement"),
+				OptionalSentence("call-statement"),
+				OptionalSentence("let-statement"),
+				OptionalSentence("set-statement"),
+				OptionalSentence("lset-statement"),
+				OptionalSentence("rset-statement"),
+				OptionalSentence("const-statement"),
+				OptionalSentence("dim-statement"),
+				OptionalSentence("with-statement"),
+				OptionalSentence("redim-statement"),
+				OptionalSentence("erase-statement"),
+				OptionalSentence("on-error-statement"),
+				OptionalSentence("resume-statement"),
+				OptionalSentence("error-statement"),
+				OptionalSentence("stop-statement"),
+				OptionalSentence("for-statement"),
+				OptionalSentence("for-each-statement"),
+				OptionalSentence("next-statement"),
+				OptionalSentence("exit-statement"),
+				OptionalSentence("do-statement"),
+				OptionalSentence("loop-statement"),
+				OptionalSentence("while-statement"),
+				OptionalSentence("wend-statement"),
+				OptionalSentence("select-statement"),
+				OptionalSentence("case-statement"),
+				OptionalSentence("gosub-statement"),
+				OptionalSentence("return-statement"),
+				OptionalSentence("goto-statement"),
+				OptionalSentence("on-statement"),
+				OptionalSentence("public-statement"),
+				OptionalSentence("private-statement"),
+				OptionalSentence("static-statement"),
+				OptionalSentence("declare-statement"),
+				OptionalSentence("sub-statement"),
+				OptionalSentence("function-statement"),
+				OptionalSentence("property-get-statement"),
+				OptionalSentence("property-let-statement"),
+				OptionalSentence("property-set-statement"),
+				OptionalSentence("implements-statement"),
+				OptionalSentence("enum-statement"),
+				OptionalSentence("type-statement"),
+				OptionalSentence("define-type-statement"),
+				OptionalSentence("event-statement"),
+				OptionalSentence("raise-event-statement"),
+				OptionalSentence("mid-statement"),
+				OptionalSentence("get-statement"),
+				OptionalSentence("line-input-statement"),
+				OptionalSentence("lock-statement"),
+				OptionalSentence("unlock-statement"),
+				OptionalSentence("open-statement"),
+				OptionalSentence("put-statement"),
+				OptionalSentence("seek-statement"),
+				OptionalSentence("write-statement"));
 	}
 
-private:
-	template <typename Tuple>
-	VbStatement(const Tuple& result)
-		: statement(std::get<0>(result))
-	{
-	}
-
-public:
-	Sentence statement;
+	optional<Sentence> optionExplicitStatement;
+	optional<Sentence> optionBaseStatement;
+	optional<Sentence> optionCompareStatement;
+	optional<Sentence> optionPrivateStatement;
+	optional<Sentence> ifStatement;
+	optional<Sentence> elseStatement;
+	optional<Sentence> elseifStatement;
+	optional<Sentence> endStatement;
+	optional<Sentence> callStatement;
+	optional<Sentence> letStatement;
+	optional<Sentence> setStatement;
+	optional<Sentence> lsetStatement;
+	optional<Sentence> rsetStatement;
+	optional<Sentence> constStatement;
+	optional<Sentence> dimStatement;
+	optional<Sentence> withStatement;
+	optional<Sentence> redimStatement;
+	optional<Sentence> eraseStatement;
+	optional<Sentence> onErrorStatement;
+	optional<Sentence> resumeStatement;
+	optional<Sentence> errorStatement;
+	optional<Sentence> stopStatement;
+	optional<Sentence> forStatement;
+	optional<Sentence> forEachStatement;
+	optional<Sentence> nextStatement;
+	optional<Sentence> exitStatement;
+	optional<Sentence> doStatement;
+	optional<Sentence> loopStatement;
+	optional<Sentence> whileStatement;
+	optional<Sentence> wendStatement;
+	optional<Sentence> selectStatement;
+	optional<Sentence> caseStatement;
+	optional<Sentence> gosubStatement;
+	optional<Sentence> returnStatement;
+	optional<Sentence> gotoStatement;
+	optional<Sentence> onStatement;
+	optional<Sentence> publicStatement;
+	optional<Sentence> privateStatement;
+	optional<Sentence> staticStatement;
+	optional<Sentence> declareStatement;
+	optional<Sentence> subStatement;
+	optional<Sentence> functionStatement;
+	optional<Sentence> propertyGetStatement;
+	optional<Sentence> propertyLetStatement;
+	optional<Sentence> propertySetStatement;
+	optional<Sentence> implementsStatement;
+	optional<Sentence> enumStatement;
+	optional<Sentence> typeStatement;
+	optional<Sentence> defineTypeStatement;
+	optional<Sentence> eventStatement;
+	optional<Sentence> raiseEventStatement;
+	optional<Sentence> midStatement;
+	optional<Sentence> getStatement;
+	optional<Sentence> lineInputStatement;
+	optional<Sentence> lockStatement;
+	optional<Sentence> unlockStatement;
+	optional<Sentence> openStatement;
+	optional<Sentence> putStatement;
+	optional<Sentence> seekStatement;
+	optional<Sentence> writeStatement;
 };

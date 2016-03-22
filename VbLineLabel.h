@@ -8,19 +8,12 @@ class VbLineLabel
 {
 public:
 	VbLineLabel(const Sentence& sentence)
-		: VbLineLabel(SentenceParser::Parse(sentence,
+	{
+		std::tie(label, std::ignore) = SentenceParser::Parse(
+			sentence,
 			RequiredToken(),
-			RequiredToken(":")))
-	{
+			RequiredToken(":"));
 	}
 
-private:
-	template <typename Tuple>
-	VbLineLabel(const Tuple& result)
-		: label(std::get<0>(result))
-	{
-	}
-
-public:
 	Token label;
 };

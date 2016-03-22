@@ -37,6 +37,12 @@
     <Filter Include="VisualBasic Code Model\Model">
       <UniqueIdentifier>{8ec456a0-1b8e-4055-b7ff-a690eb5eb84b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="VisualBasic Code Model\Sentences\Expressions">
+      <UniqueIdentifier>{17e40dba-5168-45d3-9724-22138ed97b6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualBasic Code Model\Sentences\Statements">
+      <UniqueIdentifier>{c8f1a0d7-129a-484b-9725-4c9e0ae1985e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Char.h">
@@ -207,22 +213,7 @@
     <ClInclude Include="VbFunctionAccess.h">
       <Filter>VisualBasic Code Model\Model</Filter>
     </ClInclude>
-    <ClInclude Include="VbEndStatement.h">
-      <Filter>VisualBasic Code Model\Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbFunctionStatement.h">
-      <Filter>VisualBasic Code Model\Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbIfStatement.h">
-      <Filter>VisualBasic Code Model\Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbLetStatement.h">
-      <Filter>VisualBasic Code Model\Sentences</Filter>
-    </ClInclude>
     <ClInclude Include="VbLine.h">
-      <Filter>VisualBasic Code Model\Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbStatement.h">
       <Filter>VisualBasic Code Model\Sentences</Filter>
     </ClInclude>
     <ClInclude Include="OptionalSentenceListAccessor.h">
@@ -249,9 +240,6 @@
     <ClInclude Include="VbLineLabel.h">
       <Filter>VisualBasic Code Model\Sentences</Filter>
     </ClInclude>
-    <ClInclude Include="VbCompoundStatement.h">
-      <Filter>VisualBasic Code Model\Sentences</Filter>
-    </ClInclude>
     <ClInclude Include="VbLiteral.h">
       <Filter>VisualBasic Code Model\Sentences</Filter>
     </ClInclude>
@@ -272,6 +260,57 @@
     </ClInclude>
     <ClInclude Include="VbTranslationHeader.h">
       <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbExpression.h">
+      <Filter>VisualBasic Code Model\Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbOrExpression.h">
+      <Filter>VisualBasic Code Model\Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbXorExpression.h">
+      <Filter>VisualBasic Code Model\Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbAndExpression.h">
+      <Filter>VisualBasic Code Model\Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbEqualityExpression.h">
+      <Filter>VisualBasic Code Model\Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbAdditiveExpression.h">
+      <Filter>VisualBasic Code Model\Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbMultiplicativeExpression.h">
+      <Filter>VisualBasic Code Model\Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbPostfixExpression.h">
+      <Filter>VisualBasic Code Model\Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbUnaryExpression.h">
+      <Filter>VisualBasic Code Model\Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbPrimaryExpression.h">
+      <Filter>VisualBasic Code Model\Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbRelationalExpression.h">
+      <Filter>VisualBasic Code Model\Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCompoundStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbEndStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbFunctionStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbIfStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbLetStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

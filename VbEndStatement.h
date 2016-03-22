@@ -16,17 +16,13 @@ class VbEndStatement
 {
 public:
 	VbEndStatement(const Sentence& sentence)
-		: VbEndStatement(SentenceParser::Parse(sentence,
+	{
+		optional<Sentence> keyword;
+		std::tie(std::ignore, keyword) = SentenceParser::Parse(
+			sentence,
 			RequiredToken("end"),
-			OptionalSentence("end-keyword")))
-	{
-	}
-
-private:
-	template <typename Tuple>
-	VbEndStatement(const Tuple& result)
-		: type(ParseType(std::get<1>(result)))
-	{
+			OptionalSentence("end-keyword"));
+		type = ParseType(keyword);
 	}
 
 	VbEndType ParseType(const optional<Sentence>& keyword)
@@ -45,6 +41,5 @@ private:
 			});
 	}
 
-public:
 	VbEndType type;
 };

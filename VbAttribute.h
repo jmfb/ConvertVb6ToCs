@@ -7,24 +7,17 @@ class VbAttribute
 {
 public:
 	VbAttribute(const Sentence& sentence)
-		: VbAttribute(SentenceParser::Parse(sentence,
-			RequiredToken("attribute"),
-			RequiredSentence("qualified-id"),
-			RequiredToken("="),
-			RequiredSentence("expression"),
-			RequiredToken("\\n")))
 	{
+		std::tie(std::ignore, name, std::ignore, value, std::ignore) =
+			SentenceParser::Parse(
+				sentence,
+				RequiredToken("attribute"),
+				RequiredSentence("qualified-id"),
+				RequiredToken("="),
+				RequiredSentence("expression"),
+				RequiredToken("\\n"));
 	}
 
-private:
-	template <typename Tuple>
-	VbAttribute(const Tuple& result)
-		: name(std::get<1>(result)),
-		value(std::get<3>(result))
-	{
-	}
-
-public:
 	Sentence name;
 	Sentence value;
 };

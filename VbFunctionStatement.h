@@ -16,24 +16,24 @@ class VbFunctionStatement
 {
 public:
 	VbFunctionStatement(const Sentence& sentence)
-		: VbFunctionStatement(SentenceParser::Parse(sentence,
-			OptionalToken("public", "private", "friend"),
-			OptionalToken("static"),
-			RequiredToken(),
-			RequiredToken(),
-			OptionalSentence("parameter-clause"),
-			OptionalSentence("as-array-specifier")))
 	{
-	}
-
-private:
-	template <typename Tuple>
-	VbFunctionStatement(const Tuple& result)
-		: access(ParseAccess(std::get<0>(result))),
-		isStatic(std::get<1>(result)),
-		type(ParseType(std::get<2>(result))),
-		name(std::get<3>(result).GetValue())
-	{
+		optional<Token> accessToken;
+		optional<Token> staticToken;
+		Token typeToken;
+		Token nameToken;
+		std::tie(accessToken, staticToken, typeToken, nameToken, parameterClause, asArraySpecifier) =
+			SentenceParser::Parse(
+				sentence,
+				OptionalToken("public", "private", "friend"),
+				OptionalToken("static"),
+				RequiredToken(),
+				RequiredToken(),
+				OptionalSentence("parameter-clause"),
+				OptionalSentence("as-array-specifier"));
+		access = ParseAccess(accessToken);
+		isStatic = staticToken;
+		type = ParseType(typeToken);
+		name = nameToken.GetValue();
 	}
 
 	static VbFunctionAccess ParseAccess(const optional<Token>& token)
@@ -57,11 +57,10 @@ private:
 			});
 	}
 
-public:
 	VbFunctionAccess access;
 	bool isStatic;
 	VbFunctionType type;
 	std::string name;
-	//TODO: return type
-	//TODO: parameters
+	optional<Sentence> parameterClause;
+	optional<Sentence> asArraySpecifier;
 };

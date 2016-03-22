@@ -8,25 +8,17 @@ class VbIfStatement
 {
 public:
 	VbIfStatement(const Sentence& sentence)
-		: VbIfStatement(SentenceParser::Parse(sentence,
-			RequiredToken("if"),
-			RequiredSentence("expression"),
-			RequiredToken("then"),
-			OptionalSentence("compound-statement"),
-			OptionalSentence("else-statement")))
 	{
+		std::tie(std::ignore, expression, std::ignore, compoundStatement, elseStatement) =
+			SentenceParser::Parse(
+				sentence,
+				RequiredToken("if"),
+				RequiredSentence("expression"),
+				RequiredToken("then"),
+				OptionalSentence("compound-statement"),
+				OptionalSentence("else-statement"));
 	}
 
-private:
-	template <typename Tuple>
-	VbIfStatement(const Tuple& result)
-		: expression(std::get<1>(result)),
-		compoundStatement(std::get<3>(result)),
-		elseStatement(std::get<4>(result))
-	{
-	}
-
-public:
 	Sentence expression;
 	optional<Sentence> compoundStatement;
 	optional<Sentence> elseStatement;

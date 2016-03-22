@@ -197,6 +197,8 @@
     <ClInclude Include="TransitionList.h" />
     <ClInclude Include="TransitionTable.h" />
     <ClInclude Include="TransitionType.h" />
+    <ClInclude Include="VbAdditiveExpression.h" />
+    <ClInclude Include="VbAndExpression.h" />
     <ClInclude Include="VbAttribute.h" />
     <ClInclude Include="VbCharStream.h" />
     <ClInclude Include="VbCompoundStatement.h" />
@@ -205,6 +207,8 @@
     <ClInclude Include="VbDotType.h" />
     <ClInclude Include="VbEndStatement.h" />
     <ClInclude Include="VbEndType.h" />
+    <ClInclude Include="VbEqualityExpression.h" />
+    <ClInclude Include="VbExpression.h" />
     <ClInclude Include="VbFunctionAccess.h" />
     <ClInclude Include="VbFunctionStatement.h" />
     <ClInclude Include="VbFunctionType.h" />
@@ -214,15 +218,22 @@
     <ClInclude Include="VbLineLabel.h" />
     <ClInclude Include="VbLiteral.h" />
     <ClInclude Include="VbModuleHeader.h" />
+    <ClInclude Include="VbMultiplicativeExpression.h" />
+    <ClInclude Include="VbOrExpression.h" />
+    <ClInclude Include="VbPostfixExpression.h" />
     <ClInclude Include="VbPreProcessor.h" />
     <ClInclude Include="VbPreTokenFactory.h" />
     <ClInclude Include="VbPreTokenStream.h" />
+    <ClInclude Include="VbPrimaryExpression.h" />
     <ClInclude Include="VbQualifiedId.h" />
+    <ClInclude Include="VbRelationalExpression.h" />
     <ClInclude Include="VbStatement.h" />
     <ClInclude Include="VbTokenFactory.h" />
     <ClInclude Include="VbTokenStream.h" />
     <ClInclude Include="VbTranslationHeader.h" />
     <ClInclude Include="VbTranslationUnit.h" />
+    <ClInclude Include="VbUnaryExpression.h" />
+    <ClInclude Include="VbXorExpression.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt" />

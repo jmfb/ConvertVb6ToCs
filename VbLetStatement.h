@@ -8,23 +8,16 @@ class VbLetStatement
 {
 public:
 	VbLetStatement(const Sentence& sentence)
-		: VbLetStatement(SentenceParser::Parse(sentence,
-			OptionalToken("let"),
-			RequiredSentence("l-value"),
-			RequiredToken("="),
-			RequiredSentence("expression")))
 	{
+		std::tie(std::ignore, lValue, std::ignore, expression) =
+			SentenceParser::Parse(
+				sentence,
+				OptionalToken("let"),
+				RequiredSentence("l-value"),
+				RequiredToken("="),
+				RequiredSentence("expression"));
 	}
 
-private:
-	template <typename Tuple>
-	VbLetStatement(const Tuple& result)
-		: lValue(std::get<1>(result)),
-		expression(std::get<3>(result))
-	{
-	}
-
-public:
 	Sentence lValue;
 	Sentence expression;
 };

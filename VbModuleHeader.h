@@ -12,18 +12,9 @@ class VbModuleHeader
 {
 public:
 	VbModuleHeader(const Sentence& sentence)
-		: VbModuleHeader(SentenceParser::Parse(sentence,
-			RequiredSentenceList("attribute")))
 	{
+		std::tie(attributes) = SentenceParser::Parse(sentence, RequiredSentenceList("attribute"));
 	}
 
-private:
-	template <typename Tuple>
-	VbModuleHeader(const Tuple& result)
-		: attributes(std::get<0>(result))
-	{
-	}
-
-public:
 	std::vector<Sentence> attributes;
 };

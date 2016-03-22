@@ -31,6 +31,5 @@ public:
 		}
 	}
 
-public:
 	std::vector<Sentence> statements;
 };
