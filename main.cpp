@@ -53,11 +53,23 @@ void CompileGrammarToBinaryTransitionTable()
 #include "VbConstStatement.h"
 #include "VbDeclareStatement.h"
 #include "VbDefineTypeStatement.h"
+#include "VbDimStatement.h"
+#include "VbRedimStatement.h"
+#include "VbPropertyStatement.h"
+#include "VbTypeStatement.h"
 
 #include "VbConstantDefinition.h"
+#include "VbDimDefinition.h"
+#include "VbRedimDefinition.h"
+#include "VbTypeDefinition.h"
+
 #include "VbAsSpecifier.h"
 #include "VbSimpleType.h"
 #include "VbTypeSpecifier.h"
+#include "VbEndKeyword.h"
+#include "VbSubscript.h"
+#include "VbDefineTypeKeyword.h"
+#include "VbArraySuffix.h"
 
 #include "VbLiteral.h"
 #include "VbQualifiedId.h"
@@ -83,20 +95,39 @@ void DumpStatement(const Sentence& sentence)
 	if (statement.functionStatement)
 	{
 		VbFunctionStatement functionStatement{ *statement.functionStatement };
-		std::cout << "Function: " << ToString(functionStatement.access)
-			<< (functionStatement.isStatic ? " Static" : "")
-			<< " " << ToString(functionStatement.type)
-			<< " " << functionStatement.name << std::endl;
+		std::cout << "Function " << functionStatement.name.GetValue() << std::endl;
 	}
 	else if (statement.constStatement)
 	{
 		VbConstStatement constStatement{ *statement.constStatement };
-		std::cout << "Const" << std::endl;
+		std::cout << "Const ";
+		for (auto& definition : constStatement.constantDefinitions)
+		{
+			VbConstantDefinition constantDefinition{ definition };
+			std::cout << constantDefinition.name.GetValue() << ", ";
+		}
+		std::cout << std::endl;
 	}
 	else if (statement.declareStatement)
 	{
 		VbDeclareStatement declareStatement{ *statement.declareStatement };
 		std::cout << "Declare " << declareStatement.name.GetValue() << std::endl;
+	}
+	else if (statement.typeStatement)
+	{
+		VbTypeStatement typeStatement{ *statement.typeStatement };
+		std::cout << "Type " << typeStatement.name.GetValue() << std::endl;
+	}
+	else if (statement.dimStatement)
+	{
+		VbDimStatement dimStatement{ *statement.dimStatement };
+		std::cout << "Dim ";
+		for (auto& definition : dimStatement.dimDefinitions)
+		{
+			VbDimDefinition dimDefinition{ definition };
+			std::cout << dimDefinition.name.GetValue() << ", ";
+		}
+		std::cout << std::endl;
 	}
 	else if (statement.ifStatement)
 	{
@@ -106,7 +137,13 @@ void DumpStatement(const Sentence& sentence)
 	else if (statement.endStatement)
 	{
 		VbEndStatement end{ *statement.endStatement };
-		std::cout << ToString(end.type) << std::endl;
+		std::cout << "End";
+		if (end.keyword)
+		{
+			VbEndKeyword keyword{ *end.keyword };
+			std::cout << " " << keyword.keyword.GetValue();
+		}
+		std::cout << std::endl;
 	}
 	else if (statement.letStatement)
 	{

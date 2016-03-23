@@ -49,6 +49,9 @@
     <Filter Include="VisualBasic Code Model\Sentences\Identifiers">
       <UniqueIdentifier>{3b3bd5d0-e77b-452b-8f1a-7e32823df4f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="VisualBasic Code Model\Sentences\Definitions">
+      <UniqueIdentifier>{136d8553-e66a-46a3-940d-ab47ef9491ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Char.h">
@@ -345,8 +348,41 @@
     <ClInclude Include="VbConstStatement.h">
       <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
     </ClInclude>
-    <ClInclude Include="VbConstantDefinition.h">
+    <ClInclude Include="VbDimStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbEndKeyword.h">
       <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbRedimStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbConstantDefinition.h">
+      <Filter>VisualBasic Code Model\Sentences\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbDimDefinition.h">
+      <Filter>VisualBasic Code Model\Sentences\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbRedimDefinition.h">
+      <Filter>VisualBasic Code Model\Sentences\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbSubscript.h">
+      <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbDefineTypeKeyword.h">
+      <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbArraySuffix.h">
+      <Filter>VisualBasic Code Model\Sentences\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="VbPropertyStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbTypeStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbTypeDefinition.h">
+      <Filter>VisualBasic Code Model\Sentences\Definitions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

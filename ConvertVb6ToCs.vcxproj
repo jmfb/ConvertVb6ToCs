@@ -199,6 +199,7 @@
     <ClInclude Include="TransitionType.h" />
     <ClInclude Include="VbAdditiveExpression.h" />
     <ClInclude Include="VbAndExpression.h" />
+    <ClInclude Include="VbArraySuffix.h" />
     <ClInclude Include="VbAsSpecifier.h" />
     <ClInclude Include="VbAttribute.h" />
     <ClInclude Include="VbCharStream.h" />
@@ -208,8 +209,12 @@
     <ClInclude Include="VbConstStatement.h" />
     <ClInclude Include="VbDeclaration.h" />
     <ClInclude Include="VbDeclareStatement.h" />
+    <ClInclude Include="VbDefineTypeKeyword.h" />
     <ClInclude Include="VbDefineTypeStatement.h" />
+    <ClInclude Include="VbDimDefinition.h" />
+    <ClInclude Include="VbDimStatement.h" />
     <ClInclude Include="VbDotType.h" />
+    <ClInclude Include="VbEndKeyword.h" />
     <ClInclude Include="VbEndStatement.h" />
     <ClInclude Include="VbEndType.h" />
     <ClInclude Include="VbEqualityExpression.h" />
@@ -233,15 +238,21 @@
     <ClInclude Include="VbPreTokenFactory.h" />
     <ClInclude Include="VbPreTokenStream.h" />
     <ClInclude Include="VbPrimaryExpression.h" />
+    <ClInclude Include="VbPropertyStatement.h" />
     <ClInclude Include="VbQualifiedId.h" />
+    <ClInclude Include="VbRedimDefinition.h" />
+    <ClInclude Include="VbRedimStatement.h" />
     <ClInclude Include="VbRelationalExpression.h" />
     <ClInclude Include="VbSimpleType.h" />
     <ClInclude Include="VbStatement.h" />
+    <ClInclude Include="VbSubscript.h" />
     <ClInclude Include="VbTokenFactory.h" />
     <ClInclude Include="VbTokenStream.h" />
     <ClInclude Include="VbTranslationHeader.h" />
     <ClInclude Include="VbTranslationUnit.h" />
+    <ClInclude Include="VbTypeDefinition.h" />
     <ClInclude Include="VbTypeSpecifier.h" />
+    <ClInclude Include="VbTypeStatement.h" />
     <ClInclude Include="VbUnaryExpression.h" />
     <ClInclude Include="VbXorExpression.h" />
   </ItemGroup>
