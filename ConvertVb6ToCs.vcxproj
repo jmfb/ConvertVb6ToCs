@@ -202,6 +202,9 @@
     <ClInclude Include="VbArraySuffix.h" />
     <ClInclude Include="VbAsSpecifier.h" />
     <ClInclude Include="VbAttribute.h" />
+    <ClInclude Include="VbCallStatement.h" />
+    <ClInclude Include="VbCallSuffix.h" />
+    <ClInclude Include="VbCallTerminal.h" />
     <ClInclude Include="VbCharStream.h" />
     <ClInclude Include="VbCompoundStatement.h" />
     <ClInclude Include="VbConflictResolver.h" />
@@ -214,6 +217,8 @@
     <ClInclude Include="VbDimDefinition.h" />
     <ClInclude Include="VbDimStatement.h" />
     <ClInclude Include="VbDotType.h" />
+    <ClInclude Include="VbElseIfStatement.h" />
+    <ClInclude Include="VbElseStatement.h" />
     <ClInclude Include="VbEndKeyword.h" />
     <ClInclude Include="VbEndStatement.h" />
     <ClInclude Include="VbEndType.h" />
@@ -254,6 +259,7 @@
     <ClInclude Include="VbTypeSpecifier.h" />
     <ClInclude Include="VbTypeStatement.h" />
     <ClInclude Include="VbUnaryExpression.h" />
+    <ClInclude Include="VbWithStatement.h" />
     <ClInclude Include="VbXorExpression.h" />
   </ItemGroup>
   <ItemGroup>

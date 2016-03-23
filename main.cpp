@@ -57,6 +57,10 @@ void CompileGrammarToBinaryTransitionTable()
 #include "VbRedimStatement.h"
 #include "VbPropertyStatement.h"
 #include "VbTypeStatement.h"
+#include "VbWithStatement.h"
+#include "VbElseIfStatement.h"
+#include "VbElseStatement.h"
+#include "VbCallStatement.h"
 
 #include "VbConstantDefinition.h"
 #include "VbDimDefinition.h"
@@ -76,6 +80,8 @@ void CompileGrammarToBinaryTransitionTable()
 #include "VbLValueList.h"
 #include "VbLValue.h"
 #include "VbLValueTerminal.h"
+#include "VbCallSuffix.h"
+#include "VbCallTerminal.h"
 
 #include "VbExpression.h"
 #include "VbXorExpression.h"
@@ -129,26 +135,82 @@ void DumpStatement(const Sentence& sentence)
 		}
 		std::cout << std::endl;
 	}
+	else if (statement.publicStatement)
+	{
+		VbDimStatement dimStatement{ *statement.publicStatement };
+		std::cout << "Public ";
+		for (auto& definition : dimStatement.dimDefinitions)
+		{
+			VbDimDefinition dimDefinition{ definition };
+			std::cout << dimDefinition.name.GetValue() << ", ";
+		}
+		std::cout << std::endl;
+	}
+	else if (statement.staticStatement)
+	{
+		VbDimStatement dimStatement{ *statement.staticStatement };
+		std::cout << "Static ";
+		for (auto& definition : dimStatement.dimDefinitions)
+		{
+			VbDimDefinition dimDefinition{ definition };
+			std::cout << dimDefinition.name.GetValue() << ", ";
+		}
+		std::cout << std::endl;
+	}
 	else if (statement.ifStatement)
 	{
 		VbIfStatement ifStatement{ *statement.ifStatement };
 		std::cout << "If" << std::endl;
 	}
+	else if (statement.elseIfStatement)
+	{
+		VbElseIfStatement elseIfStatement{ *statement.elseIfStatement };
+		std::cout << "ElseIf" << std::endl;
+	}
+	else if (statement.elseStatement)
+	{
+		VbElseStatement elseStatement{ *statement.elseStatement };
+		std::cout << "Else" << std::endl;
+	}
+	else if (statement.withStatement)
+	{
+		VbWithStatement withStatement{ *statement.withStatement };
+		std::cout << "With" << std::endl;
+	}
 	else if (statement.endStatement)
 	{
-		VbEndStatement end{ *statement.endStatement };
+		VbEndStatement endStatement{ *statement.endStatement };
 		std::cout << "End";
-		if (end.keyword)
+		if (endStatement.keyword)
 		{
-			VbEndKeyword keyword{ *end.keyword };
+			VbEndKeyword keyword{ *endStatement.keyword };
 			std::cout << " " << keyword.keyword.GetValue();
 		}
 		std::cout << std::endl;
 	}
 	else if (statement.letStatement)
 	{
-		VbLetStatement let{ *statement.letStatement };
+		VbLetStatement letStatement{ *statement.letStatement };
 		std::cout << "Let" << std::endl;
+	}
+	else if (statement.callStatement)
+	{
+		VbCallStatement callStatement{ *statement.callStatement };
+		std::cout << "Call";
+		//TODO: lValue variant...
+		if (callStatement.callSuffix)
+		{
+			VbCallSuffix callSuffix{ *callStatement.callSuffix };
+			VbCallTerminal callTerminal{ callSuffix.callTerminal };
+			std::cout << " " << callTerminal.name.GetValue();
+			for (auto& suffix : callSuffix.suffix)
+			{
+				//TODO: dot type
+				VbCallTerminal nextCallTerminal{ suffix.second };
+				std::cout << "." << nextCallTerminal.name.GetValue();
+			}
+		}
+		std::cout << std::endl;
 	}
 }
 

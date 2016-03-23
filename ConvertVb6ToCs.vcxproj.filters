@@ -384,6 +384,24 @@
     <ClInclude Include="VbTypeDefinition.h">
       <Filter>VisualBasic Code Model\Sentences\Definitions</Filter>
     </ClInclude>
+    <ClInclude Include="VbWithStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbElseIfStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbElseStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCallStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCallSuffix.h">
+      <Filter>VisualBasic Code Model\Sentences\Identifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCallTerminal.h">
+      <Filter>VisualBasic Code Model\Sentences\Identifiers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">

@@ -94,7 +94,7 @@ public:
 			optionPrivateStatement,
 			ifStatement,
 			elseStatement,
-			elseifStatement,
+			elseIfStatement,
 			endStatement,
 			callStatement,
 			letStatement,
@@ -218,7 +218,7 @@ public:
 	optional<Sentence> optionPrivateStatement;
 	optional<Sentence> ifStatement;
 	optional<Sentence> elseStatement;
-	optional<Sentence> elseifStatement;
+	optional<Sentence> elseIfStatement;
 	optional<Sentence> endStatement;
 	optional<Sentence> callStatement;
 	optional<Sentence> letStatement;
