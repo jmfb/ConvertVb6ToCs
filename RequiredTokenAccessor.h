@@ -4,12 +4,14 @@
 #include <string>
 #include <cstdlib>
 #include <stdexcept>
+#include <initializer_list>
+#include <set>
 
 class RequiredTokenAccessor
 {
 public:
-	RequiredTokenAccessor(const std::string& value)
-		: value(value)
+	RequiredTokenAccessor(const std::initializer_list<std::string>& values)
+		: values(values)
 	{
 	}
 
@@ -18,16 +20,20 @@ public:
 		if (index >= sentence.GetNodes().size())
 			throw std::runtime_error("Index outside of sentence.");
 		auto& token = sentence.GetNodes()[index]->AsToken();
-		if (!value.empty() && token != value)
-			throw std::runtime_error("Expected " + value);
-		return token;
+		if (values.empty())
+			return token;
+		for (auto& value : values)
+			if (token == value)
+				return token;
+		throw std::runtime_error("Unexpected token.");
 	}
 
 private:
-	std::string value;
+	std::set<std::string> values;
 };
 
-inline RequiredTokenAccessor RequiredToken(const std::string& value = "")
+template <typename... String>
+inline RequiredTokenAccessor RequiredToken(String... values)
 {
-	return{ value };
+	return{ values... };
 }

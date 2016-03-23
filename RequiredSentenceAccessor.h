@@ -3,12 +3,14 @@
 #include <string>
 #include <cstdlib>
 #include <stdexcept>
+#include <initializer_list>
+#include <set>
 
 class RequiredSentenceAccessor
 {
 public:
-	RequiredSentenceAccessor(const std::string& name)
-		: name(name)
+	RequiredSentenceAccessor(const std::initializer_list<std::string>& values)
+		: values(values)
 	{
 	}
 
@@ -17,16 +19,17 @@ public:
 		if (index >= sentence.GetNodes().size())
 			throw std::runtime_error("Index out of sentence.");
 		auto& child = sentence.GetNodes()[index]->AsSentence();
-		if (name.empty() || child.GetName() == name)
-			return child;
-		throw std::runtime_error("Expected: " + name);
+		if (!values.empty() && values.find(child.GetName()) == values.end())
+			throw std::runtime_error("Unexpected sentence");
+		return child;
 	}
 
 private:
-	std::string name;
+	std::set<std::string> values;
 };
 
-inline RequiredSentenceAccessor RequiredSentence(const std::string& name = "")
+template <typename... Strings>
+inline RequiredSentenceAccessor RequiredSentence(Strings... values)
 {
-	return{ name };
+	return{ values... };
 }

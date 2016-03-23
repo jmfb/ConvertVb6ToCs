@@ -43,6 +43,12 @@
     <Filter Include="VisualBasic Code Model\Sentences\Statements">
       <UniqueIdentifier>{c8f1a0d7-129a-484b-9725-4c9e0ae1985e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="VisualBasic Code Model\Sentences\Types">
+      <UniqueIdentifier>{dfdcdc03-c674-4229-a945-b8fd25ef3752}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualBasic Code Model\Sentences\Identifiers">
+      <UniqueIdentifier>{3b3bd5d0-e77b-452b-8f1a-7e32823df4f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Char.h">
@@ -246,9 +252,6 @@
     <ClInclude Include="VbDotType.h">
       <Filter>VisualBasic Code Model\Model</Filter>
     </ClInclude>
-    <ClInclude Include="VbQualifiedId.h">
-      <Filter>VisualBasic Code Model\Sentences</Filter>
-    </ClInclude>
     <ClInclude Include="VbAttribute.h">
       <Filter>VisualBasic Code Model\Sentences</Filter>
     </ClInclude>
@@ -312,13 +315,37 @@
     <ClInclude Include="VbStatement.h">
       <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
     </ClInclude>
-    <ClInclude Include="VbLValueList.h">
-      <Filter>VisualBasic Code Model\Sentences</Filter>
+    <ClInclude Include="VbDefineTypeStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbDeclareStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbAsSpecifier.h">
+      <Filter>VisualBasic Code Model\Sentences\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="VbSimpleType.h">
+      <Filter>VisualBasic Code Model\Sentences\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="VbTypeSpecifier.h">
+      <Filter>VisualBasic Code Model\Sentences\Types</Filter>
     </ClInclude>
     <ClInclude Include="VbLValue.h">
-      <Filter>VisualBasic Code Model\Sentences</Filter>
+      <Filter>VisualBasic Code Model\Sentences\Identifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="VbLValueList.h">
+      <Filter>VisualBasic Code Model\Sentences\Identifiers</Filter>
     </ClInclude>
     <ClInclude Include="VbLValueTerminal.h">
+      <Filter>VisualBasic Code Model\Sentences\Identifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="VbQualifiedId.h">
+      <Filter>VisualBasic Code Model\Sentences\Identifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="VbConstStatement.h">
+      <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbConstantDefinition.h">
       <Filter>VisualBasic Code Model\Sentences</Filter>
     </ClInclude>
   </ItemGroup>

@@ -50,6 +50,14 @@ void CompileGrammarToBinaryTransitionTable()
 #include "VbEndStatement.h"
 #include "VbIfStatement.h"
 #include "VbLetStatement.h"
+#include "VbConstStatement.h"
+#include "VbDeclareStatement.h"
+#include "VbDefineTypeStatement.h"
+
+#include "VbConstantDefinition.h"
+#include "VbAsSpecifier.h"
+#include "VbSimpleType.h"
+#include "VbTypeSpecifier.h"
 
 #include "VbLiteral.h"
 #include "VbQualifiedId.h"
@@ -79,6 +87,16 @@ void DumpStatement(const Sentence& sentence)
 			<< (functionStatement.isStatic ? " Static" : "")
 			<< " " << ToString(functionStatement.type)
 			<< " " << functionStatement.name << std::endl;
+	}
+	else if (statement.constStatement)
+	{
+		VbConstStatement constStatement{ *statement.constStatement };
+		std::cout << "Const" << std::endl;
+	}
+	else if (statement.declareStatement)
+	{
+		VbDeclareStatement declareStatement{ *statement.declareStatement };
+		std::cout << "Declare " << declareStatement.name.GetValue() << std::endl;
 	}
 	else if (statement.ifStatement)
 	{

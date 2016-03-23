@@ -7,8 +7,11 @@
 class RequiredSentenceListAccessor
 {
 public:
-	RequiredSentenceListAccessor(const std::string& name)
-		: name(name)
+	RequiredSentenceListAccessor(
+		const std::string& listName,
+		const std::string& itemName,
+		const std::string& separator)
+		: listName(listName), itemName(itemName), separator(separator)
 	{
 	}
 
@@ -17,24 +20,43 @@ public:
 		if (index >= sentence.GetNodes().size())
 			throw std::runtime_error("Index out of sentence.");
 		auto& child = sentence.GetNodes()[index]->AsSentence();
-		if (child.GetName() != (name + "-list"))
-			throw std::runtime_error("Expected: " + name + "-list");
+		if (child.GetName() != listName)
+			throw std::runtime_error("Expected: " + listName);
 		std::vector<Sentence> list;
 		for (auto& node : child.GetNodes())
 		{
-			auto& item = node->AsSentence();
-			if (item.GetName() != name)
-				throw std::runtime_error("Expected: " + name);
-			list.push_back(item);
+			if (node->IsSentence())
+			{
+				auto& item = node->AsSentence();
+				if (item.GetName() != itemName)
+					throw std::runtime_error("Expected: " + itemName);
+				list.push_back(item);
+			}
+			else
+			{
+				auto& token = node->AsToken();
+				if (separator.empty() || token != separator)
+					throw std::runtime_error("Invalid sentence list separator.");
+			}
 		}
 		return list;
 	}
 
 private:
-	std::string name;
+	std::string listName;
+	std::string itemName;
+	std::string separator;
 };
 
 inline RequiredSentenceListAccessor RequiredSentenceList(const std::string& name)
 {
-	return{ name };
+	return{ name + "-list", name, "" };
+}
+
+inline RequiredSentenceListAccessor RequiredSentenceList(
+	const std::string& listName,
+	const std::string& itemName,
+	const std::string& separator = "")
+{
+	return{ listName, itemName, separator };
 }
