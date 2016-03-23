@@ -217,6 +217,9 @@
     <ClInclude Include="VbLine.h" />
     <ClInclude Include="VbLineLabel.h" />
     <ClInclude Include="VbLiteral.h" />
+    <ClInclude Include="VbLValue.h" />
+    <ClInclude Include="VbLValueList.h" />
+    <ClInclude Include="VbLValueTerminal.h" />
     <ClInclude Include="VbModuleHeader.h" />
     <ClInclude Include="VbMultiplicativeExpression.h" />
     <ClInclude Include="VbOrExpression.h" />

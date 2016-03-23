@@ -50,8 +50,12 @@ void CompileGrammarToBinaryTransitionTable()
 #include "VbEndStatement.h"
 #include "VbIfStatement.h"
 #include "VbLetStatement.h"
+
 #include "VbLiteral.h"
 #include "VbQualifiedId.h"
+#include "VbLValueList.h"
+#include "VbLValue.h"
+#include "VbLValueTerminal.h"
 
 #include "VbExpression.h"
 #include "VbXorExpression.h"

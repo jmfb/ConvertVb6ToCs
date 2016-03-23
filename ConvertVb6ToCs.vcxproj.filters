@@ -312,6 +312,15 @@
     <ClInclude Include="VbStatement.h">
       <Filter>VisualBasic Code Model\Sentences\Statements</Filter>
     </ClInclude>
+    <ClInclude Include="VbLValueList.h">
+      <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbLValue.h">
+      <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbLValueTerminal.h">
+      <Filter>VisualBasic Code Model\Sentences</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">

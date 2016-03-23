@@ -9,8 +9,8 @@
 class OptionalSentenceListAccessor
 {
 public:
-	OptionalSentenceListAccessor(const std::string& name)
-		: name(name)
+	OptionalSentenceListAccessor(const std::string& listName, const std::string& itemName)
+		: listName(listName), itemName(itemName)
 	{
 	}
 
@@ -19,24 +19,30 @@ public:
 		if (index >= sentence.GetNodes().size() || !sentence.GetNodes()[index]->IsSentence())
 			return{};
 		auto& child = sentence.GetNodes()[index]->AsSentence();
-		if (child.GetName() != (name + "-list"))
+		if (child.GetName() != listName)
 			return{};
 		std::vector<Sentence> list;
 		for (auto& node : child.GetNodes())
 		{
 			auto& item = node->AsSentence();
-			if (item.GetName() != name)
-				throw std::runtime_error("Expected: " + name);
+			if (item.GetName() != itemName)
+				throw std::runtime_error("Expected: " + itemName);
 			list.push_back(item);
 		}
 		return list;
 	}
 
 private:
-	std::string name;
+	std::string listName;
+	std::string itemName;
 };
 
 inline OptionalSentenceListAccessor OptionalSentenceList(const std::string& name)
 {
-	return{ name };
+	return{ name + "-list", name };
+}
+
+inline OptionalSentenceListAccessor OptionalSentenceList(const std::string& listName, const std::string& itemName)
+{
+	return{ listName, itemName };
 }
