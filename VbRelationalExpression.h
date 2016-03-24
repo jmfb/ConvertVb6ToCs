@@ -15,9 +15,9 @@ public:
 		std::tie(relationalExpression, op, additiveExpression) =
 			SentenceParser::Parse(
 				sentence,
-				OptionalSentence("relationalExpression"),
+				OptionalSentence("relational-expression"),
 				OptionalToken(">=", ">", "<=", "<"),
-				RequiredSentence("additiveExpression"));
+				RequiredSentence("additive-expression"));
 	}
 
 	optional<Sentence> relationalExpression;

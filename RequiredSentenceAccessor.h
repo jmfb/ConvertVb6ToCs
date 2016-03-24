@@ -20,7 +20,7 @@ public:
 			throw std::runtime_error("Index out of sentence.");
 		auto& child = sentence.GetNodes()[index]->AsSentence();
 		if (!values.empty() && values.find(child.GetName()) == values.end())
-			throw std::runtime_error("Unexpected sentence");
+			throw std::runtime_error("Unexpected sentence: " + child.GetName());
 		return child;
 	}
 

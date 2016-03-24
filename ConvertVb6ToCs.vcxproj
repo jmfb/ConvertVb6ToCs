@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="VbCodeExpressionFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinaryReader.h" />
@@ -206,6 +207,15 @@
     <ClInclude Include="VbCallSuffix.h" />
     <ClInclude Include="VbCallTerminal.h" />
     <ClInclude Include="VbCharStream.h" />
+    <ClInclude Include="VbCodeBinaryExpression.h" />
+    <ClInclude Include="VbCodeBinaryExpressionType.h" />
+    <ClInclude Include="VbCodeValue.h" />
+    <ClInclude Include="VbCodeConstantExpression.h" />
+    <ClInclude Include="VbCodeValueType.h" />
+    <ClInclude Include="VbCodeExpression.h" />
+    <ClInclude Include="VbCodeExpressionFactory.h" />
+    <ClInclude Include="VbCodeUnaryExpression.h" />
+    <ClInclude Include="VbCodeUnaryExpressionType.h" />
     <ClInclude Include="VbCompoundStatement.h" />
     <ClInclude Include="VbConflictResolver.h" />
     <ClInclude Include="VbConstantDefinition.h" />

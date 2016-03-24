@@ -1,6 +1,7 @@
 #pragma once
 #include "SentenceItem.h"
 #include "Token.h"
+#include <regex>
 
 class SentenceToken : public SentenceItem
 {
@@ -12,7 +13,11 @@ public:
 
 	void WriteXml(std::ostream& out) const final
 	{
-		out << "<token>" << token.GetValue() << "</token>";
+		auto value = token.GetValue();
+		value = std::regex_replace(value, std::regex{ "&" }, "&amp;");
+		value = std::regex_replace(value, std::regex{ "<" }, "&lt;");
+		value = std::regex_replace(value, std::regex{ ">" }, "&gt;");
+		out << "<token>" << value << "</token>";
 	}
 
 	Position GetPosition() const final

@@ -41,6 +41,9 @@ void CompileGrammarToBinaryTransitionTable()
 #include "VbTranslationHeader.h"
 #include "VbModuleHeader.h"
 #include "VbAttribute.h"
+#include "VbQualifiedId.h"
+
+#if 0
 #include "VbDeclaration.h"
 #include "VbLine.h"
 #include "VbLineLabel.h"
@@ -76,25 +79,14 @@ void CompileGrammarToBinaryTransitionTable()
 #include "VbArraySuffix.h"
 
 #include "VbLiteral.h"
-#include "VbQualifiedId.h"
 #include "VbLValueList.h"
 #include "VbLValue.h"
 #include "VbLValueTerminal.h"
 #include "VbCallSuffix.h"
 #include "VbCallTerminal.h"
+#endif
 
-#include "VbExpression.h"
-#include "VbXorExpression.h"
-#include "VbOrExpression.h"
-#include "VbAndExpression.h"
-#include "VbMultiplicativeExpression.h"
-#include "VbAdditiveExpression.h"
-#include "VbEqualityExpression.h"
-#include "VbRelationalExpression.h"
-#include "VbUnaryExpression.h"
-#include "VbPostfixExpression.h"
-#include "VbPrimaryExpression.h"
-
+#if 0
 void DumpStatement(const Sentence& sentence)
 {
 	VbStatement statement{ sentence };
@@ -213,7 +205,46 @@ void DumpStatement(const Sentence& sentence)
 		std::cout << std::endl;
 	}
 }
+#endif
 
+#include "VbCodeExpressionFactory.h"
+
+class VbCodeModule
+{
+public:
+	VbCodeModule(const Sentence& sentence)
+	{
+		VbTranslationUnit translationUnit{ sentence };
+		LoadHeader(translationUnit);
+		//TODO
+	}
+
+private:
+	void LoadHeader(const VbTranslationUnit& translationUnit)
+	{
+		if (!translationUnit.translationHeader)
+			throw std::runtime_error("Missing translation header.");
+		VbTranslationHeader translationHeader{ *translationUnit.translationHeader };
+		if (!translationHeader.moduleHeader)
+			throw std::runtime_error("Missing module header.");
+		VbModuleHeader moduleHeader{ *translationHeader.moduleHeader };
+		if (moduleHeader.attributes.size() != 1)
+			throw std::runtime_error("Should be exactly one attribute.");
+		VbAttribute attribute{ moduleHeader.attributes[0] };
+		auto attributeName = VbQualifiedId{ attribute.name }.ToSimpleName();
+		if (attributeName != "VB_Name")
+			throw std::runtime_error("Only supported module attribute is VB_Name");
+		auto value = VbCodeExpressionFactory::CreateExpression(attribute.value)->EvaluateConstant();
+		if (value.type != VbCodeValueType::String)
+			throw std::runtime_error("VB_Name should be a string.");
+		name = value.stringValue;
+	}
+
+public:
+	std::string name;
+};
+
+#if 0
 void Dump(const Sentence& sentence)
 {
 	VbTranslationUnit translationUnit{ sentence };
@@ -256,19 +287,17 @@ void Dump(const Sentence& sentence)
 			DumpStatement(statement);
 	}
 }
+#endif
 
 void Process(const std::string& name, const std::string& source)
 {
-	std::cout << "Loading binary...";
 	TransitionTable transitionTable;
 	transitionTable.Read(BinaryReader{ std::ifstream{ R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.bin)", std::ios::binary } });
-	std::cout << "done." << std::endl;
-
-	std::cout << "Parsing source...";
 	auto sentence = transitionTable.Parse(VbTokenStream{ name, source });
-	std::cout << "done." << std::endl;
+	sentence.WriteXml(std::ofstream{ R"(c:\temp\output.xml)" });
 
-	Dump(sentence);
+	VbCodeModule module{ sentence };
+	std::cout << module.name << std::endl;
 }
 
 int main(int argc, char** argv)

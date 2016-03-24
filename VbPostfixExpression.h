@@ -10,7 +10,7 @@ class VbPostfixExpression
 public:
 	VbPostfixExpression(const Sentence& sentence)
 	{
-		std::tie(postfixExpression, primaryExpression, dot, id, expressionClause) =
+		std::tie(primaryExpression, postfixExpression, dot, id, expressionClause) =
 			SentenceParser::Parse(
 				sentence,
 				OptionalSentence("primary-expression"),
