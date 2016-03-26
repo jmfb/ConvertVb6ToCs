@@ -13,6 +13,7 @@
 #include "VbUnaryExpression.h"
 #include "VbPostfixExpression.h"
 #include "VbPrimaryExpression.h"
+#include "VbCodeValueFactory.h"
 
 VbCodeExpressionPtr VbCodeExpressionFactory::CreateExpression(const Sentence& sentence)
 {
@@ -179,15 +180,6 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateConstantExpression(const Sent
 {
 	if (sentence.GetNodes().size() != 1)
 		throw std::runtime_error("Literal should contain exactly 1 token.");
-	auto& token = sentence.GetNodes()[0]->AsToken();
-	if (token.GetType() == TokenType::Keyword)
-		throw std::runtime_error("Not implemented: Literal keywords");
-	auto& literal = token.GetValue();
-	if (literal.empty())
-		throw std::runtime_error("Empty literal is not valid.");
-	if (literal[0] != '"')
-		throw std::runtime_error("Not implemented: non-string literals.");
-	if (literal.back() != '"')
-		throw std::runtime_error("String must end in quote.");
-	return std::make_shared<VbCodeConstantExpression>(literal.substr(1, literal.size() - 2));
+	auto& value = VbCodeValueFactory::Create(sentence.GetNodes()[0]->AsToken());
+	return std::make_shared<VbCodeConstantExpression>(value);
 }

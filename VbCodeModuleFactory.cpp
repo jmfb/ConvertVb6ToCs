@@ -1,0 +1,116 @@
+#include "VbCodeModuleFactory.h"
+#include "VbTranslationUnit.h"
+#include "VbTranslationHeader.h"
+#include "VbModuleHeader.h"
+#include "VbAttribute.h"
+#include "VbQualifiedId.h"
+#include "VbCodeExpressionFactory.h"
+#include "VbDeclaration.h"
+#include "VbLine.h"
+#include "VbCompoundStatement.h"
+#include "VbStatement.h"
+#include "VbConstStatement.h"
+#include "VbConstantDefinition.h"
+#include "VbCodeTypeFactory.h"
+#include "VbCodeConstant.h"
+
+VbCodeModule VbCodeModuleFactory::Create(const Sentence& sentence)
+{
+	VbTranslationUnit translationUnit{ sentence };
+	if (!translationUnit.translationHeader)
+		throw std::runtime_error("Missing translation header.");
+	LoadHeader(*translationUnit.translationHeader);
+	if (translationUnit.declarationList)
+		for (auto& declarationSentence : *translationUnit.declarationList)
+			ProcessDeclaration(declarationSentence);
+	return
+	{
+		name,
+		isOptionExplicit,
+		constants
+	};
+}
+
+void VbCodeModuleFactory::LoadHeader(const Sentence& sentence)
+{
+	VbTranslationHeader translationHeader{ sentence };
+	if (!translationHeader.moduleHeader)
+		throw std::runtime_error("Missing module header.");
+	VbModuleHeader moduleHeader{ *translationHeader.moduleHeader };
+	if (moduleHeader.attributes.size() != 1)
+		throw std::runtime_error("Should be exactly one attribute.");
+	VbAttribute attribute{ moduleHeader.attributes[0] };
+	auto attributeName = VbQualifiedId{ attribute.name }.ToSimpleName();
+	if (attributeName != "VB_Name")
+		throw std::runtime_error("Only supported module attribute is VB_Name");
+	auto value = VbCodeExpressionFactory::CreateExpression(attribute.value)->EvaluateConstant();
+	if (value.type != VbCodeValueType::String)
+		throw std::runtime_error("VB_Name should be a string.");
+	name = value.stringValue;
+}
+
+void VbCodeModuleFactory::ProcessDeclaration(const Sentence& sentence)
+{
+	VbDeclaration declaration{ sentence };
+	if (declaration.attribute)
+		throw std::runtime_error("Declaration not supported in module definition outside of header.");
+	if (declaration.lineLabel)
+		throw std::runtime_error("Line label not yet implemented.");
+	if (!declaration.vbLine)
+		return;
+	VbLine line{ *declaration.vbLine };
+	if (line.statement)
+		ProcessStatement(*line.statement);
+	if (!line.compoundStatement)
+		return;
+	VbCompoundStatement compoundStatement{ *line.compoundStatement };
+	for (auto& statementSentence : compoundStatement.statements)
+		ProcessStatement(statementSentence);
+}
+
+void VbCodeModuleFactory::ProcessStatement(const Sentence& sentence)
+{
+	if (isBeforeFirstFunction)
+		ProcessHeaderStatement(sentence);
+	else
+		ProcessBodyStatement(sentence);
+}
+
+void VbCodeModuleFactory::ProcessHeaderStatement(const Sentence& sentence)
+{
+	VbStatement statement{ sentence };
+	if (statement.optionExplicitStatement)
+		isOptionExplicit = true;
+	else if (statement.constStatement)
+		ProcessConstStatement(*statement.constStatement);
+	else if (statement.publicStatement)
+		throw std::runtime_error("TODO: Public statement.");
+	else
+		throw std::runtime_error("Unsupported module header level statement.");
+}
+
+void VbCodeModuleFactory::ProcessBodyStatement(const Sentence& sentence)
+{
+	VbStatement statement{ sentence };
+	throw std::runtime_error("Unsupported module body level statement.");
+}
+
+void VbCodeModuleFactory::ProcessConstStatement(const Sentence& sentence)
+{
+	VbConstStatement constStatement{ sentence };
+	auto isPublic = constStatement.access &&
+		*constStatement.access == "public" ||
+		*constStatement.access == "global";
+	for (auto& constantDefinitionSentence : constStatement.constantDefinitions)
+	{
+		VbConstantDefinition constantDefinition{ constantDefinitionSentence };
+		auto& name = constantDefinition.name.GetValue();
+		auto value = VbCodeExpressionFactory::CreateExpression(constantDefinition.expression)->EvaluateConstant();
+		auto type = constantDefinition.asSpecifier ?
+			VbCodeTypeFactory::Create(*constantDefinition.asSpecifier) :
+			VbCodeType{ value.type };
+		if (type.type != value.type)
+			throw std::runtime_error("Coercing constant type value is not yet implemented.");
+		constants.emplace_back(isPublic, name, value);
+	}
+}

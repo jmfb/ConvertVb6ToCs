@@ -5,6 +5,10 @@
 class VbCodeValue
 {
 public:
+	VbCodeValue()
+		: type(VbCodeValueType::Variant) //Null, Nothing, or Empty?
+	{
+	}
 	VbCodeValue(bool value)
 		: type(VbCodeValueType::Boolean), boolValue(value)
 	{

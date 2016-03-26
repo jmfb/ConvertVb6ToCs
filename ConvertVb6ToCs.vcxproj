@@ -144,6 +144,10 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="VbCodeExpressionFactory.cpp" />
+    <ClCompile Include="VbCodeModuleFactory.cpp" />
+    <ClCompile Include="VbCodeTypeFactory.cpp" />
+    <ClCompile Include="VbCodeTypeNameFactory.cpp" />
+    <ClCompile Include="VbCodeValueFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinaryReader.h" />
@@ -209,8 +213,16 @@
     <ClInclude Include="VbCharStream.h" />
     <ClInclude Include="VbCodeBinaryExpression.h" />
     <ClInclude Include="VbCodeBinaryExpressionType.h" />
+    <ClInclude Include="VbCodeConstant.h" />
+    <ClInclude Include="VbCodeModule.h" />
+    <ClInclude Include="VbCodeModuleFactory.h" />
+    <ClInclude Include="VbCodeType.h" />
+    <ClInclude Include="VbCodeTypeFactory.h" />
+    <ClInclude Include="VbCodeTypeName.h" />
+    <ClInclude Include="VbCodeTypeNameFactory.h" />
     <ClInclude Include="VbCodeValue.h" />
     <ClInclude Include="VbCodeConstantExpression.h" />
+    <ClInclude Include="VbCodeValueFactory.h" />
     <ClInclude Include="VbCodeValueType.h" />
     <ClInclude Include="VbCodeExpression.h" />
     <ClInclude Include="VbCodeExpressionFactory.h" />

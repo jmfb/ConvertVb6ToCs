@@ -5,6 +5,18 @@
     <ClCompile Include="VbCodeExpressionFactory.cpp">
       <Filter>VisualBasic Code\Expressions</Filter>
     </ClCompile>
+    <ClCompile Include="VbCodeTypeFactory.cpp">
+      <Filter>VisualBasic Code</Filter>
+    </ClCompile>
+    <ClCompile Include="VbCodeValueFactory.cpp">
+      <Filter>VisualBasic Code</Filter>
+    </ClCompile>
+    <ClCompile Include="VbCodeTypeNameFactory.cpp">
+      <Filter>VisualBasic Code</Filter>
+    </ClCompile>
+    <ClCompile Include="VbCodeModuleFactory.cpp">
+      <Filter>VisualBasic Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="IO">
@@ -430,6 +442,30 @@
       <Filter>VisualBasic Code</Filter>
     </ClInclude>
     <ClInclude Include="VbCodeValueType.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeTypeName.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeType.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeTypeFactory.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeValueFactory.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeTypeNameFactory.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeConstant.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeModule.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeModuleFactory.h">
       <Filter>VisualBasic Code</Filter>
     </ClInclude>
   </ItemGroup>
