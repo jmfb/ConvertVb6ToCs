@@ -4,11 +4,17 @@
 #include "VbPropertyStatement.h"
 #include "VbEndStatement.h"
 #include "VbDimStatement.h"
+#include "VbWithStatement.h"
+#include "VbLetStatement.h"
 #include "VbEndKeyword.h"
 #include "VbDimDefinition.h"
 #include "VbCodeEndType.h"
 #include "VbCodeParameterFactory.h"
 #include "VbCodeTypeFactory.h"
+#include "VbCodeWithStatement.h"
+#include "VbCodeLetStatement.h"
+#include "VbCodeEndProgramStatement.h"
+#include "VbCodeExpressionFactory.h"
 #include <iostream>
 
 void VbCodeFunctionFactory::AddStatement(const Sentence& sentence)
@@ -43,6 +49,10 @@ void VbCodeFunctionFactory::ProcessStatement(const Sentence& sentence)
 		ProcessDimStatement(false, *statement.dimStatement);
 	else if (statement.staticStatement)
 		ProcessDimStatement(true, *statement.staticStatement);
+	else if (statement.withStatement)
+		ProcessWithStatement(*statement.withStatement);
+	else if (statement.letStatement)
+		ProcessLetStatement(*statement.letStatement);
 	else
 		std::cout << "TODO: misc. function statement" << std::endl;
 }
@@ -76,6 +86,7 @@ void VbCodeFunctionFactory::BeginFunction(const Sentence& sentence)
 		VbCodeParameterFactory::Create(functionStatement.parameterClause),
 		VbCodeTypeFactory::CreateOptional(functionStatement.asArraySpecifier)
 	};
+	blocks.push(&function->statements);
 }
 
 void VbCodeFunctionFactory::BeginProperty(const Sentence& sentence)
@@ -90,6 +101,7 @@ void VbCodeFunctionFactory::BeginProperty(const Sentence& sentence)
 		VbCodeParameterFactory::Create(propertyStatement.parameterClause),
 		VbCodeTypeFactory::CreateOptional(propertyStatement.asArraySpecifier)
 	};
+	blocks.push(&function->statements);
 }
 
 VbCodeFunctionType VbCodeFunctionFactory::ParseType(const Token& token)
@@ -121,7 +133,10 @@ void VbCodeFunctionFactory::ProcessEndStatement(const Sentence& sentence)
 {
 	VbEndStatement endStatement{ sentence };
 	if (!endStatement.keyword)
-		throw std::runtime_error("TODO: Support 'End <program>' statement.");
+	{
+		blocks.top()->push_back(std::make_shared<VbCodeEndProgramStatement>());
+		return;
+	}
 	VbEndKeyword endKeyword{ *endStatement.keyword };
 	auto type = SentenceParser::ToEnum<VbCodeEndType>(
 		endKeyword.keyword,
@@ -138,7 +153,12 @@ void VbCodeFunctionFactory::ProcessEndStatement(const Sentence& sentence)
 	case VbCodeEndType::If:
 	case VbCodeEndType::Select:
 	case VbCodeEndType::With:
-		std::cout << "TODO: Support End If/Select/With statement." << std::endl;
+		if (compoundStatements.empty())
+			throw std::runtime_error("End If/Select/With found without any preceding block.");
+		compoundStatements.top()->MatchEnd(type);
+		blocks.pop();
+		blocks.top()->push_back(compoundStatements.top());
+		compoundStatements.pop();
 		break;
 
 	case VbCodeEndType::Sub:
@@ -159,6 +179,9 @@ void VbCodeFunctionFactory::ProcessEndStatement(const Sentence& sentence)
 		endOfFunction = true;
 		break;
 	}
+
+	if (endOfFunction && blocks.size() != 1)
+		throw std::runtime_error("Missing end block before end of function.");
 }
 
 void VbCodeFunctionFactory::ProcessDimStatement(bool isStatic, const Sentence& sentence)
@@ -177,4 +200,21 @@ void VbCodeFunctionFactory::ProcessDimStatement(bool isStatic, const Sentence& s
 		else
 			function->variables.push_back(variable);
 	}
+}
+
+void VbCodeFunctionFactory::ProcessWithStatement(const Sentence& sentence)
+{
+	VbWithStatement withStatement{ sentence };
+	std::cout << "TODO: with statement l-value" << std::endl;
+	auto statement = std::make_shared<VbCodeWithStatement>();
+	compoundStatements.push(statement);
+	blocks.push(&statement->statements);
+}
+
+void VbCodeFunctionFactory::ProcessLetStatement(const Sentence& sentence)
+{
+	VbLetStatement letStatement{ sentence };
+	std::cout << "TODO: let statement l-value" << std::endl;
+	blocks.top()->push_back(std::make_shared<VbCodeLetStatement>(
+		VbCodeExpressionFactory::CreateExpression(letStatement.expression)));
 }

@@ -85,6 +85,9 @@
     <Filter Include="VisualBasic Code\Functions">
       <UniqueIdentifier>{7be5e6c3-04af-4578-8016-f5916229d82e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="VisualBasic Code\Statements">
+      <UniqueIdentifier>{08a2ee02-21f2-47bb-9c20-09f0e6f92c94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Char.h">
@@ -530,6 +533,18 @@
     </ClInclude>
     <ClInclude Include="VbCodeEndType.h">
       <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeStatement.h">
+      <Filter>VisualBasic Code\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeWithStatement.h">
+      <Filter>VisualBasic Code\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeLetStatement.h">
+      <Filter>VisualBasic Code\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeEndProgramStatement.h">
+      <Filter>VisualBasic Code\Statements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

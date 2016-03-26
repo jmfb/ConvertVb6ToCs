@@ -4,6 +4,7 @@
 #include "VbCodeParameter.h"
 #include "VbCodeType.h"
 #include "VbCodeVariable.h"
+#include "VbCodeStatement.h"
 #include "optional.h"
 #include <string>
 #include <vector>
@@ -31,5 +32,5 @@ public:
 	optional<VbCodeType> returnValue;
 	std::vector<VbCodeVariable> variables;
 	std::vector<VbCodeVariable> statics;
-	//TODO: statements
+	std::vector<VbCodeStatementPtr> statements;
 };

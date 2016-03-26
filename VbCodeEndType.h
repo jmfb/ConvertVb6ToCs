@@ -12,7 +12,7 @@ enum class VbCodeEndType
 	Property
 };
 
-const char* ToString(VbCodeEndType value)
+inline const char* ToString(VbCodeEndType value)
 {
 	switch (value)
 	{

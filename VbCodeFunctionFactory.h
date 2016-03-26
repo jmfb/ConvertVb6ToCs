@@ -2,9 +2,11 @@
 #include "VbCodeFunction.h"
 #include "VbCodeFunctionType.h"
 #include "VbCodeFunctionAccess.h"
+#include "VbCodeStatement.h"
 #include "Sentence.h"
 #include "Token.h"
 #include "optional.h"
+#include <stack>
 
 class VbCodeFunctionFactory
 {
@@ -23,8 +25,12 @@ private:
 	static VbCodeFunctionAccess ParseAccess(const optional<Token>& token);
 	void ProcessEndStatement(const Sentence& sentence);
 	void ProcessDimStatement(bool isStatic, const Sentence& sentence);
+	void ProcessWithStatement(const Sentence& sentence);
+	void ProcessLetStatement(const Sentence& sentence);
 
 private:
 	optional<VbCodeFunction> function;
 	bool endOfFunction = false;
+	std::stack<VbCodeStatementPtr> compoundStatements;
+	std::stack<std::vector<VbCodeStatementPtr>*> blocks;
 };
