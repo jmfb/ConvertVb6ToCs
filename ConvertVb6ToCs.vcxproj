@@ -222,8 +222,10 @@
     <ClInclude Include="VbCodeDeclareFactory.h" />
     <ClInclude Include="VbCodeFunction.h" />
     <ClInclude Include="VbCodeFunctionFactory.h" />
+    <ClInclude Include="VbCodeIdExpression.h" />
     <ClInclude Include="VbCodeLetStatement.h" />
     <ClInclude Include="VbCodeMember.h" />
+    <ClInclude Include="VbCodeMemberExpression.h" />
     <ClInclude Include="VbCodeModule.h" />
     <ClInclude Include="VbCodeModuleFactory.h" />
     <ClInclude Include="VbCodeParameter.h" />
@@ -244,6 +246,7 @@
     <ClInclude Include="VbCodeUnaryExpression.h" />
     <ClInclude Include="VbCodeUnaryExpressionType.h" />
     <ClInclude Include="VbCodeVariable.h" />
+    <ClInclude Include="VbCodeWithExpression.h" />
     <ClInclude Include="VbCodeWithStatement.h" />
     <ClInclude Include="VbCompoundStatement.h" />
     <ClInclude Include="VbConflictResolver.h" />
@@ -257,7 +260,7 @@
     <ClInclude Include="VbDefineTypeStatement.h" />
     <ClInclude Include="VbDimDefinition.h" />
     <ClInclude Include="VbDimStatement.h" />
-    <ClInclude Include="VbDotType.h" />
+    <ClInclude Include="VbCodeDotType.h" />
     <ClInclude Include="VbElseIfStatement.h" />
     <ClInclude Include="VbElseStatement.h" />
     <ClInclude Include="VbEndKeyword.h" />

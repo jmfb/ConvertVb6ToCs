@@ -1,6 +1,6 @@
 #pragma once
 #include "SentenceParser.h"
-#include "VbDotType.h"
+#include "VbCodeDotType.h"
 #include <vector>
 #include <utility>
 
@@ -32,21 +32,21 @@ public:
 				RequiredToken(),
 				OptionalSentence("qualified-suffix"));
 		if (wsDotSentence)
-			wsDot = SentenceParser::ToEnum<VbDotType>(
+			wsDot = SentenceParser::ToEnum<VbCodeDotType>(
 				wsDotSentence->GetNodes()[0]->AsToken(),
 				{
-					{ " .", VbDotType::Dot },
-					{ " !", VbDotType::Bang }
+					{ " .", VbCodeDotType::Dot },
+					{ " !", VbCodeDotType::Bang }
 				});
 		if (!qualifiedSuffix)
 			return;
 		for (auto index = 0u; index < qualifiedSuffix->GetNodes().size(); index += 2)
 		{
-			auto dot = SentenceParser::ToEnum<VbDotType>(
+			auto dot = SentenceParser::ToEnum<VbCodeDotType>(
 				qualifiedSuffix->GetNodes()[index]->AsSentence().GetNodes()[0]->AsToken(),
 				{
-					{ ".", VbDotType::Dot },
-					{ "!", VbDotType::Bang }
+					{ ".", VbCodeDotType::Dot },
+					{ "!", VbCodeDotType::Bang }
 				});
 			if ((index + 1) >= qualifiedSuffix->GetNodes().size())
 				throw std::runtime_error("Qualified suffix must be in pairs.");
@@ -63,14 +63,14 @@ public:
 		out << id.GetValue();
 		for (auto& part : suffix)
 		{
-			if (part.first != VbDotType::Dot)
+			if (part.first != VbCodeDotType::Dot)
 				throw std::runtime_error("Bang separator not allowed in simple names.");
 			out << "." << part.second.GetValue();
 		}
 		return out.str();
 	}
 
-	optional<VbDotType> wsDot;
+	optional<VbCodeDotType> wsDot;
 	Token id;
-	std::vector<std::pair<VbDotType, Token>> suffix;
+	std::vector<std::pair<VbCodeDotType, Token>> suffix;
 };

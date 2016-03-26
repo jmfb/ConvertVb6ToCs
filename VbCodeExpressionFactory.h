@@ -1,6 +1,7 @@
 #pragma once
 #include "Sentence.h"
 #include "VbCodeExpression.h"
+#include "VbCodeDotType.h"
 #include "optional.h"
 
 class VbCodeExpressionFactory
@@ -8,6 +9,8 @@ class VbCodeExpressionFactory
 public:
 	static VbCodeExpressionPtr CreateDefaultValue(const optional<Sentence>& sentence);
 	static VbCodeExpressionPtr CreateExpression(const Sentence& sentence);
+
+private:
 	static VbCodeExpressionPtr CreateOrExpression(const Sentence& sentence);
 	static VbCodeExpressionPtr CreateXorExpression(const Sentence& sentence);
 	static VbCodeExpressionPtr CreateAndExpression(const Sentence& sentence);
@@ -19,4 +22,6 @@ public:
 	static VbCodeExpressionPtr CreatePostfixExpression(const Sentence& sentence);
 	static VbCodeExpressionPtr CreatePrimaryExpression(const Sentence& sentence);
 	static VbCodeExpressionPtr CreateConstantExpression(const Sentence& sentence);
+
+	static VbCodeDotType ParseDot(const Sentence& sentence);
 };

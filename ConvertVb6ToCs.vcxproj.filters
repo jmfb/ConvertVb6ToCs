@@ -426,9 +426,6 @@
     <ClInclude Include="VbCallTerminal.h">
       <Filter>VisualBasic Sentences\Identifiers</Filter>
     </ClInclude>
-    <ClInclude Include="VbDotType.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
     <ClInclude Include="VbCodeExpression.h">
       <Filter>VisualBasic Code\Expressions</Filter>
     </ClInclude>
@@ -545,6 +542,18 @@
     </ClInclude>
     <ClInclude Include="VbCodeEndProgramStatement.h">
       <Filter>VisualBasic Code\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeWithExpression.h">
+      <Filter>VisualBasic Code\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeDotType.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeMemberExpression.h">
+      <Filter>VisualBasic Code\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeIdExpression.h">
+      <Filter>VisualBasic Code\Expressions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

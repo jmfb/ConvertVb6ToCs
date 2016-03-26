@@ -10,7 +10,7 @@ VbCodeTypeName VbCodeTypeNameFactory::Create(const Sentence& sentence)
 		return{ "", qualifiedId.id.GetValue() };
 	if (qualifiedId.suffix.size() != 1)
 		throw std::runtime_error("Only 'library.name' type names supported.");
-	if (qualifiedId.suffix[0].first != VbDotType::Dot)
+	if (qualifiedId.suffix[0].first != VbCodeDotType::Dot)
 		throw std::runtime_error("Bang not allowed in type names.");
 	return{ qualifiedId.id.GetValue(), qualifiedId.suffix[0].second.GetValue() };
 }

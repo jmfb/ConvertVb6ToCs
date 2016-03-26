@@ -2,6 +2,9 @@
 #include "VbCodeUnaryExpression.h"
 #include "VbCodeBinaryExpression.h"
 #include "VbCodeConstantExpression.h"
+#include "VbCodeWithExpression.h"
+#include "VbCodeMemberExpression.h"
+#include "VbCodeIdExpression.h"
 #include "VbExpression.h"
 #include "VbXorExpression.h"
 #include "VbOrExpression.h"
@@ -174,7 +177,12 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreatePostfixExpression(const Sente
 	VbPostfixExpression expression{ sentence };
 	if (expression.primaryExpression)
 		return CreatePrimaryExpression(*expression.primaryExpression);
-	throw std::runtime_error("Not implemented: expression.id or expression(...)");
+	if (expression.dot)
+		return std::make_shared<VbCodeMemberExpression>(
+			CreatePostfixExpression(*expression.postfixExpression),
+			ParseDot(*expression.dot),
+			expression.id->GetValue());
+	throw std::runtime_error("Not implemented: expression(...)");
 }
 
 VbCodeExpressionPtr VbCodeExpressionFactory::CreatePrimaryExpression(const Sentence& sentence)
@@ -182,7 +190,13 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreatePrimaryExpression(const Sente
 	VbPrimaryExpression expression{ sentence };
 	if (expression.literal)
 		return CreateConstantExpression(*expression.literal);
-	throw std::runtime_error("Not implemented: all other primary expressions");
+	if (expression.wsDot)
+		return std::make_shared<VbCodeWithExpression>(ParseDot(*expression.wsDot), expression.id->GetValue());
+	if (expression.expression1)
+		throw std::runtime_error("Not implemented: (expression) or (expression, expression)");
+	if (*expression.id == "me")
+		throw std::runtime_error("Not implemented: Me");
+	return std::make_shared<VbCodeIdExpression>(expression.id->GetValue());
 }
 
 VbCodeExpressionPtr VbCodeExpressionFactory::CreateConstantExpression(const Sentence& sentence)
@@ -191,4 +205,16 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateConstantExpression(const Sent
 		throw std::runtime_error("Literal should contain exactly 1 token.");
 	auto& value = VbCodeValueFactory::Create(sentence.GetNodes()[0]->AsToken());
 	return std::make_shared<VbCodeConstantExpression>(value);
+}
+
+VbCodeDotType VbCodeExpressionFactory::ParseDot(const Sentence& sentence)
+{
+	return SentenceParser::ToEnum<VbCodeDotType>(
+		sentence.GetNodes()[0]->AsToken(),
+		{
+			{ " !", VbCodeDotType::Bang },
+			{ "!", VbCodeDotType::Bang },
+			{ " .", VbCodeDotType::Dot },
+			{ ".", VbCodeDotType::Dot }
+		});
 }
