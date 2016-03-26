@@ -22,6 +22,7 @@ private:
 	static VbCodeFunctionType ParseType(const Token& token);
 	static VbCodeFunctionAccess ParseAccess(const optional<Token>& token);
 	void ProcessEndStatement(const Sentence& sentence);
+	void ProcessDimStatement(bool isStatic, const Sentence& sentence);
 
 private:
 	optional<VbCodeFunction> function;

@@ -3,6 +3,7 @@
 #include "VbCodeFunctionAccess.h"
 #include "VbCodeParameter.h"
 #include "VbCodeType.h"
+#include "VbCodeVariable.h"
 #include "optional.h"
 #include <string>
 #include <vector>
@@ -28,5 +29,7 @@ public:
 	std::string name;
 	std::vector<VbCodeParameter> parameters;
 	optional<VbCodeType> returnValue;
+	std::vector<VbCodeVariable> variables;
+	std::vector<VbCodeVariable> statics;
 	//TODO: statements
 };

@@ -57,7 +57,16 @@ void Process(const std::string& name, const std::string& source)
 	for (auto& typeDefinition : module.typeDefinitions)
 		std::cout << (typeDefinition.isPublic ? "public" : "private") << " type " << typeDefinition.name << std::endl;
 	for (auto& function : module.functions)
-		std::cout << ToString(function.access) << " " << ToString(function.type) << " " << function.name << std::endl;
+	{
+		std::cout << ToString(function.access) << " " << ToString(function.type) << " " << function.name << "(";
+		for (auto& parameter : function.parameters)
+			std::cout << parameter.name << ",";
+		std::cout << ")" << std::endl;
+		for (auto& variable : function.statics)
+			std::cout << "  static " << variable.name << std::endl;
+		for (auto& variable : function.variables)
+			std::cout << "  dim " << variable.name << std::endl;
+	}
 }
 
 int main(int argc, char** argv)

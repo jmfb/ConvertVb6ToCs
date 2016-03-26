@@ -3,7 +3,9 @@
 #include "VbFunctionStatement.h"
 #include "VbPropertyStatement.h"
 #include "VbEndStatement.h"
+#include "VbDimStatement.h"
 #include "VbEndKeyword.h"
+#include "VbDimDefinition.h"
 #include "VbCodeEndType.h"
 #include "VbCodeParameterFactory.h"
 #include "VbCodeTypeFactory.h"
@@ -37,6 +39,10 @@ void VbCodeFunctionFactory::ProcessStatement(const Sentence& sentence)
 	VbStatement statement{ sentence };
 	if (statement.endStatement)
 		ProcessEndStatement(*statement.endStatement);
+	else if (statement.dimStatement)
+		ProcessDimStatement(false, *statement.dimStatement);
+	else if (statement.staticStatement)
+		ProcessDimStatement(true, *statement.staticStatement);
 	else
 		std::cout << "TODO: misc. function statement" << std::endl;
 }
@@ -152,5 +158,23 @@ void VbCodeFunctionFactory::ProcessEndStatement(const Sentence& sentence)
 			throw std::runtime_error("Mismatched End Property.");
 		endOfFunction = true;
 		break;
+	}
+}
+
+void VbCodeFunctionFactory::ProcessDimStatement(bool isStatic, const Sentence& sentence)
+{
+	VbDimStatement dimStatement{ sentence };
+	for (auto& dimDefinitionSentence : dimStatement.dimDefinitions)
+	{
+		VbDimDefinition dimDefinition{ dimDefinitionSentence };
+		if (dimDefinition.arraySuffix)
+			throw std::runtime_error("Dim array suffix not yet implemented.");
+		if (dimDefinition.isWithEvents)
+			throw std::runtime_error("Dim definition may not be with events.");
+		VbCodeVariable variable{ dimDefinition.name.GetValue(), VbCodeTypeFactory::Create(dimDefinition.asNewSpecifier) };
+		if (isStatic)
+			function->statics.push_back(variable);
+		else
+			function->variables.push_back(variable);
 	}
 }
