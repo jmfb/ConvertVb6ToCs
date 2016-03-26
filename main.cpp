@@ -47,12 +47,13 @@ void Process(const std::string& name, const std::string& source)
 	sentence.WriteXml(std::ofstream{ R"(c:\temp\output.xml)" });
 
 	auto module = VbCodeModuleFactory{}.Create(sentence);
-	std::cout << module.name << std::endl;
+	std::cout << "module " << module.name << std::endl;
 	for (auto& constant : module.constants)
 		std::cout << (constant.isPublic ? "public" : "private") << " const " << constant.name << std::endl;
 	for (auto& member : module.members)
 		std::cout << (member.isPublic ? "public" : "private") << " member " << member.name << std::endl;
-	//TODO: more
+	for (auto& declare : module.declares)
+		std::cout << (declare.isPublic ? "public" : "private") << " declare " << declare.name << std::endl;
 }
 
 int main(int argc, char** argv)

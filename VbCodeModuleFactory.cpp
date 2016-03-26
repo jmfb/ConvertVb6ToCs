@@ -15,6 +15,7 @@
 #include "VbCodeConstant.h"
 #include "VbDimStatement.h"
 #include "VbDimDefinition.h"
+#include "VbCodeDeclareFactory.h"
 #include <iostream>
 
 VbCodeModule VbCodeModuleFactory::Create(const Sentence& sentence)
@@ -23,15 +24,23 @@ VbCodeModule VbCodeModuleFactory::Create(const Sentence& sentence)
 	if (!translationUnit.translationHeader)
 		throw std::runtime_error("Missing translation header.");
 	LoadHeader(*translationUnit.translationHeader);
-	if (translationUnit.declarationList)
-		for (auto& declarationSentence : *translationUnit.declarationList)
-			ProcessDeclaration(declarationSentence);
+	try
+	{
+		if (translationUnit.declarationList)
+			for (auto& declarationSentence : *translationUnit.declarationList)
+				ProcessDeclaration(declarationSentence);
+	}
+	catch (const std::exception& exception)
+	{
+		std::cout << exception.what() << std::endl;
+	}
 	return
 	{
 		name,
 		isOptionExplicit,
 		constants,
-		members
+		members,
+		declares
 	};
 }
 
@@ -92,7 +101,7 @@ void VbCodeModuleFactory::ProcessHeaderStatement(const Sentence& sentence)
 	else if (statement.privateStatement)
 		ProcessMemberStatement(false, *statement.privateStatement);
 	else if (statement.declareStatement)
-		std::cout << "TODO: declare-statement" << std::endl;
+		declares.push_back(VbCodeDeclareFactory::Create(*statement.declareStatement));
 	else if (statement.typeStatement)
 		std::cout << "TODO: type-statement" << std::endl;
 	else if (statement.functionStatement)
@@ -136,9 +145,10 @@ void VbCodeModuleFactory::ProcessMemberStatement(bool isPublic, const Sentence& 
 		auto& name = dimDefinition.name.GetValue();
 		if (dimDefinition.arraySuffix)
 			throw std::runtime_error("Array suffix not yet supported.");
-		auto type = dimDefinition.asNewSpecifier ?
-			VbCodeTypeFactory::Create(*dimDefinition.asNewSpecifier) :
-			VbCodeType{ VbCodeValueType::Variant };
-		members.emplace_back(isPublic, dimDefinition.isWithEvents, name, type);
+		members.emplace_back(
+			isPublic,
+			dimDefinition.isWithEvents,
+			name,
+			VbCodeTypeFactory::Create(dimDefinition.asNewSpecifier));
 	}
 }

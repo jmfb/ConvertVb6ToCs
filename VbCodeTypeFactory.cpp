@@ -7,6 +7,13 @@
 #include "VbCodeTypeNameFactory.h"
 #include "SentenceParser.h"
 
+VbCodeType VbCodeTypeFactory::Create(const optional<Sentence>& sentence)
+{
+	if (sentence)
+		return Create(*sentence);
+	return{ VbCodeValueType::Variant };
+}
+
 VbCodeType VbCodeTypeFactory::Create(const Sentence& sentence)
 {
 	VbAsSpecifier asSpecifier{ sentence };

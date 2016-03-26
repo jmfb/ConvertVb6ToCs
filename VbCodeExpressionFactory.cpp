@@ -14,6 +14,15 @@
 #include "VbPostfixExpression.h"
 #include "VbPrimaryExpression.h"
 #include "VbCodeValueFactory.h"
+#include "VbDefaultValue.h"
+
+VbCodeExpressionPtr VbCodeExpressionFactory::CreateDefaultValue(const optional<Sentence>& sentence)
+{
+	if (!sentence)
+		return nullptr;
+	VbDefaultValue defaultValue{ *sentence };
+	return CreateExpression(defaultValue.expression);
+}
 
 VbCodeExpressionPtr VbCodeExpressionFactory::CreateExpression(const Sentence& sentence)
 {

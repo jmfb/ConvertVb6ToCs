@@ -5,16 +5,22 @@
     <ClCompile Include="VbCodeExpressionFactory.cpp">
       <Filter>VisualBasic Code\Expressions</Filter>
     </ClCompile>
-    <ClCompile Include="VbCodeTypeFactory.cpp">
+    <ClCompile Include="VbCodeModuleFactory.cpp">
       <Filter>VisualBasic Code</Filter>
     </ClCompile>
-    <ClCompile Include="VbCodeValueFactory.cpp">
-      <Filter>VisualBasic Code</Filter>
+    <ClCompile Include="VbCodeTypeFactory.cpp">
+      <Filter>VisualBasic Code\Types and Values</Filter>
     </ClCompile>
     <ClCompile Include="VbCodeTypeNameFactory.cpp">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClCompile>
+    <ClCompile Include="VbCodeValueFactory.cpp">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClCompile>
+    <ClCompile Include="VbCodeParameterFactory.cpp">
       <Filter>VisualBasic Code</Filter>
     </ClCompile>
-    <ClCompile Include="VbCodeModuleFactory.cpp">
+    <ClCompile Include="VbCodeDeclareFactory.cpp">
       <Filter>VisualBasic Code</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,6 +72,9 @@
     </Filter>
     <Filter Include="VisualBasic Code\Expressions">
       <UniqueIdentifier>{8ec456a0-1b8e-4055-b7ff-a690eb5eb84b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualBasic Code\Types and Values">
+      <UniqueIdentifier>{cd42db3f-1489-4d94-8e27-252e04187a93}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -438,30 +447,6 @@
     <ClInclude Include="VbCodeConstantExpression.h">
       <Filter>VisualBasic Code\Expressions</Filter>
     </ClInclude>
-    <ClInclude Include="VbCodeValue.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeValueType.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeTypeName.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeType.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeTypeFactory.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeValueFactory.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeTypeNameFactory.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeConstant.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
     <ClInclude Include="VbCodeModule.h">
       <Filter>VisualBasic Code</Filter>
     </ClInclude>
@@ -470,6 +455,57 @@
     </ClInclude>
     <ClInclude Include="VbCodeMember.h">
       <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeType.h">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeTypeFactory.h">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeTypeName.h">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeTypeNameFactory.h">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeValue.h">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeValueFactory.h">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeValueType.h">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeConstant.h">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeDeclare.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeParameter.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeParameterFactory.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbParameterClause.h">
+      <Filter>VisualBasic Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbParameter.h">
+      <Filter>VisualBasic Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbDefaultValue.h">
+      <Filter>VisualBasic Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbPassBy.h">
+      <Filter>VisualBasic Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeDeclareFactory.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbDeclareAlias.h">
+      <Filter>VisualBasic Sentences</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

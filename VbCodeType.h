@@ -7,6 +7,7 @@
 class VbCodeType
 {
 public:
+	VbCodeType() = default;
 	VbCodeType(VbCodeValueType type)
 		: type(type)
 	{

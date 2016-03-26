@@ -1,10 +1,12 @@
 #pragma once
 #include "Sentence.h"
 #include "VbCodeExpression.h"
+#include "optional.h"
 
 class VbCodeExpressionFactory
 {
 public:
+	static VbCodeExpressionPtr CreateDefaultValue(const optional<Sentence>& sentence);
 	static VbCodeExpressionPtr CreateExpression(const Sentence& sentence);
 	static VbCodeExpressionPtr CreateOrExpression(const Sentence& sentence);
 	static VbCodeExpressionPtr CreateXorExpression(const Sentence& sentence);

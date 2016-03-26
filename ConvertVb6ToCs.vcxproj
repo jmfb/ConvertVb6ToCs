@@ -143,8 +143,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="VbCodeDeclareFactory.cpp" />
     <ClCompile Include="VbCodeExpressionFactory.cpp" />
     <ClCompile Include="VbCodeModuleFactory.cpp" />
+    <ClCompile Include="VbCodeParameterFactory.cpp" />
     <ClCompile Include="VbCodeTypeFactory.cpp" />
     <ClCompile Include="VbCodeTypeNameFactory.cpp" />
     <ClCompile Include="VbCodeValueFactory.cpp" />
@@ -214,9 +216,13 @@
     <ClInclude Include="VbCodeBinaryExpression.h" />
     <ClInclude Include="VbCodeBinaryExpressionType.h" />
     <ClInclude Include="VbCodeConstant.h" />
+    <ClInclude Include="VbCodeDeclare.h" />
+    <ClInclude Include="VbCodeDeclareFactory.h" />
     <ClInclude Include="VbCodeMember.h" />
     <ClInclude Include="VbCodeModule.h" />
     <ClInclude Include="VbCodeModuleFactory.h" />
+    <ClInclude Include="VbCodeParameter.h" />
+    <ClInclude Include="VbCodeParameterFactory.h" />
     <ClInclude Include="VbCodeType.h" />
     <ClInclude Include="VbCodeTypeFactory.h" />
     <ClInclude Include="VbCodeTypeName.h" />
@@ -234,7 +240,9 @@
     <ClInclude Include="VbConstantDefinition.h" />
     <ClInclude Include="VbConstStatement.h" />
     <ClInclude Include="VbDeclaration.h" />
+    <ClInclude Include="VbDeclareAlias.h" />
     <ClInclude Include="VbDeclareStatement.h" />
+    <ClInclude Include="VbDefaultValue.h" />
     <ClInclude Include="VbDefineTypeKeyword.h" />
     <ClInclude Include="VbDefineTypeStatement.h" />
     <ClInclude Include="VbDimDefinition.h" />
@@ -261,6 +269,9 @@
     <ClInclude Include="VbModuleHeader.h" />
     <ClInclude Include="VbMultiplicativeExpression.h" />
     <ClInclude Include="VbOrExpression.h" />
+    <ClInclude Include="VbParameter.h" />
+    <ClInclude Include="VbParameterClause.h" />
+    <ClInclude Include="VbPassBy.h" />
     <ClInclude Include="VbPostfixExpression.h" />
     <ClInclude Include="VbPreProcessor.h" />
     <ClInclude Include="VbPreTokenFactory.h" />

@@ -2,6 +2,7 @@
 #include "VbCodeModule.h"
 #include "VbCodeConstant.h"
 #include "VbCodeMember.h"
+#include "VbCodeDeclare.h"
 #include "Sentence.h"
 #include <string>
 #include <vector>
@@ -28,4 +29,5 @@ private:
 	bool isOptionExplicit = false;
 	std::vector<VbCodeConstant> constants;
 	std::vector<VbCodeMember> members;
+	std::vector<VbCodeDeclare> declares;
 };
