@@ -26,6 +26,9 @@
     <ClCompile Include="VbCodeTypeDefinitionFactory.cpp">
       <Filter>VisualBasic Code</Filter>
     </ClCompile>
+    <ClCompile Include="VbCodeFunctionFactory.cpp">
+      <Filter>VisualBasic Code\Functions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="IO">
@@ -78,6 +81,9 @@
     </Filter>
     <Filter Include="VisualBasic Code\Types and Values">
       <UniqueIdentifier>{cd42db3f-1489-4d94-8e27-252e04187a93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualBasic Code\Functions">
+      <UniqueIdentifier>{7be5e6c3-04af-4578-8016-f5916229d82e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -420,15 +426,6 @@
     <ClInclude Include="VbDotType.h">
       <Filter>VisualBasic Code</Filter>
     </ClInclude>
-    <ClInclude Include="VbEndType.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbFunctionAccess.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbFunctionType.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
     <ClInclude Include="VbCodeExpression.h">
       <Filter>VisualBasic Code\Expressions</Filter>
     </ClInclude>
@@ -517,6 +514,21 @@
       <Filter>VisualBasic Code</Filter>
     </ClInclude>
     <ClInclude Include="VbCodeTypeDefinitionFactory.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeFunction.h">
+      <Filter>VisualBasic Code\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeFunctionFactory.h">
+      <Filter>VisualBasic Code\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeFunctionType.h">
+      <Filter>VisualBasic Code\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeFunctionAccess.h">
+      <Filter>VisualBasic Code\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeEndType.h">
       <Filter>VisualBasic Code</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,6 +4,8 @@
 #include "VbCodeMember.h"
 #include "VbCodeDeclare.h"
 #include "VbCodeTypeDefinition.h"
+#include "VbCodeFunction.h"
+#include "VbCodeFunctionFactory.h"
 #include "Sentence.h"
 #include <string>
 #include <vector>
@@ -23,7 +25,7 @@ private:
 	void ProcessMemberStatement(bool isPublic, const Sentence& sentence);
 
 private:
-	bool isBeforeFirstFunction = true;
+	VbCodeFunctionFactory functionFactory;
 
 private:
 	std::string name;
@@ -32,4 +34,5 @@ private:
 	std::vector<VbCodeMember> members;
 	std::vector<VbCodeDeclare> declares;
 	std::vector<VbCodeTypeDefinition> typeDefinitions;
+	std::vector<VbCodeFunction> functions;
 };

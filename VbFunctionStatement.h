@@ -10,6 +10,15 @@
 //	| "public" "static" "function" id <parameter-clause-opt> <as-array-specifier-opt>
 //	| "private" "static" "function" id <parameter-clause-opt> <as-array-specifier-opt>
 //	| "friend" "static" "function" id <parameter-clause-opt> <as-array-specifier-opt>;
+//<sub-statement> =
+//	"sub" id <parameter-clause-opt>
+//	| "static" "sub" id <parameter-clause-opt>
+//	| "public" "sub" id <parameter-clause-opt>
+//	| "private" "sub" id <parameter-clause-opt>
+//	| "friend" "sub" id <parameter-clause-opt>
+//	| "public" "static" "sub" id <parameter-clause-opt>
+//	| "private" "static" "sub" id <parameter-clause-opt>
+//	| "friend" "static" "sub" id <parameter-clause-opt>;
 class VbFunctionStatement
 {
 public:
@@ -20,7 +29,7 @@ public:
 				sentence,
 				OptionalToken("public", "private", "friend"),
 				OptionalToken("static"),
-				RequiredToken(),
+				RequiredToken("function", "sub"),
 				RequiredToken(),
 				OptionalSentence("parameter-clause"),
 				OptionalSentence("as-array-specifier"));

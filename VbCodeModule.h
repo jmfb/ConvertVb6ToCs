@@ -3,6 +3,7 @@
 #include "VbCodeMember.h"
 #include "VbCodeDeclare.h"
 #include "VbCodeTypeDefinition.h"
+#include "VbCodeFunction.h"
 #include <string>
 #include <vector>
 
@@ -15,13 +16,15 @@ public:
 		const std::vector<VbCodeConstant>& constants,
 		const std::vector<VbCodeMember>& members,
 		const std::vector<VbCodeDeclare>& declares,
-		const std::vector<VbCodeTypeDefinition>& typeDefinitions)
+		const std::vector<VbCodeTypeDefinition>& typeDefinitions,
+		const std::vector<VbCodeFunction>& functions)
 		: name(name),
 		isOptionExplicit(isOptionExplicit),
 		constants(constants),
 		members(members),
 		declares(declares),
-		typeDefinitions(typeDefinitions)
+		typeDefinitions(typeDefinitions),
+		functions(functions)
 	{
 	}
 
@@ -31,4 +34,5 @@ public:
 	std::vector<VbCodeMember> members;
 	std::vector<VbCodeDeclare> declares;
 	std::vector<VbCodeTypeDefinition> typeDefinitions;
+	std::vector<VbCodeFunction> functions;
 };

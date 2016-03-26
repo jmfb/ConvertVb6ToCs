@@ -14,6 +14,6 @@ VbCodeDeclare VbCodeDeclareFactory::Create(const Sentence& sentence)
 		declareStatement.declareAlias ? VbDeclareAlias{ *declareStatement.declareAlias }.alias.GetValue() : "",
 		declareStatement.library.GetValue(),
 		VbCodeParameterFactory::Create(declareStatement.parameterClause),
-		declareStatement.asArraySpecifier ? VbCodeTypeFactory::Create(*declareStatement.asArraySpecifier) : optional<VbCodeType>{}
+		VbCodeTypeFactory::CreateOptional(declareStatement.asArraySpecifier)
 	};
 }

@@ -145,6 +145,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="VbCodeDeclareFactory.cpp" />
     <ClCompile Include="VbCodeExpressionFactory.cpp" />
+    <ClCompile Include="VbCodeFunctionFactory.cpp" />
     <ClCompile Include="VbCodeModuleFactory.cpp" />
     <ClCompile Include="VbCodeParameterFactory.cpp" />
     <ClCompile Include="VbCodeTypeDefinitionFactory.cpp" />
@@ -219,6 +220,8 @@
     <ClInclude Include="VbCodeConstant.h" />
     <ClInclude Include="VbCodeDeclare.h" />
     <ClInclude Include="VbCodeDeclareFactory.h" />
+    <ClInclude Include="VbCodeFunction.h" />
+    <ClInclude Include="VbCodeFunctionFactory.h" />
     <ClInclude Include="VbCodeMember.h" />
     <ClInclude Include="VbCodeModule.h" />
     <ClInclude Include="VbCodeModuleFactory.h" />
@@ -256,12 +259,12 @@
     <ClInclude Include="VbElseStatement.h" />
     <ClInclude Include="VbEndKeyword.h" />
     <ClInclude Include="VbEndStatement.h" />
-    <ClInclude Include="VbEndType.h" />
+    <ClInclude Include="VbCodeEndType.h" />
     <ClInclude Include="VbEqualityExpression.h" />
     <ClInclude Include="VbExpression.h" />
-    <ClInclude Include="VbFunctionAccess.h" />
+    <ClInclude Include="VbCodeFunctionAccess.h" />
     <ClInclude Include="VbFunctionStatement.h" />
-    <ClInclude Include="VbFunctionType.h" />
+    <ClInclude Include="VbCodeFunctionType.h" />
     <ClInclude Include="VbIfStatement.h" />
     <ClInclude Include="VbLetStatement.h" />
     <ClInclude Include="VbLine.h" />

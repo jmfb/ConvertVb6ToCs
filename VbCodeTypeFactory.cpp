@@ -14,6 +14,13 @@ VbCodeType VbCodeTypeFactory::Create(const optional<Sentence>& sentence)
 	return{ VbCodeValueType::Variant };
 }
 
+optional<VbCodeType> VbCodeTypeFactory::CreateOptional(const optional<Sentence>& sentence)
+{
+	if (sentence)
+		return Create(*sentence);
+	return{};
+}
+
 VbCodeType VbCodeTypeFactory::Create(const Sentence& sentence)
 {
 	VbAsSpecifier asSpecifier{ sentence };

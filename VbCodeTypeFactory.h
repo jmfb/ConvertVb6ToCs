@@ -7,5 +7,6 @@ class VbCodeTypeFactory
 {
 public:
 	static VbCodeType Create(const optional<Sentence>& sentence);
+	static optional<VbCodeType> CreateOptional(const optional<Sentence>& sentence);
 	static VbCodeType Create(const Sentence& sentence);
 };

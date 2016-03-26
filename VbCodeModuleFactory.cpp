@@ -30,6 +30,8 @@ VbCodeModule VbCodeModuleFactory::Create(const Sentence& sentence)
 		if (translationUnit.declarationList)
 			for (auto& declarationSentence : *translationUnit.declarationList)
 				ProcessDeclaration(declarationSentence);
+		if (functionFactory.IsInFunction())
+			throw std::runtime_error("Missing end of function before end of file.");
 	}
 	catch (const std::exception& exception)
 	{
@@ -42,7 +44,8 @@ VbCodeModule VbCodeModuleFactory::Create(const Sentence& sentence)
 		constants,
 		members,
 		declares,
-		typeDefinitions
+		typeDefinitions,
+		functions
 	};
 }
 
@@ -85,7 +88,7 @@ void VbCodeModuleFactory::ProcessDeclaration(const Sentence& sentence)
 
 void VbCodeModuleFactory::ProcessStatement(const Sentence& sentence)
 {
-	if (isBeforeFirstFunction)
+	if (functions.empty() && !functionFactory.IsInFunction())
 		ProcessHeaderStatement(sentence);
 	else
 		ProcessBodyStatement(sentence);
@@ -106,16 +109,18 @@ void VbCodeModuleFactory::ProcessHeaderStatement(const Sentence& sentence)
 		declares.push_back(VbCodeDeclareFactory::Create(*statement.declareStatement));
 	else if (statement.typeStatement)
 		typeDefinitions.push_back(VbCodeTypeDefinitionFactory::Create(*statement.typeStatement));
-	else if (statement.functionStatement)
-		throw std::runtime_error("TODO: Function statement!");
 	else
-		throw std::runtime_error("Unsupported module header level statement.");
+		functionFactory.AddStatement(sentence);
 }
 
 void VbCodeModuleFactory::ProcessBodyStatement(const Sentence& sentence)
 {
-	VbStatement statement{ sentence };
-	throw std::runtime_error("Unsupported module body level statement.");
+	functionFactory.AddStatement(sentence);
+	if (functionFactory.IsEndOfFunction())
+	{
+		functions.push_back(functionFactory.Create());
+		functionFactory = {};
+	}
 }
 
 void VbCodeModuleFactory::ProcessConstStatement(const Sentence& sentence)
