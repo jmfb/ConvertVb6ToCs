@@ -3,6 +3,7 @@
 #include "VbCodeConstant.h"
 #include "VbCodeMember.h"
 #include "VbCodeDeclare.h"
+#include "VbCodeTypeDefinition.h"
 #include "Sentence.h"
 #include <string>
 #include <vector>
@@ -30,4 +31,5 @@ private:
 	std::vector<VbCodeConstant> constants;
 	std::vector<VbCodeMember> members;
 	std::vector<VbCodeDeclare> declares;
+	std::vector<VbCodeTypeDefinition> typeDefinitions;
 };

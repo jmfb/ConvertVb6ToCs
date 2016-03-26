@@ -20,6 +20,8 @@ public:
 		if (index >= sentence.GetNodes().size() || !sentence.GetNodes()[index]->IsToken())
 			return{};
 		auto& token = sentence.GetNodes()[index]->AsToken();
+		if (values.empty())
+			return token;
 		for (auto& value : values)
 			if (token == value)
 				return token;

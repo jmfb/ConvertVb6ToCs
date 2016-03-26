@@ -23,6 +23,9 @@
     <ClCompile Include="VbCodeDeclareFactory.cpp">
       <Filter>VisualBasic Code</Filter>
     </ClCompile>
+    <ClCompile Include="VbCodeTypeDefinitionFactory.cpp">
+      <Filter>VisualBasic Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="IO">
@@ -506,6 +509,15 @@
     </ClInclude>
     <ClInclude Include="VbDeclareAlias.h">
       <Filter>VisualBasic Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeTypeDefinition.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeVariable.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeTypeDefinitionFactory.h">
+      <Filter>VisualBasic Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 #include "VbCodeConstant.h"
 #include "VbCodeMember.h"
 #include "VbCodeDeclare.h"
+#include "VbCodeTypeDefinition.h"
 #include <string>
 #include <vector>
 
@@ -13,12 +14,14 @@ public:
 		bool isOptionExplicit,
 		const std::vector<VbCodeConstant>& constants,
 		const std::vector<VbCodeMember>& members,
-		const std::vector<VbCodeDeclare>& declares)
+		const std::vector<VbCodeDeclare>& declares,
+		const std::vector<VbCodeTypeDefinition>& typeDefinitions)
 		: name(name),
 		isOptionExplicit(isOptionExplicit),
 		constants(constants),
 		members(members),
-		declares(declares)
+		declares(declares),
+		typeDefinitions(typeDefinitions)
 	{
 	}
 
@@ -27,4 +30,5 @@ public:
 	std::vector<VbCodeConstant> constants;
 	std::vector<VbCodeMember> members;
 	std::vector<VbCodeDeclare> declares;
+	std::vector<VbCodeTypeDefinition> typeDefinitions;
 };

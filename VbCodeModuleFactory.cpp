@@ -16,6 +16,7 @@
 #include "VbDimStatement.h"
 #include "VbDimDefinition.h"
 #include "VbCodeDeclareFactory.h"
+#include "VbCodeTypeDefinitionFactory.h"
 #include <iostream>
 
 VbCodeModule VbCodeModuleFactory::Create(const Sentence& sentence)
@@ -40,7 +41,8 @@ VbCodeModule VbCodeModuleFactory::Create(const Sentence& sentence)
 		isOptionExplicit,
 		constants,
 		members,
-		declares
+		declares,
+		typeDefinitions
 	};
 }
 
@@ -103,7 +105,7 @@ void VbCodeModuleFactory::ProcessHeaderStatement(const Sentence& sentence)
 	else if (statement.declareStatement)
 		declares.push_back(VbCodeDeclareFactory::Create(*statement.declareStatement));
 	else if (statement.typeStatement)
-		std::cout << "TODO: type-statement" << std::endl;
+		typeDefinitions.push_back(VbCodeTypeDefinitionFactory::Create(*statement.typeStatement));
 	else if (statement.functionStatement)
 		throw std::runtime_error("TODO: Function statement!");
 	else

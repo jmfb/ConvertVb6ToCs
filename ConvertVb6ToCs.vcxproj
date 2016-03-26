@@ -147,6 +147,7 @@
     <ClCompile Include="VbCodeExpressionFactory.cpp" />
     <ClCompile Include="VbCodeModuleFactory.cpp" />
     <ClCompile Include="VbCodeParameterFactory.cpp" />
+    <ClCompile Include="VbCodeTypeDefinitionFactory.cpp" />
     <ClCompile Include="VbCodeTypeFactory.cpp" />
     <ClCompile Include="VbCodeTypeNameFactory.cpp" />
     <ClCompile Include="VbCodeValueFactory.cpp" />
@@ -224,6 +225,8 @@
     <ClInclude Include="VbCodeParameter.h" />
     <ClInclude Include="VbCodeParameterFactory.h" />
     <ClInclude Include="VbCodeType.h" />
+    <ClInclude Include="VbCodeTypeDefinition.h" />
+    <ClInclude Include="VbCodeTypeDefinitionFactory.h" />
     <ClInclude Include="VbCodeTypeFactory.h" />
     <ClInclude Include="VbCodeTypeName.h" />
     <ClInclude Include="VbCodeTypeNameFactory.h" />
@@ -235,6 +238,7 @@
     <ClInclude Include="VbCodeExpressionFactory.h" />
     <ClInclude Include="VbCodeUnaryExpression.h" />
     <ClInclude Include="VbCodeUnaryExpressionType.h" />
+    <ClInclude Include="VbCodeVariable.h" />
     <ClInclude Include="VbCompoundStatement.h" />
     <ClInclude Include="VbConflictResolver.h" />
     <ClInclude Include="VbConstantDefinition.h" />
