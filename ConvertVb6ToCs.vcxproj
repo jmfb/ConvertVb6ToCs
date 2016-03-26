@@ -214,6 +214,7 @@
     <ClInclude Include="VbCodeBinaryExpression.h" />
     <ClInclude Include="VbCodeBinaryExpressionType.h" />
     <ClInclude Include="VbCodeConstant.h" />
+    <ClInclude Include="VbCodeMember.h" />
     <ClInclude Include="VbCodeModule.h" />
     <ClInclude Include="VbCodeModuleFactory.h" />
     <ClInclude Include="VbCodeType.h" />

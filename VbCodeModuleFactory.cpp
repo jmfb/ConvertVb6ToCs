@@ -13,6 +13,9 @@
 #include "VbConstantDefinition.h"
 #include "VbCodeTypeFactory.h"
 #include "VbCodeConstant.h"
+#include "VbDimStatement.h"
+#include "VbDimDefinition.h"
+#include <iostream>
 
 VbCodeModule VbCodeModuleFactory::Create(const Sentence& sentence)
 {
@@ -27,7 +30,8 @@ VbCodeModule VbCodeModuleFactory::Create(const Sentence& sentence)
 	{
 		name,
 		isOptionExplicit,
-		constants
+		constants,
+		members
 	};
 }
 
@@ -84,7 +88,15 @@ void VbCodeModuleFactory::ProcessHeaderStatement(const Sentence& sentence)
 	else if (statement.constStatement)
 		ProcessConstStatement(*statement.constStatement);
 	else if (statement.publicStatement)
-		throw std::runtime_error("TODO: Public statement.");
+		ProcessMemberStatement(true, *statement.publicStatement);
+	else if (statement.privateStatement)
+		ProcessMemberStatement(false, *statement.privateStatement);
+	else if (statement.declareStatement)
+		std::cout << "TODO: declare-statement" << std::endl;
+	else if (statement.typeStatement)
+		std::cout << "TODO: type-statement" << std::endl;
+	else if (statement.functionStatement)
+		throw std::runtime_error("TODO: Function statement!");
 	else
 		throw std::runtime_error("Unsupported module header level statement.");
 }
@@ -112,5 +124,21 @@ void VbCodeModuleFactory::ProcessConstStatement(const Sentence& sentence)
 		if (type.type != value.type)
 			throw std::runtime_error("Coercing constant type value is not yet implemented.");
 		constants.emplace_back(isPublic, name, value);
+	}
+}
+
+void VbCodeModuleFactory::ProcessMemberStatement(bool isPublic, const Sentence& sentence)
+{
+	VbDimStatement dimStatement{ sentence };
+	for (auto& dimDefinitionStatement : dimStatement.dimDefinitions)
+	{
+		VbDimDefinition dimDefinition{ dimDefinitionStatement };
+		auto& name = dimDefinition.name.GetValue();
+		if (dimDefinition.arraySuffix)
+			throw std::runtime_error("Array suffix not yet supported.");
+		auto type = dimDefinition.asNewSpecifier ?
+			VbCodeTypeFactory::Create(*dimDefinition.asNewSpecifier) :
+			VbCodeType{ VbCodeValueType::Variant };
+		members.emplace_back(isPublic, dimDefinition.isWithEvents, name, type);
 	}
 }

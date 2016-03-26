@@ -1,6 +1,7 @@
 #pragma once
 #include "VbCodeModule.h"
 #include "VbCodeConstant.h"
+#include "VbCodeMember.h"
 #include "Sentence.h"
 #include <string>
 #include <vector>
@@ -17,6 +18,7 @@ private:
 	void ProcessHeaderStatement(const Sentence& sentence);
 	void ProcessBodyStatement(const Sentence& sentence);
 	void ProcessConstStatement(const Sentence& sentence);
+	void ProcessMemberStatement(bool isPublic, const Sentence& sentence);
 
 private:
 	bool isBeforeFirstFunction = true;
@@ -25,4 +27,5 @@ private:
 	std::string name;
 	bool isOptionExplicit = false;
 	std::vector<VbCodeConstant> constants;
+	std::vector<VbCodeMember> members;
 };

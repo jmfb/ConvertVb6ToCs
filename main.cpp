@@ -50,6 +50,8 @@ void Process(const std::string& name, const std::string& source)
 	std::cout << module.name << std::endl;
 	for (auto& constant : module.constants)
 		std::cout << (constant.isPublic ? "public" : "private") << " const " << constant.name << std::endl;
+	for (auto& member : module.members)
+		std::cout << (member.isPublic ? "public" : "private") << " member " << member.name << std::endl;
 	//TODO: more
 }
 

@@ -468,6 +468,9 @@
     <ClInclude Include="VbCodeModuleFactory.h">
       <Filter>VisualBasic Code</Filter>
     </ClInclude>
+    <ClInclude Include="VbCodeMember.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">
