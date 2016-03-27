@@ -17,7 +17,6 @@
 #include "VbDimDefinition.h"
 #include "VbCodeDeclareFactory.h"
 #include "VbCodeTypeDefinitionFactory.h"
-#include <iostream>
 
 VbCodeModule VbCodeModuleFactory::Create(const Sentence& sentence)
 {
@@ -25,18 +24,11 @@ VbCodeModule VbCodeModuleFactory::Create(const Sentence& sentence)
 	if (!translationUnit.translationHeader)
 		throw std::runtime_error("Missing translation header.");
 	LoadHeader(*translationUnit.translationHeader);
-	try
-	{
-		if (translationUnit.declarationList)
-			for (auto& declarationSentence : *translationUnit.declarationList)
-				ProcessDeclaration(declarationSentence);
-		if (functionFactory.IsInFunction())
-			throw std::runtime_error("Missing end of function before end of file.");
-	}
-	catch (const std::exception& exception)
-	{
-		std::cout << exception.what() << std::endl;
-	}
+	if (translationUnit.declarationList)
+		for (auto& declarationSentence : *translationUnit.declarationList)
+			ProcessDeclaration(declarationSentence);
+	if (functionFactory.IsInFunction())
+		throw std::runtime_error("Missing end of function before end of file.");
 	return
 	{
 		name,
@@ -71,7 +63,7 @@ void VbCodeModuleFactory::ProcessDeclaration(const Sentence& sentence)
 {
 	VbDeclaration declaration{ sentence };
 	if (declaration.attribute)
-		throw std::runtime_error("Declaration not supported in module definition outside of header.");
+		throw std::runtime_error("Attribute not supported in module definition outside of header.");
 	if (declaration.lineLabel)
 		throw std::runtime_error("Line label not yet implemented.");
 	if (!declaration.vbLine)
@@ -127,8 +119,7 @@ void VbCodeModuleFactory::ProcessConstStatement(const Sentence& sentence)
 {
 	VbConstStatement constStatement{ sentence };
 	auto isPublic = constStatement.access &&
-		*constStatement.access == "public" ||
-		*constStatement.access == "global";
+		(*constStatement.access == "public" || *constStatement.access == "global");
 	for (auto& constantDefinitionSentence : constStatement.constantDefinitions)
 	{
 		VbConstantDefinition constantDefinition{ constantDefinitionSentence };

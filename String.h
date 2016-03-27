@@ -1,4 +1,5 @@
 #pragma once
+#include <regex>
 #include <string>
 #include <algorithm>
 #include <cctype>
@@ -26,5 +27,19 @@ public:
 			return false;
 		auto pos = value.rfind(suffix);
 		return pos == (value.size() - suffix.size());
+	}
+
+	static std::string Replace(const std::string& source, const std::string& find, const std::string& replaceWith)
+	{
+		return std::regex_replace(source, std::regex{ find }, replaceWith);
+	}
+
+	static std::string EscapeXml(const std::string& value)
+	{
+		auto escaped = value;
+		escaped = Replace(escaped, "&", "&amp;");
+		escaped = Replace(escaped, "<", "&lt;");
+		escaped = Replace(escaped, ">", "&gt;");
+		return escaped;
 	}
 };

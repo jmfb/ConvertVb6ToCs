@@ -8,6 +8,7 @@
 #include "VbCodeCallExpression.h"
 #include "VbCodeMissingExpression.h"
 #include "VbCodeLenExpression.h"
+#include "VbCodeMeExpression.h"
 #include "VbExpression.h"
 #include "VbXorExpression.h"
 #include "VbOrExpression.h"
@@ -24,6 +25,11 @@
 #include "VbExpressionClause.h"
 #include "VbExpressionList.h"
 #include "VbExpressionItem.h"
+#include "VbLValue.h"
+#include "VbLValueTerminal.h"
+#include "VbCallStatement.h"
+#include "VbCallSuffix.h"
+#include "VbCallTerminal.h"
 
 VbCodeExpressionPtr VbCodeExpressionFactory::CreateDefaultValue(const optional<Sentence>& sentence)
 {
@@ -37,6 +43,73 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateExpression(const Sentence& se
 {
 	VbExpression expression{ sentence };
 	return CreateOrExpression(expression.orExpression);
+}
+
+VbCodeExpressionPtr VbCodeExpressionFactory::CreateLValue(const Sentence& sentence)
+{
+	VbLValue lValue{ sentence };
+	VbCodeExpressionPtr expression;
+	if (lValue.wsDot)
+		expression = std::make_shared<VbCodeWithExpression>(ParseDot(*lValue.wsDot), lValue.id.GetValue());
+	else if (lValue.id == "me")
+		expression = std::make_shared<VbCodeMeExpression>();
+	else
+		expression = std::make_shared<VbCodeIdExpression>(lValue.id.GetValue());
+	if (lValue.suffix)
+		for (auto& terminalSentence : *lValue.suffix)
+		{
+			VbLValueTerminal terminal{ terminalSentence };
+			if (terminal.dot)
+				expression = std::make_shared<VbCodeMemberExpression>(
+					expression,
+					ParseDot(*terminal.dot),
+					terminal.id->GetValue());
+			else
+				expression = std::make_shared<VbCodeCallExpression>(
+					expression,
+					CreateExpressionClause(*terminal.expressionClause));
+		}
+	return expression;
+}
+
+VbCodeExpressionPtr VbCodeExpressionFactory::CreateCallStatement(const Sentence& sentence)
+{
+	VbCallStatement callStatement{ sentence };
+	if (callStatement.lValue)
+	{
+		auto lValue = CreateLValue(*callStatement.lValue);
+		std::vector<VbCodeExpressionPtr> arguments;
+		if (callStatement.expressionList)
+			arguments = CreateExpressionList(*callStatement.expressionList);
+		return std::make_shared<VbCodeCallExpression>(lValue, arguments);
+	}
+	VbCallSuffix callSuffix{ *callStatement.callSuffix };
+	VbCallTerminal firstTerminal{ callSuffix.callTerminal };
+	VbCodeExpressionPtr expression;
+	if (callStatement.isMe)
+		expression = std::make_shared<VbCodeMemberExpression>(
+			std::make_shared<VbCodeMeExpression>(),
+			VbCodeDotType::Dot,
+			firstTerminal.name.GetValue());
+	else if (callStatement.wsDot)
+		expression = std::make_shared<VbCodeWithExpression>(
+			ParseDot(*callStatement.wsDot),
+			firstTerminal.name.GetValue());
+	else
+		expression = std::make_shared<VbCodeIdExpression>(firstTerminal.name.GetValue());
+	if (firstTerminal.expressionClause)
+		expression = std::make_shared<VbCodeCallExpression>(expression, CreateExpressionClause(*firstTerminal.expressionClause));
+	for (auto& suffix : callSuffix.suffix)
+	{
+		VbCallTerminal nextTerminal{ suffix.second };
+		expression = std::make_shared<VbCodeMemberExpression>(
+			expression,
+			ParseDot(suffix.first),
+			nextTerminal.name.GetValue());
+		if (nextTerminal.expressionClause)
+			expression = std::make_shared<VbCodeCallExpression>(expression, CreateExpressionClause(*nextTerminal.expressionClause));
+	}
+	return expression;
 }
 
 VbCodeExpressionPtr VbCodeExpressionFactory::CreateOrExpression(const Sentence& sentence)
@@ -210,7 +283,7 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreatePrimaryExpression(const Sente
 	if (expression.expression1)
 		return CreateExpression(*expression.expression1);
 	if (*expression.id == "me")
-		throw std::runtime_error("Not implemented: Me");
+		return std::make_shared<VbCodeMeExpression>();
 	return std::make_shared<VbCodeIdExpression>(expression.id->GetValue());
 }
 
@@ -225,10 +298,15 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateConstantExpression(const Sent
 std::vector<VbCodeExpressionPtr> VbCodeExpressionFactory::CreateExpressionClause(const Sentence& sentence)
 {
 	VbExpressionClause expressionClause{ sentence };
-	if (!expressionClause.expressionList)
-		return{};
+	if (expressionClause.expressionList)
+		return CreateExpressionList(*expressionClause.expressionList);
+	return{};
+}
+
+std::vector<VbCodeExpressionPtr> VbCodeExpressionFactory::CreateExpressionList(const Sentence& sentence)
+{
 	std::vector<VbCodeExpressionPtr> expressions;
-	VbExpressionList expressionList{ *expressionClause.expressionList };
+	VbExpressionList expressionList{ sentence };
 	if (expressionList.separator && *expressionList.separator != ",")
 		throw std::runtime_error("';' statement separator not yet implemented.");
 	for (auto& expressionItemSentence : expressionList.expressionItems)

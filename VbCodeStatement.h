@@ -3,6 +3,7 @@
 #include "VbCodeExpression.h"
 #include <memory>
 #include <vector>
+#include <iostream>
 
 class VbCodeStatement;
 using VbCodeStatementPtr = std::shared_ptr<VbCodeStatement>;
@@ -13,6 +14,8 @@ public:
 	virtual ~VbCodeStatement()
 	{
 	}
+
+	virtual void WriteXml(std::ostream& out) const = 0;
 
 	void MatchEnd(VbCodeEndType end) const
 	{

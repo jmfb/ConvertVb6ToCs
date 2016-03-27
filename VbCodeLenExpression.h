@@ -9,5 +9,12 @@ public:
 	{
 	}
 
+	void WriteXml(std::ostream& out) const final
+	{
+		out << "<len-expression>";
+		expression->WriteXml(out);
+		out << "</len-expression>";
+	}
+
 	VbCodeExpressionPtr expression;
 };

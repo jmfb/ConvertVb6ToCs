@@ -8,6 +8,7 @@
 #include "optional.h"
 #include <string>
 #include <vector>
+#include <iostream>
 
 class VbCodeFunction
 {
@@ -22,6 +23,14 @@ public:
 		const optional<VbCodeType> returnValue)
 		: type(type), access(access), isStatic(isStatic), name(name), parameters(parameters), returnValue(returnValue)
 	{
+	}
+
+	void WriteXml(std::ostream& out) const
+	{
+		out << "<function name=\"" << name << "\">";
+		for (auto& statement : statements)
+			statement->WriteXml(out);
+		out << "</function>";
 	}
 
 	VbCodeFunctionType type;

@@ -12,6 +12,17 @@ public:
 	{
 	}
 
+	void WriteXml(std::ostream& out) const final
+	{
+		out << "<call-expression>";
+		expression->WriteXml(out);
+		out << "<arguments>";
+		for (auto& argument : arguments)
+			argument->WriteXml(out);
+		out << "</arguments>";
+		out << "</call-expression>";
+	}
+
 	VbCodeExpressionPtr expression;
 	std::vector<VbCodeExpressionPtr> arguments;
 };

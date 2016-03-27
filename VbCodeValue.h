@@ -1,6 +1,8 @@
 #pragma once
 #include "VbCodeValueType.h"
+#include "String.h"
 #include <string>
+#include <iostream>
 
 class VbCodeValue
 {
@@ -36,6 +38,37 @@ public:
 	VbCodeValue(const std::string& value)
 		: type(VbCodeValueType::String), stringValue(value)
 	{
+	}
+
+	void WriteXml(std::ostream& out) const
+	{
+		out << ToString(type) << " = ";
+		switch (type)
+		{
+		case VbCodeValueType::Boolean:
+			out << (boolValue ? "True" : "False");
+			break;
+		case VbCodeValueType::Byte:
+			out << static_cast<unsigned int>(byteValue);
+			break;
+		case VbCodeValueType::Integer:
+			out << integerValue;
+			break;
+		case VbCodeValueType::Long:
+			out << longValue;
+			break;
+		case VbCodeValueType::Single:
+			out << singleValue;
+			break;
+		case VbCodeValueType::Double:
+			out << doubleValue;
+			break;
+		case VbCodeValueType::String:
+			out << "\"" << String::EscapeXml(stringValue) << "\"";
+			break;
+		default:
+			throw std::runtime_error("Value type not yet supported for WriteXml");
+		}
 	}
 
 public:

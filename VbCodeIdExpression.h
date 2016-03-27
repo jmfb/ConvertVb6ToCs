@@ -10,5 +10,10 @@ public:
 	{
 	}
 
+	void WriteXml(std::ostream& out) const final
+	{
+		out << "<id-expression>" << name << "</id-expression>";
+	}
+
 	std::string name;
 };

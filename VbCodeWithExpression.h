@@ -11,6 +11,11 @@ public:
 	{
 	}
 
+	void WriteXml(std::ostream& out) const final
+	{
+		out << "<with-expression>" << ToString(dot) << member << "</with-expression>";
+	}
+
 	VbCodeDotType dot;
 	std::string member;
 };

@@ -218,6 +218,7 @@
     <ClInclude Include="VbCodeBinaryExpression.h" />
     <ClInclude Include="VbCodeBinaryExpressionType.h" />
     <ClInclude Include="VbCodeCallExpression.h" />
+    <ClInclude Include="VbCodeExpressionStatement.h" />
     <ClInclude Include="VbCodeConstant.h" />
     <ClInclude Include="VbCodeDeclare.h" />
     <ClInclude Include="VbCodeDeclareFactory.h" />
@@ -228,6 +229,7 @@
     <ClInclude Include="VbCodeIfStatement.h" />
     <ClInclude Include="VbCodeLenExpression.h" />
     <ClInclude Include="VbCodeLetStatement.h" />
+    <ClInclude Include="VbCodeMeExpression.h" />
     <ClInclude Include="VbCodeMember.h" />
     <ClInclude Include="VbCodeMemberExpression.h" />
     <ClInclude Include="VbCodeMissingExpression.h" />

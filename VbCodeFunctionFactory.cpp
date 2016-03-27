@@ -18,6 +18,7 @@
 #include "VbCodeLetStatement.h"
 #include "VbCodeIfStatement.h"
 #include "VbCodeEndProgramStatement.h"
+#include "VbCodeExpressionStatement.h"
 #include "VbCodeExpressionFactory.h"
 #include <iostream>
 
@@ -63,6 +64,8 @@ void VbCodeFunctionFactory::ProcessStatement(const Sentence& sentence)
 		ProcessElseIfStatement(*statement.elseIfStatement);
 	else if (statement.elseStatement)
 		ProcessElseStatement(*statement.elseStatement);
+	else if (statement.callStatement)
+		ProcessCallStatement(*statement.callStatement);
 	else
 		std::cout << "TODO: misc. function statement" << std::endl;
 }
@@ -215,8 +218,7 @@ void VbCodeFunctionFactory::ProcessDimStatement(bool isStatic, const Sentence& s
 void VbCodeFunctionFactory::ProcessWithStatement(const Sentence& sentence)
 {
 	VbWithStatement withStatement{ sentence };
-	std::cout << "TODO: with statement l-value" << std::endl;
-	auto statement = std::make_shared<VbCodeWithStatement>();
+	auto statement = std::make_shared<VbCodeWithStatement>(VbCodeExpressionFactory::CreateLValue(withStatement.lValue));
 	compoundStatements.push(statement);
 	blocks.push(&statement->statements);
 }
@@ -224,8 +226,8 @@ void VbCodeFunctionFactory::ProcessWithStatement(const Sentence& sentence)
 void VbCodeFunctionFactory::ProcessLetStatement(const Sentence& sentence)
 {
 	VbLetStatement letStatement{ sentence };
-	std::cout << "TODO: let statement l-value" << std::endl;
 	blocks.top()->push_back(std::make_shared<VbCodeLetStatement>(
+		VbCodeExpressionFactory::CreateLValue(letStatement.lValue),
 		VbCodeExpressionFactory::CreateExpression(letStatement.expression)));
 }
 
@@ -261,4 +263,10 @@ void VbCodeFunctionFactory::ProcessElseStatement(const Sentence& sentence)
 		throw std::runtime_error("Else followed by compound-statement not yet implemented.");
 	blocks.pop();
 	blocks.push(compoundStatements.top()->Else());
+}
+
+void VbCodeFunctionFactory::ProcessCallStatement(const Sentence& sentence)
+{
+	auto expression = VbCodeExpressionFactory::CreateCallStatement(sentence);
+	blocks.top()->push_back(std::make_shared<VbCodeExpressionStatement>(expression));
 }

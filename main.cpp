@@ -46,6 +46,7 @@ void Process(const std::string& name, const std::string& source)
 	auto sentence = transitionTable.Parse(VbTokenStream{ name, source });
 	sentence.WriteXml(std::ofstream{ R"(c:\temp\output.xml)" });
 
+	std::ofstream outFunctions{ R"(c:\temp\functions.xml)" };
 	auto module = VbCodeModuleFactory{}.Create(sentence);
 	std::cout << "module " << module.name << std::endl;
 	for (auto& constant : module.constants)
@@ -66,6 +67,7 @@ void Process(const std::string& name, const std::string& source)
 			std::cout << "  static " << variable.name << std::endl;
 		for (auto& variable : function.variables)
 			std::cout << "  dim " << variable.name << std::endl;
+		function.WriteXml(outFunctions);
 	}
 }
 

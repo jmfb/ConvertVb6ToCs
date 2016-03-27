@@ -30,6 +30,7 @@ private:
 	void ProcessIfStatement(const Sentence& sentence);
 	void ProcessElseIfStatement(const Sentence& sentence);
 	void ProcessElseStatement(const Sentence& sentence);
+	void ProcessCallStatement(const Sentence& sentence);
 
 private:
 	optional<VbCodeFunction> function;

@@ -10,6 +10,8 @@ class VbCodeExpressionFactory
 public:
 	static VbCodeExpressionPtr CreateDefaultValue(const optional<Sentence>& sentence);
 	static VbCodeExpressionPtr CreateExpression(const Sentence& sentence);
+	static VbCodeExpressionPtr CreateLValue(const Sentence& sentence);
+	static VbCodeExpressionPtr CreateCallStatement(const Sentence& sentence);
 
 private:
 	static VbCodeExpressionPtr CreateOrExpression(const Sentence& sentence);
@@ -25,5 +27,6 @@ private:
 	static VbCodeExpressionPtr CreateConstantExpression(const Sentence& sentence);
 
 	static std::vector<VbCodeExpressionPtr> CreateExpressionClause(const Sentence& sentence);
+	static std::vector<VbCodeExpressionPtr> CreateExpressionList(const Sentence& sentence);
 	static VbCodeDotType ParseDot(const Sentence& sentence);
 };
