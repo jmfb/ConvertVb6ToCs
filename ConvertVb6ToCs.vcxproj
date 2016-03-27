@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="VbCodeClassFactory.cpp" />
     <ClCompile Include="VbCodeDeclareFactory.cpp" />
     <ClCompile Include="VbCodeExpressionFactory.cpp" />
     <ClCompile Include="VbCodeFunctionFactory.cpp" />
@@ -215,9 +216,12 @@
     <ClInclude Include="VbCallSuffix.h" />
     <ClInclude Include="VbCallTerminal.h" />
     <ClInclude Include="VbCharStream.h" />
+    <ClInclude Include="VbClassHeader.h" />
     <ClInclude Include="VbCodeBinaryExpression.h" />
     <ClInclude Include="VbCodeBinaryExpressionType.h" />
     <ClInclude Include="VbCodeCallExpression.h" />
+    <ClInclude Include="VbCodeClass.h" />
+    <ClInclude Include="VbCodeClassFactory.h" />
     <ClInclude Include="VbCodeExpressionStatement.h" />
     <ClInclude Include="VbCodeConstant.h" />
     <ClInclude Include="VbCodeDeclare.h" />
@@ -309,6 +313,9 @@
     <ClInclude Include="VbRedimDefinition.h" />
     <ClInclude Include="VbRedimStatement.h" />
     <ClInclude Include="VbRelationalExpression.h" />
+    <ClInclude Include="VbSetting.h" />
+    <ClInclude Include="VbSettingBlock.h" />
+    <ClInclude Include="VbSettingValue.h" />
     <ClInclude Include="VbSimpleType.h" />
     <ClInclude Include="VbStatement.h" />
     <ClInclude Include="VbSubscript.h" />

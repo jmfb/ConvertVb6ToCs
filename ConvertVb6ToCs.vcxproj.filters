@@ -5,9 +5,6 @@
     <ClCompile Include="VbCodeExpressionFactory.cpp">
       <Filter>VisualBasic Code\Expressions</Filter>
     </ClCompile>
-    <ClCompile Include="VbCodeModuleFactory.cpp">
-      <Filter>VisualBasic Code</Filter>
-    </ClCompile>
     <ClCompile Include="VbCodeTypeFactory.cpp">
       <Filter>VisualBasic Code\Types and Values</Filter>
     </ClCompile>
@@ -28,6 +25,12 @@
     </ClCompile>
     <ClCompile Include="VbCodeFunctionFactory.cpp">
       <Filter>VisualBasic Code\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="VbCodeClassFactory.cpp">
+      <Filter>VisualBasic Code\Translation Units</Filter>
+    </ClCompile>
+    <ClCompile Include="VbCodeModuleFactory.cpp">
+      <Filter>VisualBasic Code\Translation Units</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +90,9 @@
     </Filter>
     <Filter Include="VisualBasic Code\Statements">
       <UniqueIdentifier>{08a2ee02-21f2-47bb-9c20-09f0e6f92c94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualBasic Code\Translation Units">
+      <UniqueIdentifier>{b0050705-8bbd-4f81-9930-60f7fce71b0a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -447,12 +453,6 @@
     <ClInclude Include="VbCodeConstantExpression.h">
       <Filter>VisualBasic Code\Expressions</Filter>
     </ClInclude>
-    <ClInclude Include="VbCodeModule.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeModuleFactory.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
     <ClInclude Include="VbCodeMember.h">
       <Filter>VisualBasic Code</Filter>
     </ClInclude>
@@ -593,6 +593,30 @@
     </ClInclude>
     <ClInclude Include="VbCodeIdResolver.h">
       <Filter>VisualBasic Code\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeClass.h">
+      <Filter>VisualBasic Code\Translation Units</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeClassFactory.h">
+      <Filter>VisualBasic Code\Translation Units</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeModule.h">
+      <Filter>VisualBasic Code\Translation Units</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeModuleFactory.h">
+      <Filter>VisualBasic Code\Translation Units</Filter>
+    </ClInclude>
+    <ClInclude Include="VbClassHeader.h">
+      <Filter>VisualBasic Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbSettingBlock.h">
+      <Filter>VisualBasic Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbSetting.h">
+      <Filter>VisualBasic Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbSettingValue.h">
+      <Filter>VisualBasic Sentences</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

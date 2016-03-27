@@ -3,7 +3,13 @@
 VbCodeValue VbCodeValueFactory::Create(const Token& token)
 {
 	if (token.GetType() == TokenType::Keyword)
-		throw std::runtime_error("Not implemented: Literal keywords");
+	{
+		if (token == "true")
+			return{ true };
+		if (token == "false")
+			return{ false };
+		throw std::runtime_error("Not implemented: Other Literal keywords");
+	}
 	auto& literal = token.GetValue();
 	if (literal.empty())
 		throw std::runtime_error("Empty literal is not valid.");
