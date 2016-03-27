@@ -18,7 +18,7 @@
 #include "VbCodeDeclareFactory.h"
 #include "VbCodeTypeDefinitionFactory.h"
 
-VbCodeModule VbCodeModuleFactory::Create(const Sentence& sentence)
+VbCodeModule VbCodeModuleFactory::Create(const std::string& library, const Sentence& sentence)
 {
 	VbTranslationUnit translationUnit{ sentence };
 	if (!translationUnit.translationHeader)
@@ -31,6 +31,7 @@ VbCodeModule VbCodeModuleFactory::Create(const Sentence& sentence)
 		throw std::runtime_error("Missing end of function before end of file.");
 	return
 	{
+		library,
 		name,
 		isOptionExplicit,
 		constants,
@@ -111,6 +112,7 @@ void VbCodeModuleFactory::ProcessBodyStatement(const Sentence& sentence)
 	if (functionFactory.IsEndOfFunction())
 	{
 		functions.push_back(functionFactory.Create());
+		functions.back().isStatic = true; //All module functions are static (but are not declared that way)
 		functionFactory = {};
 	}
 }

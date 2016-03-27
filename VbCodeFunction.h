@@ -33,6 +33,54 @@ public:
 		out << "</function>";
 	}
 
+	void WriteCs(std::ostream& out) const
+	{
+		for (auto& variable : statics)
+			variable.WriteStaticCs(name, out);
+		out << "		";
+		switch (access)
+		{
+		case VbCodeFunctionAccess::Public:
+			out << "public";
+			break;
+		case VbCodeFunctionAccess::Private:
+			out << "private";
+			break;
+		case VbCodeFunctionAccess::Friend:
+			out << "internal";
+			break;
+		}
+		out << " " << (isStatic ? "static " : "");
+		if (returnValue)
+			returnValue->WriteCs(out);
+		else
+			out << "void";
+		out << " " << name << "(";
+		auto first = true;
+		for (auto& parameter : parameters)
+		{
+			if (!first)
+				out << ",";
+			first = false;
+			parameter.WriteCs(out);
+		}
+		out << ")" << std::endl
+			<< "		{" << std::endl;
+		if (returnValue)
+		{
+			out << "			var __result__ = default(";
+			returnValue->WriteCs(out);
+			out << ");" << std::endl;
+		}
+		for (auto& variable : variables)
+			variable.WriteCs(out);
+		//TODO: statements
+		if (returnValue)
+			out << "			return __result__;" << std::endl;
+		out << "		}" << std::endl
+			<< std::endl;
+	}
+
 	VbCodeFunctionType type;
 	VbCodeFunctionAccess access;
 	bool isStatic = false;

@@ -2,6 +2,7 @@
 #include "VbCodeVariable.h"
 #include <string>
 #include <vector>
+#include <iostream>
 
 class VbCodeTypeDefinition
 {
@@ -14,6 +15,21 @@ public:
 		name(name),
 		members(members)
 	{
+	}
+
+	void WriteCs(std::ostream& out) const
+	{
+		out << "		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]" << std::endl
+			<< "		" << (isPublic ? "public" : "private") << " struct " << name << std::endl
+			<< "		{" << std::endl;
+		for (auto& member : members)
+		{
+			out << "			public ";
+			member.type.WriteCs(out);
+			out << " " << member.name << ";" << std::endl;
+		}
+		out << "		}" << std::endl
+			<< std::endl;
 	}
 
 	bool isPublic;

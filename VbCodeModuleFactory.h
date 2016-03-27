@@ -13,7 +13,7 @@
 class VbCodeModuleFactory
 {
 public:
-	VbCodeModule Create(const Sentence& sentence);
+	VbCodeModule Create(const std::string& library, const Sentence& sentence);
 
 private:
 	void LoadHeader(const Sentence& sentence);

@@ -3,6 +3,7 @@
 #include "VbDeclareAlias.h"
 #include "VbCodeParameterFactory.h"
 #include "VbCodeTypeFactory.h"
+#include "VbCodeValueFactory.h"
 
 VbCodeDeclare VbCodeDeclareFactory::Create(const Sentence& sentence)
 {
@@ -11,8 +12,8 @@ VbCodeDeclare VbCodeDeclareFactory::Create(const Sentence& sentence)
 	{
 		declareStatement.access && *declareStatement.access == "public",
 		declareStatement.name.GetValue(),
-		declareStatement.declareAlias ? VbDeclareAlias{ *declareStatement.declareAlias }.alias.GetValue() : "",
-		declareStatement.library.GetValue(),
+		declareStatement.declareAlias ? VbCodeValueFactory::Create(VbDeclareAlias{ *declareStatement.declareAlias }.alias).stringValue : "",
+		VbCodeValueFactory::Create(declareStatement.library).stringValue,
 		VbCodeParameterFactory::Create(declareStatement.parameterClause),
 		VbCodeTypeFactory::CreateOptional(declareStatement.asArraySpecifier)
 	};

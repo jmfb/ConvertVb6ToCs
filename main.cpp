@@ -47,28 +47,24 @@ void Process(const std::string& name, const std::string& source)
 	sentence.WriteXml(std::ofstream{ R"(c:\temp\output.xml)" });
 
 	std::ofstream outFunctions{ R"(c:\temp\functions.xml)" };
-	auto module = VbCodeModuleFactory{}.Create(sentence);
-	std::cout << "module " << module.name << std::endl;
+	auto module = VbCodeModuleFactory{}.Create("DSHECommon", sentence);
+	module.ResolveUnqualifiedTypeNames();
+	std::cout << "namespace " << module.library << std::endl
+		<< "{" << std::endl;
+	std::cout << "	internal static class " << module.name << std::endl
+		<< "	{" << std::endl;
 	for (auto& constant : module.constants)
-		std::cout << (constant.isPublic ? "public" : "private") << " const " << constant.name << std::endl;
+		constant.WriteCs(std::cout);
 	for (auto& member : module.members)
-		std::cout << (member.isPublic ? "public" : "private") << " member " << member.name << std::endl;
+		member.WriteCs(true, std::cout);
 	for (auto& declare : module.declares)
-		std::cout << (declare.isPublic ? "public" : "private") << " declare " << declare.name << std::endl;
+		declare.WriteCs(std::cout);
 	for (auto& typeDefinition : module.typeDefinitions)
-		std::cout << (typeDefinition.isPublic ? "public" : "private") << " type " << typeDefinition.name << std::endl;
+		typeDefinition.WriteCs(std::cout);
 	for (auto& function : module.functions)
-	{
-		std::cout << ToString(function.access) << " " << ToString(function.type) << " " << function.name << "(";
-		for (auto& parameter : function.parameters)
-			std::cout << parameter.name << ",";
-		std::cout << ")" << std::endl;
-		for (auto& variable : function.statics)
-			std::cout << "  static " << variable.name << std::endl;
-		for (auto& variable : function.variables)
-			std::cout << "  dim " << variable.name << std::endl;
-		function.WriteXml(outFunctions);
-	}
+		function.WriteCs(std::cout);
+	std::cout << "	}" << std::endl
+		<< "}" << std::endl;
 }
 
 int main(int argc, char** argv)
