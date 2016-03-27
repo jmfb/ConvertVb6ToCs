@@ -27,6 +27,9 @@ private:
 	void ProcessDimStatement(bool isStatic, const Sentence& sentence);
 	void ProcessWithStatement(const Sentence& sentence);
 	void ProcessLetStatement(const Sentence& sentence);
+	void ProcessIfStatement(const Sentence& sentence);
+	void ProcessElseIfStatement(const Sentence& sentence);
+	void ProcessElseStatement(const Sentence& sentence);
 
 private:
 	optional<VbCodeFunction> function;

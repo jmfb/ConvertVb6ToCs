@@ -6,6 +6,9 @@
 #include "VbDimStatement.h"
 #include "VbWithStatement.h"
 #include "VbLetStatement.h"
+#include "VbIfStatement.h"
+#include "VbElseIfStatement.h"
+#include "VbElseStatement.h"
 #include "VbEndKeyword.h"
 #include "VbDimDefinition.h"
 #include "VbCodeEndType.h"
@@ -13,6 +16,7 @@
 #include "VbCodeTypeFactory.h"
 #include "VbCodeWithStatement.h"
 #include "VbCodeLetStatement.h"
+#include "VbCodeIfStatement.h"
 #include "VbCodeEndProgramStatement.h"
 #include "VbCodeExpressionFactory.h"
 #include <iostream>
@@ -53,6 +57,12 @@ void VbCodeFunctionFactory::ProcessStatement(const Sentence& sentence)
 		ProcessWithStatement(*statement.withStatement);
 	else if (statement.letStatement)
 		ProcessLetStatement(*statement.letStatement);
+	else if (statement.ifStatement)
+		ProcessIfStatement(*statement.ifStatement);
+	else if (statement.elseIfStatement)
+		ProcessElseIfStatement(*statement.elseIfStatement);
+	else if (statement.elseStatement)
+		ProcessElseStatement(*statement.elseStatement);
 	else
 		std::cout << "TODO: misc. function statement" << std::endl;
 }
@@ -217,4 +227,38 @@ void VbCodeFunctionFactory::ProcessLetStatement(const Sentence& sentence)
 	std::cout << "TODO: let statement l-value" << std::endl;
 	blocks.top()->push_back(std::make_shared<VbCodeLetStatement>(
 		VbCodeExpressionFactory::CreateExpression(letStatement.expression)));
+}
+
+void VbCodeFunctionFactory::ProcessIfStatement(const Sentence& sentence)
+{
+	VbIfStatement ifStatement{ sentence };
+	if (ifStatement.compoundStatement)
+		throw std::runtime_error("If followed by compound-statement not yet implemented.");
+	if (ifStatement.elseStatement)
+		throw std::runtime_error("If followed by else not yet implemented.");
+	auto expression = VbCodeExpressionFactory::CreateExpression(ifStatement.expression);
+	auto statement = std::make_shared<VbCodeIfStatement>(expression);
+	compoundStatements.push(statement);
+	blocks.push(&statement->ifBlocks.back().statements);
+}
+
+void VbCodeFunctionFactory::ProcessElseIfStatement(const Sentence& sentence)
+{
+	VbElseIfStatement elseIfStatement{ sentence };
+	if (compoundStatements.empty())
+		throw std::runtime_error("ElseIf could not find matching If");
+	auto expression = VbCodeExpressionFactory::CreateExpression(elseIfStatement.expression);
+	blocks.pop();
+	blocks.push(compoundStatements.top()->ElseIf(expression));
+}
+
+void VbCodeFunctionFactory::ProcessElseStatement(const Sentence& sentence)
+{
+	VbElseStatement elseStatement{ sentence };
+	if (compoundStatements.empty())
+		throw std::runtime_error("Else could not find matching If");
+	if (elseStatement.compoundStatement)
+		throw std::runtime_error("Else followed by compound-statement not yet implemented.");
+	blocks.pop();
+	blocks.push(compoundStatements.top()->Else());
 }

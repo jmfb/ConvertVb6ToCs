@@ -5,6 +5,9 @@
 #include "VbCodeWithExpression.h"
 #include "VbCodeMemberExpression.h"
 #include "VbCodeIdExpression.h"
+#include "VbCodeCallExpression.h"
+#include "VbCodeMissingExpression.h"
+#include "VbCodeLenExpression.h"
 #include "VbExpression.h"
 #include "VbXorExpression.h"
 #include "VbOrExpression.h"
@@ -18,6 +21,9 @@
 #include "VbPrimaryExpression.h"
 #include "VbCodeValueFactory.h"
 #include "VbDefaultValue.h"
+#include "VbExpressionClause.h"
+#include "VbExpressionList.h"
+#include "VbExpressionItem.h"
 
 VbCodeExpressionPtr VbCodeExpressionFactory::CreateDefaultValue(const optional<Sentence>& sentence)
 {
@@ -159,7 +165,12 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateUnaryExpression(const Sentenc
 	if (op == "string")
 		throw std::runtime_error("Not implemented: string");
 	if (op == "len")
-		throw std::runtime_error("Not implemented: len");
+	{
+		auto expressions = CreateExpressionClause(*expression.expressionClause);
+		if (expressions.size() != 1)
+			throw std::runtime_error("Only one argument to Len is supported.");
+		return std::make_shared<VbCodeLenExpression>(expressions[0]);
+	}
 	auto type = SentenceParser::ToEnum<VbCodeUnaryExpressionType>(
 		op,
 		{
@@ -182,7 +193,9 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreatePostfixExpression(const Sente
 			CreatePostfixExpression(*expression.postfixExpression),
 			ParseDot(*expression.dot),
 			expression.id->GetValue());
-	throw std::runtime_error("Not implemented: expression(...)");
+	return std::make_shared<VbCodeCallExpression>(
+		CreatePostfixExpression(*expression.postfixExpression),
+		CreateExpressionClause(*expression.expressionClause));
 }
 
 VbCodeExpressionPtr VbCodeExpressionFactory::CreatePrimaryExpression(const Sentence& sentence)
@@ -192,8 +205,10 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreatePrimaryExpression(const Sente
 		return CreateConstantExpression(*expression.literal);
 	if (expression.wsDot)
 		return std::make_shared<VbCodeWithExpression>(ParseDot(*expression.wsDot), expression.id->GetValue());
+	if (expression.expression2)
+		throw std::runtime_error("Not implemented: (expression, expression)");
 	if (expression.expression1)
-		throw std::runtime_error("Not implemented: (expression) or (expression, expression)");
+		return CreateExpression(*expression.expression1);
 	if (*expression.id == "me")
 		throw std::runtime_error("Not implemented: Me");
 	return std::make_shared<VbCodeIdExpression>(expression.id->GetValue());
@@ -205,6 +220,32 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateConstantExpression(const Sent
 		throw std::runtime_error("Literal should contain exactly 1 token.");
 	auto& value = VbCodeValueFactory::Create(sentence.GetNodes()[0]->AsToken());
 	return std::make_shared<VbCodeConstantExpression>(value);
+}
+
+std::vector<VbCodeExpressionPtr> VbCodeExpressionFactory::CreateExpressionClause(const Sentence& sentence)
+{
+	VbExpressionClause expressionClause{ sentence };
+	if (!expressionClause.expressionList)
+		return{};
+	std::vector<VbCodeExpressionPtr> expressions;
+	VbExpressionList expressionList{ *expressionClause.expressionList };
+	if (expressionList.separator && *expressionList.separator != ",")
+		throw std::runtime_error("';' statement separator not yet implemented.");
+	for (auto& expressionItemSentence : expressionList.expressionItems)
+	{
+		VbExpressionItem expressionItem{ expressionItemSentence };
+		if (!expressionItem.expression)
+			expressions.push_back(std::make_shared<VbCodeMissingExpression>());
+		else
+		{
+			if (expressionItem.passBy)
+				throw std::runtime_error("Pass-by on expression item not yet implemented.");
+			if (expressionItem.name)
+				throw std::runtime_error("Named expression items not yet implemented.");
+			expressions.push_back(CreateExpression(*expressionItem.expression));
+		}
+	}
+	return expressions;
 }
 
 VbCodeDotType VbCodeExpressionFactory::ParseDot(const Sentence& sentence)

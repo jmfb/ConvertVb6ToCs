@@ -3,6 +3,7 @@
 #include "VbCodeExpression.h"
 #include "VbCodeDotType.h"
 #include "optional.h"
+#include <vector>
 
 class VbCodeExpressionFactory
 {
@@ -23,5 +24,6 @@ private:
 	static VbCodeExpressionPtr CreatePrimaryExpression(const Sentence& sentence);
 	static VbCodeExpressionPtr CreateConstantExpression(const Sentence& sentence);
 
+	static std::vector<VbCodeExpressionPtr> CreateExpressionClause(const Sentence& sentence);
 	static VbCodeDotType ParseDot(const Sentence& sentence);
 };

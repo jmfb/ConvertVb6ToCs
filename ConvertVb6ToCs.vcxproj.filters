@@ -555,6 +555,30 @@
     <ClInclude Include="VbCodeIdExpression.h">
       <Filter>VisualBasic Code\Expressions</Filter>
     </ClInclude>
+    <ClInclude Include="VbCodeIfStatement.h">
+      <Filter>VisualBasic Code\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeIfBlock.h">
+      <Filter>VisualBasic Code\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeCallExpression.h">
+      <Filter>VisualBasic Code\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbExpressionClause.h">
+      <Filter>VisualBasic Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbExpressionList.h">
+      <Filter>VisualBasic Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbExpressionItem.h">
+      <Filter>VisualBasic Sentences\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeMissingExpression.h">
+      <Filter>VisualBasic Code\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeLenExpression.h">
+      <Filter>VisualBasic Code\Expressions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">
