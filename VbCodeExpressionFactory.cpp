@@ -9,6 +9,7 @@
 #include "VbCodeMissingExpression.h"
 #include "VbCodeLenExpression.h"
 #include "VbCodeMeExpression.h"
+#include "VbCodeParenthesisExpression.h"
 #include "VbExpression.h"
 #include "VbXorExpression.h"
 #include "VbOrExpression.h"
@@ -281,7 +282,7 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreatePrimaryExpression(const Sente
 	if (expression.expression2)
 		throw std::runtime_error("Not implemented: (expression, expression)");
 	if (expression.expression1)
-		return CreateExpression(*expression.expression1);
+		return std::make_shared<VbCodeParenthesisExpression>(CreateExpression(*expression.expression1));
 	if (*expression.id == "me")
 		return std::make_shared<VbCodeMeExpression>();
 	return std::make_shared<VbCodeIdExpression>(expression.id->GetValue());

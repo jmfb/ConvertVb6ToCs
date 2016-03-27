@@ -585,6 +585,9 @@
     <ClInclude Include="VbCodeExpressionStatement.h">
       <Filter>VisualBasic Code\Statements</Filter>
     </ClInclude>
+    <ClInclude Include="VbCodeParenthesisExpression.h">
+      <Filter>VisualBasic Code\Expressions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">

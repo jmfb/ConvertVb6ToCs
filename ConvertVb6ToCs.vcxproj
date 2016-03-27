@@ -237,6 +237,7 @@
     <ClInclude Include="VbCodeModuleFactory.h" />
     <ClInclude Include="VbCodeParameter.h" />
     <ClInclude Include="VbCodeParameterFactory.h" />
+    <ClInclude Include="VbCodeParenthesisExpression.h" />
     <ClInclude Include="VbCodeStatement.h" />
     <ClInclude Include="VbCodeType.h" />
     <ClInclude Include="VbCodeTypeDefinition.h" />
