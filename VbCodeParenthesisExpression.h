@@ -16,5 +16,12 @@ public:
 		out << "</parenthesis-expression>";
 	}
 
+	void WriteCs(VbCodeStatementWriter& writer) const final
+	{
+		writer.out << "(";
+		expression->WriteCs(writer);
+		writer.out << ")";
+	}
+
 	VbCodeExpressionPtr expression;
 };

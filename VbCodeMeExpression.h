@@ -8,4 +8,9 @@ public:
 	{
 		out << "Me";
 	}
+
+	void WriteCs(VbCodeStatementWriter& writer) const final
+	{
+		writer.out << "this";
+	}
 };

@@ -20,7 +20,7 @@ public:
 	void WriteCs(VbCodeStatementWriter& writer) const final
 	{
 		writer.StartLine();
-		writer.out << "//TODO: expression-statement";
+		expression->WriteCs(writer);
 		writer.out << ";" << std::endl;
 	}
 

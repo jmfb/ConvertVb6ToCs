@@ -23,6 +23,23 @@ public:
 		out << "</call-expression>";
 	}
 
+
+	void WriteCs(VbCodeStatementWriter& writer) const final
+	{
+		expression->WriteCs(writer);
+		writer.out << "(";
+		auto first = true;
+		for (auto& argument : arguments)
+		{
+			if (!first)
+				writer.out << ", ";
+			first = false;
+			//TODO: need to inspect if target function parameter is byref to add "ref " keyword.
+			argument->WriteCs(writer);
+		}
+		writer.out << ")";
+	}
+
 	VbCodeExpressionPtr expression;
 	std::vector<VbCodeExpressionPtr> arguments;
 };

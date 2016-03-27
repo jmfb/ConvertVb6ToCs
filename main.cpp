@@ -7,76 +7,50 @@
 #include "VbConflictResolver.h"
 #include "ParserLALR.h"
 
-static const auto source = R"x(
-	Public Function Foo( _
-		ByVal index As Long, _
-		ByRef found As Boolean _
-	) As Variant
-		If (index) Then
-			found = True
-		End If
-	Done:
-		Foo = CStr(index) : index = index + 1
-	End Sub
-)x";
-
-void CompileGrammarToBinaryTransitionTable()
-{
-	std::cout << "Loading grammar text...";
-	std::ifstream in{ R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.txt)" };
-	std::stringstream buffer;
-	in >> buffer.rdbuf();
-	std::cout << "done." << std::endl;
-
-	std::cout << "Starting to load transition table" << std::endl;
-	auto transitionTable = ParserLALR::Generate(buffer.str(), "translation-unit", VbConflictResolver{});
-	std::cout << "Done loading transition table" << std::endl;
-
-	std::cout << "Saving binary...";
-	transitionTable.Write(BinaryWriter{ std::ofstream{ R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.bin)", std::ios::binary } });
-	std::cout << "done." << std::endl;
-}
-
 #include "VbCodeModuleFactory.h"
 
-void Process(const std::string& name, const std::string& source)
+const auto visualBasicGrammarFileName = R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.txt)";
+const auto visualBasicTransitionTableFileName = R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.bin)";
+
+template <typename LanguageConflictResolver>
+void CompileGrammarToBinaryTransitionTable(const std::string& grammarFileName, const std::string& transitionTableFileName)
+{
+	std::stringstream buffer;
+	std::ifstream{ grammarFileName.c_str() } >> buffer.rdbuf();
+
+	auto transitionTable = ParserLALR::Generate(buffer.str(), "translation-unit", LanguageConflictResolver{});
+	transitionTable.Write(BinaryWriter{ std::ofstream{ transitionTableFileName.c_str(), std::ios::binary } });
+}
+
+void CompileVisualBasicGrammarToTransitionTable()
+{
+	CompileGrammarToBinaryTransitionTable<VbConflictResolver>(visualBasicGrammarFileName, visualBasicTransitionTableFileName);
+}
+
+template <typename LanguageTokenStream>
+Sentence Parse(const std::string& transitionTableFileName, const std::string& sourceFileName)
 {
 	TransitionTable transitionTable;
-	transitionTable.Read(BinaryReader{ std::ifstream{ R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.bin)", std::ios::binary } });
-	auto sentence = transitionTable.Parse(VbTokenStream{ name, source });
-	sentence.WriteXml(std::ofstream{ R"(c:\temp\output.xml)" });
+	transitionTable.Read(BinaryReader{ std::ifstream{ transitionTableFileName.c_str(), std::ios::binary } });
 
-	std::ofstream outFunctions{ R"(c:\temp\functions.xml)" };
-	auto module = VbCodeModuleFactory{}.Create("DSHECommon", sentence);
+	std::stringstream buffer;
+	std::ifstream{ sourceFileName.c_str() } >> buffer.rdbuf();
+	return transitionTable.Parse(LanguageTokenStream{ sourceFileName, buffer.str() });
+}
+
+void ProcessVisualBasicModule(const std::string& library, const std::string& fileName)
+{
+	auto sentence = Parse<VbTokenStream>(visualBasicTransitionTableFileName, fileName);
+	auto module = VbCodeModuleFactory{}.Create(library, sentence);
 	module.ResolveUnqualifiedTypeNames();
-	std::cout << "namespace " << module.library << std::endl
-		<< "{" << std::endl;
-	std::cout << "	internal static class " << module.name << std::endl
-		<< "	{" << std::endl;
-	for (auto& constant : module.constants)
-		constant.WriteCs(std::cout);
-	for (auto& member : module.members)
-		member.WriteCs(true, std::cout);
-	for (auto& declare : module.declares)
-		declare.WriteCs(std::cout);
-	for (auto& typeDefinition : module.typeDefinitions)
-		typeDefinition.WriteCs(std::cout);
-	for (auto& function : module.functions)
-		function.WriteCs(std::cout);
-	std::cout << "	}" << std::endl
-		<< "}" << std::endl;
+	module.WriteCs(std::ofstream{ fileName + ".cs" });
 }
 
 int main(int argc, char** argv)
 {
 	try
 	{
-		//Process("source", source);
-		auto fileName = R"(c:\save\code\tests\DSHECommon\basGlobals.bas)";
-		std::ifstream in{ fileName };
-		std::stringstream buffer;
-		in >> buffer.rdbuf();
-		Process(fileName, buffer.str());
+		ProcessVisualBasicModule("DSHECommon", R"(C:\Save\Code\tests\DSHECommon\basGlobals.bas)");
 	}
 	catch (const std::exception& exception)
 	{

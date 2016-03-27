@@ -25,9 +25,9 @@ public:
 	void WriteCs(VbCodeStatementWriter& writer) const final
 	{
 		writer.StartLine();
-		writer.out << "/* TODO: l-value */";
+		lValue->WriteCs(writer);
 		writer.out << " = ";
-		writer.out << "/* TODO: expression */";
+		expression->WriteCs(writer);
 		writer.out << ";" << std::endl;
 	}
 

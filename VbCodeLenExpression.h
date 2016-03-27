@@ -16,5 +16,12 @@ public:
 		out << "</len-expression>";
 	}
 
+	void WriteCs(VbCodeStatementWriter& writer) const final
+	{
+		writer.out << "Len(";
+		expression->WriteCs(writer);
+		writer.out << ")";
+	}
+
 	VbCodeExpressionPtr expression;
 };

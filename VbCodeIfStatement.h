@@ -35,7 +35,7 @@ public:
 	{
 		writer.StartLine();
 		writer.out << "if (";
-		writer.out << "/* TODO: condition */";
+		ifBlocks[0].expression->WriteCs(writer); //TODO: determine if conversion to bool is required
 		writer.out << ")" << std::endl;
 		writer.BeginBlock();
 		for (auto& statement : ifBlocks[0].statements)
@@ -45,7 +45,7 @@ public:
 		{
 			writer.StartLine();
 			writer.out << "else if (";
-			writer.out << "/* TODO: condition */";
+			ifBlocks[index].expression->WriteCs(writer); //TODO: same
 			writer.out << ")" << std::endl;
 			writer.BeginBlock();
 			for (auto& statement : ifBlocks[index].statements)

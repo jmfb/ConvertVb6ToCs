@@ -16,6 +16,11 @@ public:
 		value.WriteXml(out);
 		out << "</constant-expression>";
 	}
+	void WriteCs(VbCodeStatementWriter& writer) const final
+	{
+		value.WriteValueCs(writer.out);
+	}
+
 	VbCodeValue EvaluateConstant() const final
 	{
 		return value;

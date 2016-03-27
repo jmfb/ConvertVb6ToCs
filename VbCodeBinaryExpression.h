@@ -22,6 +22,74 @@ public:
 		out << "</" << name << ">";
 	}
 
+	void WriteCs(VbCodeStatementWriter& writer) const final
+	{
+		lhs->WriteCs(writer);
+		switch (type)
+		{
+		case VbCodeBinaryExpressionType::Multiplication:
+			writer.out << " * ";
+			break;
+		case VbCodeBinaryExpressionType::Division:
+			writer.out << " / ";
+			break;
+		case VbCodeBinaryExpressionType::IntegerDivision:
+			writer.out << " / "; //TODO: does this need to do something else?
+			break;
+		case VbCodeBinaryExpressionType::Modulus:
+			writer.out << " % ";
+			break;
+		case VbCodeBinaryExpressionType::Exponent:
+			throw std::runtime_error("Exponent operator not yet supported.");
+		case VbCodeBinaryExpressionType::Addition:
+			writer.out << " + ";
+			break;
+		case VbCodeBinaryExpressionType::Subtraction:
+			writer.out << " - ";
+			break;
+		case VbCodeBinaryExpressionType::StringConcatenation:
+			writer.out << " + "; //TODO: do I need to do automatic conversions to string?
+			break;
+		case VbCodeBinaryExpressionType::GreaterThan:
+			writer.out << " > ";
+			break;
+		case VbCodeBinaryExpressionType::GreaterThanOrEqual:
+			writer.out << " >= ";
+			break;
+		case VbCodeBinaryExpressionType::LessThan:
+			writer.out << " < ";
+			break;
+		case VbCodeBinaryExpressionType::LessThanOrEqual:
+			writer.out << " <= ";
+			break;
+		case VbCodeBinaryExpressionType::EqualTo:
+			writer.out << " == ";
+			break;
+		case VbCodeBinaryExpressionType::NotEqualTo:
+			writer.out << " != ";
+			break;
+		case VbCodeBinaryExpressionType::Implies:
+			throw std::runtime_error("Implies operator not yet supported.");
+		case VbCodeBinaryExpressionType::Equivalent:
+			throw std::runtime_error("Equivalent operator not yet supported.");
+		case VbCodeBinaryExpressionType::Is:
+			writer.out << " is ";
+			break;
+		case VbCodeBinaryExpressionType::Like:
+			throw std::runtime_error("Like operator not yet implemented.");
+		case VbCodeBinaryExpressionType::And:
+			writer.out << " && "; //TODO: determine if bitwise and is more appropriate
+			break;
+		case VbCodeBinaryExpressionType::Xor:
+			writer.out << " ^ ";
+			break;
+		case VbCodeBinaryExpressionType::Or:
+			writer.out << " || "; //TODO: determine if bitwise or is more appropriate
+			break;
+		}
+		rhs->WriteCs(writer);
+	}
+
 	const char* GetXmlName() const
 	{
 		switch (type)

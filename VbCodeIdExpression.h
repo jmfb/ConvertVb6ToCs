@@ -15,5 +15,10 @@ public:
 		out << "<id-expression>" << name << "</id-expression>";
 	}
 
+	void WriteCs(VbCodeStatementWriter& writer) const final
+	{
+		writer.out << writer.Resolve(name);
+	}
+
 	std::string name;
 };

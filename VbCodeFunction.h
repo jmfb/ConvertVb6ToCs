@@ -29,7 +29,24 @@ public:
 
 	std::string Resolve(const std::string& id) const final
 	{
-		//TODO:
+		if (id == name)
+			return "__result__";
+		for (auto& variable : statics)
+			if (variable.name == id)
+				return "__" + name + "_" + id;
+		for (auto& variable : variables)
+			if (variable.name == id)
+				return id;
+		//TODO: go up to module level constants/declares/members/type-definitions/etc.
+
+		if (id == "Err")
+			return "Err()";
+		if (id == "CStr")
+			return "Convert.ToString";
+		if (id == "ScaleModeConstants")
+			return "Microsoft.VisualBasic.PowerPacks.Printing.Compatibility.VB6.ScaleModeConstants";
+
+		//No clue, just return it for now...
 		return id;
 	}
 

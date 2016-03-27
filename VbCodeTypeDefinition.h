@@ -19,7 +19,7 @@ public:
 
 	void WriteCs(std::ostream& out) const
 	{
-		out << "		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]" << std::endl
+		out << "		[StructLayout(LayoutKind.Sequential)]" << std::endl
 			<< "		" << (isPublic ? "public" : "private") << " struct " << name << std::endl
 			<< "		{" << std::endl;
 		for (auto& member : members)

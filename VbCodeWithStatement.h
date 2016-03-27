@@ -28,7 +28,7 @@ public:
 		writer.out << "var ";
 		writer.PushWith();
 		writer.out << " = ";
-		writer.out << "/* TODO: expression */";
+		expression->WriteCs(writer);
 		writer.out << ";" << std::endl;
 		for (auto& statement : statements)
 			statement->WriteCs(writer);

@@ -81,7 +81,14 @@ public:
 
 	void WriteCs(std::ostream& out) const
 	{
-		out << "namespace " << library << std::endl
+		out << "using System;" << std::endl
+			<< "using System.Runtime.InteropServices; " << std::endl
+			<< "using static Microsoft.VisualBasic.Constants;" << std::endl
+			<< "using static Microsoft.VisualBasic.Information;" << std::endl
+			<< "using static Microsoft.VisualBasic.PowerPacks.Printing.Compatibility.VB6.ScaleModeConstants;" << std::endl
+			<< "using static Microsoft.VisualBasic.Strings;" << std::endl
+			<< std::endl
+			<< "namespace " << library << std::endl
 			<< "{" << std::endl;
 		out << "	internal static class " << name << std::endl
 			<< "	{" << std::endl;

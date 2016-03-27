@@ -26,14 +26,11 @@ public:
 
 	void WriteCs(std::ostream& out) const
 	{
-		out << "		[System.Runtime.InteropServices.DllImport(" << std::endl
-			<< "			\"" << library << "\"";
+		out << "		[DllImport(\"" << library << "\"";
 		if (!alias.empty())
-			out << "," << std::endl
-				<< "			EntryPoint = \"" << alias << "\"";
+			out << ", EntryPoint = \"" << alias << "\"";
 		if (HasStringParameter())
-			out << "," << std::endl
-				<< "			CharSet = System.Runtime.InteropServices.CharSet." << (IsUnicodeApi() ? "Unicode" : "Ansi");
+			out << ", CharSet = CharSet." << (IsUnicodeApi() ? "Unicode" : "Ansi");
 		out << ")]" << std::endl
 			<< "		" << (isPublic ? "public" : "private") << " static extern ";
 		if (returnType)

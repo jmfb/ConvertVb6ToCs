@@ -20,6 +20,23 @@ public:
 		out << "</" << name << ">";
 	}
 
+	void WriteCs(VbCodeStatementWriter& writer) const final
+	{
+		switch (type)
+		{
+		case VbCodeUnaryExpressionType::FileNumber:
+			throw std::runtime_error("File number expressions not yet supported.");
+		case VbCodeUnaryExpressionType::Negate:
+			writer.out << "-";
+			expression->WriteCs(writer);
+			break;
+		case VbCodeUnaryExpressionType::Not:
+			writer.out << "!";
+			expression->WriteCs(writer);
+			break;
+		}
+	}
+
 	const char* GetXmlName() const
 	{
 		switch (type)

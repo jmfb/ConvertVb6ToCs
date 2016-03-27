@@ -1,5 +1,6 @@
 #pragma once
 #include "VbCodeValue.h"
+#include "VbCodeStatementWriter.h"
 #include <memory>
 #include <stdexcept>
 #include <iostream>
@@ -12,6 +13,7 @@ public:
 	}
 
 	virtual void WriteXml(std::ostream& out) const = 0;
+	virtual void WriteCs(VbCodeStatementWriter& writer) const = 0;
 	virtual VbCodeValue EvaluateConstant() const
 	{
 		throw std::runtime_error("Cannot evaluate constant.");
