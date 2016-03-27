@@ -22,6 +22,18 @@ public:
 		out << "</with-statement>";
 	}
 
+	void WriteCs(VbCodeStatementWriter& writer) const final
+	{
+		writer.StartLine();
+		writer.out << "var ";
+		writer.PushWith();
+		writer.out << " = ";
+		writer.out << "/* TODO: expression */";
+		writer.out << ";" << std::endl;
+		for (auto& statement : statements)
+			statement->WriteCs(writer);
+	}
+
 	bool MatchesEnd(VbCodeEndType end) const final
 	{
 		return end == VbCodeEndType::With;

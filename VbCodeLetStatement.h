@@ -22,6 +22,15 @@ public:
 		out << "</let-statement>";
 	}
 
+	void WriteCs(VbCodeStatementWriter& writer) const final
+	{
+		writer.StartLine();
+		writer.out << "/* TODO: l-value */";
+		writer.out << " = ";
+		writer.out << "/* TODO: expression */";
+		writer.out << ";" << std::endl;
+	}
+
 	VbCodeExpressionPtr lValue;
 	VbCodeExpressionPtr expression;
 };

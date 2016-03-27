@@ -8,4 +8,10 @@ public:
 	{
 		out << "<end-program-statement />";
 	}
+
+	void WriteCs(VbCodeStatementWriter& writer) const final
+	{
+		writer.StartLine();
+		writer.out << "System.Diagnostics.Process.GetCurrentProcess().Close();" << std::endl;
+	}
 };

@@ -31,6 +31,37 @@ public:
 		}
 	}
 
+	void WriteCs(VbCodeStatementWriter& writer) const final
+	{
+		writer.StartLine();
+		writer.out << "if (";
+		writer.out << "/* TODO: condition */";
+		writer.out << ")" << std::endl;
+		writer.BeginBlock();
+		for (auto& statement : ifBlocks[0].statements)
+			statement->WriteCs(writer);
+		writer.EndBlock();
+		for (auto index = 1u; index < ifBlocks.size(); ++index)
+		{
+			writer.StartLine();
+			writer.out << "else if (";
+			writer.out << "/* TODO: condition */";
+			writer.out << ")" << std::endl;
+			writer.BeginBlock();
+			for (auto& statement : ifBlocks[index].statements)
+				statement->WriteCs(writer);
+			writer.EndBlock();
+		}
+		if (!elseBlock)
+			return;
+		writer.StartLine();
+		writer.out << "else" << std::endl;
+		writer.BeginBlock();
+		for (auto& statement : *elseBlock)
+			statement->WriteCs(writer);
+		writer.EndBlock();
+	}
+
 	bool MatchesEnd(VbCodeEndType end) const final
 	{
 		return end == VbCodeEndType::If;

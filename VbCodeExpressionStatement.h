@@ -17,5 +17,12 @@ public:
 		out << "</expression-statement>";
 	}
 
+	void WriteCs(VbCodeStatementWriter& writer) const final
+	{
+		writer.StartLine();
+		writer.out << "//TODO: expression-statement";
+		writer.out << ";" << std::endl;
+	}
+
 	VbCodeExpressionPtr expression;
 };

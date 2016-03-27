@@ -5,12 +5,14 @@
 #include "VbCodeType.h"
 #include "VbCodeVariable.h"
 #include "VbCodeStatement.h"
+#include "VbCodeIdResolver.h"
+#include "VbCodeStatementWriter.h"
 #include "optional.h"
 #include <string>
 #include <vector>
 #include <iostream>
 
-class VbCodeFunction
+class VbCodeFunction : public VbCodeIdResolver
 {
 public:
 	VbCodeFunction() = default;
@@ -23,6 +25,12 @@ public:
 		const optional<VbCodeType> returnValue)
 		: type(type), access(access), isStatic(isStatic), name(name), parameters(parameters), returnValue(returnValue)
 	{
+	}
+
+	std::string Resolve(const std::string& id) const final
+	{
+		//TODO:
+		return id;
 	}
 
 	void WriteXml(std::ostream& out) const
@@ -74,7 +82,11 @@ public:
 		}
 		for (auto& variable : variables)
 			variable.WriteCs(out);
-		//TODO: statements
+
+		VbCodeStatementWriter writer{ out, *this };
+		for (auto& statement : statements)
+			statement->WriteCs(writer);
+
 		if (returnValue)
 			out << "			return __result__;" << std::endl;
 		out << "		}" << std::endl

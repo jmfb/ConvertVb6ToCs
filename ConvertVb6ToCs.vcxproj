@@ -225,6 +225,7 @@
     <ClInclude Include="VbCodeFunction.h" />
     <ClInclude Include="VbCodeFunctionFactory.h" />
     <ClInclude Include="VbCodeIdExpression.h" />
+    <ClInclude Include="VbCodeIdResolver.h" />
     <ClInclude Include="VbCodeIfBlock.h" />
     <ClInclude Include="VbCodeIfStatement.h" />
     <ClInclude Include="VbCodeLenExpression.h" />
@@ -239,6 +240,7 @@
     <ClInclude Include="VbCodeParameterFactory.h" />
     <ClInclude Include="VbCodeParenthesisExpression.h" />
     <ClInclude Include="VbCodeStatement.h" />
+    <ClInclude Include="VbCodeStatementWriter.h" />
     <ClInclude Include="VbCodeType.h" />
     <ClInclude Include="VbCodeTypeDefinition.h" />
     <ClInclude Include="VbCodeTypeDefinitionFactory.h" />

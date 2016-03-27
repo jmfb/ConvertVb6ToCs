@@ -588,6 +588,12 @@
     <ClInclude Include="VbCodeParenthesisExpression.h">
       <Filter>VisualBasic Code\Expressions</Filter>
     </ClInclude>
+    <ClInclude Include="VbCodeStatementWriter.h">
+      <Filter>VisualBasic Code\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeIdResolver.h">
+      <Filter>VisualBasic Code\Functions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">
