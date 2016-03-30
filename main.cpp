@@ -7,8 +7,7 @@
 #include "VbConflictResolver.h"
 #include "ParserLALR.h"
 
-#include "VbCodeModuleFactory.h"
-#include "VbCodeClassFactory.h"
+#include "VbCodeTranslationUnitFactory.h"
 
 const auto visualBasicGrammarFileName = R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.txt)";
 const auto visualBasicTransitionTableFileName = R"(c:\save\code\tests\ConvertVb6ToCs\VbGrammar.bin)";
@@ -44,26 +43,20 @@ Sentence ParseVisualBasic(const std::string& fileName)
 	return Parse<VbTokenStream>(visualBasicTransitionTableFileName, fileName);
 }
 
-void ProcessVisualBasicModule(const std::string& library, const std::string& fileName)
+void ProcessVisualBasicSource(const std::string& library, const std::string& fileName)
 {
-	auto module = VbCodeModuleFactory{}.Create(library, ParseVisualBasic(fileName));
-	module.ResolveUnqualifiedTypeNames();
-	module.WriteCs(std::ofstream{ fileName + ".cs" });
-}
-
-void ProcessVisualBasicClass(const std::string& library, const std::string& fileName)
-{
-	auto cls = VbCodeClassFactory{}.Create(library, ParseVisualBasic(fileName));
-	cls.ResolveUnqualifiedTypeNames();
-	cls.WriteCs(std::cout);
+	auto translationUnit = VbCodeTranslationUnitFactory{}.Create(library, ParseVisualBasic(fileName));
+	translationUnit.ResolveUnqualifiedTypeNames();
+	translationUnit.WriteCs(std::cout);
+	//translationUnitmodule.WriteCs(std::ofstream{ fileName + ".cs" });
 }
 
 int main(int argc, char** argv)
 {
 	try
 	{
-		//ProcessVisualBasicModule("DSHECommon", R"(C:\Save\Code\tests\DSHECommon\basGlobals.bas)");
-		ProcessVisualBasicClass("DSHECommon", R"(C:\Save\Code\tests\DSHECommon\CDataField.cls)");
+		//ProcessVisualBasicSource("DSHECommon", R"(C:\Save\Code\tests\DSHECommon\basGlobals.bas)");
+		ProcessVisualBasicSource("DSHECommon", R"(C:\Save\Code\tests\DSHECommon\CDataField.cls)");
 	}
 	catch (const std::exception& exception)
 	{

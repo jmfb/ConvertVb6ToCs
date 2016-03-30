@@ -26,11 +26,11 @@
     <ClCompile Include="VbCodeFunctionFactory.cpp">
       <Filter>VisualBasic Code\Functions</Filter>
     </ClCompile>
-    <ClCompile Include="VbCodeClassFactory.cpp">
+    <ClCompile Include="VbCodeTranslationUnitFactory.cpp">
       <Filter>VisualBasic Code\Translation Units</Filter>
     </ClCompile>
-    <ClCompile Include="VbCodeModuleFactory.cpp">
-      <Filter>VisualBasic Code\Translation Units</Filter>
+    <ClCompile Include="VbCodeEnumDefinitionFactory.cpp">
+      <Filter>VisualBasic Code</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -594,18 +594,6 @@
     <ClInclude Include="VbCodeIdResolver.h">
       <Filter>VisualBasic Code\Functions</Filter>
     </ClInclude>
-    <ClInclude Include="VbCodeClass.h">
-      <Filter>VisualBasic Code\Translation Units</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeClassFactory.h">
-      <Filter>VisualBasic Code\Translation Units</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeModule.h">
-      <Filter>VisualBasic Code\Translation Units</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeModuleFactory.h">
-      <Filter>VisualBasic Code\Translation Units</Filter>
-    </ClInclude>
     <ClInclude Include="VbClassHeader.h">
       <Filter>VisualBasic Sentences</Filter>
     </ClInclude>
@@ -617,6 +605,30 @@
     </ClInclude>
     <ClInclude Include="VbSettingValue.h">
       <Filter>VisualBasic Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeTranslationUnitFactory.h">
+      <Filter>VisualBasic Code\Translation Units</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeTranslationUnit.h">
+      <Filter>VisualBasic Code\Translation Units</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeTranslationUnitType.h">
+      <Filter>VisualBasic Code\Translation Units</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeEnumDefinition.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeEnumMember.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeEnumDefinitionFactory.h">
+      <Filter>VisualBasic Code</Filter>
+    </ClInclude>
+    <ClInclude Include="VbEnumStatement.h">
+      <Filter>VisualBasic Sentences\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbEnumMember.h">
+      <Filter>VisualBasic Sentences\Definitions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

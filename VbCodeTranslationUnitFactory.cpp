@@ -1,7 +1,12 @@
-#include "VbCodeModuleFactory.h"
+#include "VbCodeTranslationUnitFactory.h"
 #include "VbTranslationUnit.h"
 #include "VbTranslationHeader.h"
 #include "VbModuleHeader.h"
+#include "VbClassHeader.h"
+#include "VbSettingBlock.h"
+#include "VbSetting.h"
+#include "VbSettingValue.h"
+#include "VbLValue.h"
 #include "VbAttribute.h"
 #include "VbQualifiedId.h"
 #include "VbCodeExpressionFactory.h"
@@ -17,8 +22,9 @@
 #include "VbDimDefinition.h"
 #include "VbCodeDeclareFactory.h"
 #include "VbCodeTypeDefinitionFactory.h"
+#include "VbCodeEnumDefinitionFactory.h"
 
-VbCodeModule VbCodeModuleFactory::Create(const std::string& library, const Sentence& sentence)
+VbCodeTranslationUnit VbCodeTranslationUnitFactory::Create(const std::string& library, const Sentence& sentence)
 {
 	VbTranslationUnit translationUnit{ sentence };
 	if (!translationUnit.translationHeader)
@@ -31,6 +37,7 @@ VbCodeModule VbCodeModuleFactory::Create(const std::string& library, const Sente
 		throw std::runtime_error("Missing end of function before end of file.");
 	return
 	{
+		type,
 		library,
 		name,
 		isOptionExplicit,
@@ -38,16 +45,26 @@ VbCodeModule VbCodeModuleFactory::Create(const std::string& library, const Sente
 		members,
 		declares,
 		typeDefinitions,
+		enumDefinitions,
 		functions
 	};
 }
 
-void VbCodeModuleFactory::LoadHeader(const Sentence& sentence)
+void VbCodeTranslationUnitFactory::LoadHeader(const Sentence& sentence)
 {
 	VbTranslationHeader translationHeader{ sentence };
-	if (!translationHeader.moduleHeader)
-		throw std::runtime_error("Missing module header.");
-	VbModuleHeader moduleHeader{ *translationHeader.moduleHeader };
+	if (translationHeader.moduleHeader)
+		LoadModuleHeader(*translationHeader.moduleHeader);
+	else if (translationHeader.classHeader)
+		LoadClassHeader(*translationHeader.classHeader);
+	else
+		throw std::runtime_error("Only module and class headers are supported.");
+}
+
+void VbCodeTranslationUnitFactory::LoadModuleHeader(const Sentence& sentence)
+{
+	type = VbCodeTranslationUnitType::Module;
+	VbModuleHeader moduleHeader{ sentence };
 	if (moduleHeader.attributes.size() != 1)
 		throw std::runtime_error("Should be exactly one attribute.");
 	VbAttribute attribute{ moduleHeader.attributes[0] };
@@ -60,7 +77,35 @@ void VbCodeModuleFactory::LoadHeader(const Sentence& sentence)
 	name = value.stringValue;
 }
 
-void VbCodeModuleFactory::ProcessDeclaration(const Sentence& sentence)
+void VbCodeTranslationUnitFactory::LoadClassHeader(const Sentence& sentence)
+{
+	type = VbCodeTranslationUnitType::Class;
+	VbClassHeader classHeader{ sentence };
+	VbSettingBlock settingBlock{ classHeader.settingBlock };
+	if (settingBlock.settings)
+		for (auto& settingSentence : *settingBlock.settings)
+		{
+			VbSetting setting{ settingSentence };
+			VbLValue lValue{ setting.lValue };
+			VbSettingValue settingValue{ setting.settingValue };
+			//TODO: MultiUse, Persistable, DataBindingBehavior, DataSourceBehavior, MTSTransactionMode
+		}
+	for (auto& attributeSentence : classHeader.attributes)
+	{
+		VbAttribute attribute{ attributeSentence };
+		auto attributeName = VbQualifiedId{ attribute.name }.ToSimpleName();
+		auto value = VbCodeExpressionFactory::CreateExpression(attribute.value)->EvaluateConstant();
+		if (attributeName == "VB_Name")
+		{
+			if (value.type != VbCodeValueType::String)
+				throw std::runtime_error("VB_Name should be a string.");
+			name = value.stringValue;
+		}
+		//TODO: VB_GlobalNameSpace, VB_Creatable, VB_PredeclaredId, VB_Exposed
+	}
+}
+
+void VbCodeTranslationUnitFactory::ProcessDeclaration(const Sentence& sentence)
 {
 	VbDeclaration declaration{ sentence };
 	if (declaration.attribute)
@@ -79,7 +124,7 @@ void VbCodeModuleFactory::ProcessDeclaration(const Sentence& sentence)
 		ProcessStatement(statementSentence);
 }
 
-void VbCodeModuleFactory::ProcessStatement(const Sentence& sentence)
+void VbCodeTranslationUnitFactory::ProcessStatement(const Sentence& sentence)
 {
 	if (functions.empty() && !functionFactory.IsInFunction())
 		ProcessHeaderStatement(sentence);
@@ -87,7 +132,7 @@ void VbCodeModuleFactory::ProcessStatement(const Sentence& sentence)
 		ProcessBodyStatement(sentence);
 }
 
-void VbCodeModuleFactory::ProcessHeaderStatement(const Sentence& sentence)
+void VbCodeTranslationUnitFactory::ProcessHeaderStatement(const Sentence& sentence)
 {
 	VbStatement statement{ sentence };
 	if (statement.optionExplicitStatement)
@@ -102,22 +147,25 @@ void VbCodeModuleFactory::ProcessHeaderStatement(const Sentence& sentence)
 		declares.push_back(VbCodeDeclareFactory::Create(*statement.declareStatement));
 	else if (statement.typeStatement)
 		typeDefinitions.push_back(VbCodeTypeDefinitionFactory::Create(*statement.typeStatement));
+	else if (statement.enumStatement)
+		enumDefinitions.push_back(VbCodeEnumDefinitionFactory::Create(*statement.enumStatement));
 	else
 		functionFactory.AddStatement(sentence);
 }
 
-void VbCodeModuleFactory::ProcessBodyStatement(const Sentence& sentence)
+void VbCodeTranslationUnitFactory::ProcessBodyStatement(const Sentence& sentence)
 {
 	functionFactory.AddStatement(sentence);
 	if (functionFactory.IsEndOfFunction())
 	{
 		functions.push_back(functionFactory.Create());
-		functions.back().isStatic = true; //All module functions are static (but are not declared that way)
+		if (type == VbCodeTranslationUnitType::Module)
+			functions.back().isStatic = true;
 		functionFactory = {};
 	}
 }
 
-void VbCodeModuleFactory::ProcessConstStatement(const Sentence& sentence)
+void VbCodeTranslationUnitFactory::ProcessConstStatement(const Sentence& sentence)
 {
 	VbConstStatement constStatement{ sentence };
 	auto isPublic = constStatement.access &&
@@ -136,7 +184,7 @@ void VbCodeModuleFactory::ProcessConstStatement(const Sentence& sentence)
 	}
 }
 
-void VbCodeModuleFactory::ProcessMemberStatement(bool isPublic, const Sentence& sentence)
+void VbCodeTranslationUnitFactory::ProcessMemberStatement(bool isPublic, const Sentence& sentence)
 {
 	VbDimStatement dimStatement{ sentence };
 	for (auto& dimDefinitionStatement : dimStatement.dimDefinitions)

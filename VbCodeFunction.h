@@ -5,14 +5,13 @@
 #include "VbCodeType.h"
 #include "VbCodeVariable.h"
 #include "VbCodeStatement.h"
-#include "VbCodeIdResolver.h"
 #include "VbCodeStatementWriter.h"
 #include "optional.h"
 #include <string>
 #include <vector>
 #include <iostream>
 
-class VbCodeFunction : public VbCodeIdResolver
+class VbCodeFunction
 {
 public:
 	VbCodeFunction() = default;
@@ -27,29 +26,6 @@ public:
 	{
 	}
 
-	std::string Resolve(const std::string& id) const final
-	{
-		if (id == name)
-			return "__result__";
-		for (auto& variable : statics)
-			if (variable.name == id)
-				return "__" + name + "_" + id;
-		for (auto& variable : variables)
-			if (variable.name == id)
-				return id;
-		//TODO: go up to module level constants/declares/members/type-definitions/etc.
-
-		if (id == "Err")
-			return "Err()";
-		if (id == "CStr")
-			return "Convert.ToString";
-		if (id == "ScaleModeConstants")
-			return "Microsoft.VisualBasic.PowerPacks.Printing.Compatibility.VB6.ScaleModeConstants";
-
-		//No clue, just return it for now...
-		return id;
-	}
-
 	void WriteXml(std::ostream& out) const
 	{
 		out << "<function name=\"" << name << "\">";
@@ -58,55 +34,52 @@ public:
 		out << "</function>";
 	}
 
-	void WriteCs(std::ostream& out) const
+	void WriteCs(VbCodeStatementWriter& writer) const
 	{
 		for (auto& variable : statics)
-			variable.WriteStaticCs(name, out);
-		out << "		";
+			variable.WriteStaticCs(name, writer.out);
+		writer.out << "		";
 		switch (access)
 		{
 		case VbCodeFunctionAccess::Public:
-			out << "public";
+			writer.out << "public";
 			break;
 		case VbCodeFunctionAccess::Private:
-			out << "private";
+			writer.out << "private";
 			break;
 		case VbCodeFunctionAccess::Friend:
-			out << "internal";
+			writer.out << "internal";
 			break;
 		}
-		out << " " << (isStatic ? "static " : "");
+		writer.out << " " << (isStatic ? "static " : "");
 		if (returnValue)
-			returnValue->WriteCs(out);
+			returnValue->WriteCs(writer.out);
 		else
-			out << "void";
-		out << " " << name << "(";
+			writer.out << "void";
+		writer.out << " " << name << "(";
 		auto first = true;
 		for (auto& parameter : parameters)
 		{
 			if (!first)
-				out << ",";
+				writer.out << ",";
 			first = false;
-			parameter.WriteCs(out);
+			parameter.WriteCs(writer.out);
 		}
-		out << ")" << std::endl
+		writer.out << ")" << std::endl
 			<< "		{" << std::endl;
 		if (returnValue)
 		{
-			out << "			var __result__ = default(";
-			returnValue->WriteCs(out);
-			out << ");" << std::endl;
+			writer.out << "			var __result__ = default(";
+			returnValue->WriteCs(writer.out);
+			writer.out << ");" << std::endl;
 		}
 		for (auto& variable : variables)
-			variable.WriteCs(out);
-
-		VbCodeStatementWriter writer{ out, *this };
+			variable.WriteCs(writer.out);
 		for (auto& statement : statements)
 			statement->WriteCs(writer);
-
 		if (returnValue)
-			out << "			return __result__;" << std::endl;
-		out << "		}" << std::endl
+			writer.out << "			return __result__;" << std::endl;
+		writer.out << "		}" << std::endl
 			<< std::endl;
 	}
 
