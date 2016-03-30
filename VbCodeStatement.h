@@ -2,6 +2,7 @@
 #include "VbCodeEndType.h"
 #include "VbCodeExpression.h"
 #include "VbCodeStatementWriter.h"
+#include "VbCodeCaseExpression.h"
 #include <memory>
 #include <vector>
 #include <iostream>
@@ -36,5 +37,8 @@ public:
 	{
 		throw std::runtime_error("Else could not find matching If");
 	}
+	virtual std::vector<VbCodeStatementPtr>* Case(const std::vector<VbCodeCaseExpression>& expressions)
+	{
+		throw std::runtime_error("Case could not find matching Select");
+	}
 };
-

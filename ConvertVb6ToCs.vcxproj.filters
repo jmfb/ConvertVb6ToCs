@@ -645,6 +645,18 @@
     <ClInclude Include="VbRelationalOp.h">
       <Filter>VisualBasic Sentences</Filter>
     </ClInclude>
+    <ClInclude Include="VbCodeSelectStatement.h">
+      <Filter>VisualBasic Code\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeCaseBlock.h">
+      <Filter>VisualBasic Code\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeCaseType.h">
+      <Filter>VisualBasic Code\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeCaseExpression.h">
+      <Filter>VisualBasic Code\Statements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">

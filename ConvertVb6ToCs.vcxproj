@@ -223,6 +223,9 @@
     <ClInclude Include="VbCodeBinaryExpression.h" />
     <ClInclude Include="VbCodeBinaryExpressionType.h" />
     <ClInclude Include="VbCodeCallExpression.h" />
+    <ClInclude Include="VbCodeCaseBlock.h" />
+    <ClInclude Include="VbCodeCaseExpression.h" />
+    <ClInclude Include="VbCodeCaseType.h" />
     <ClInclude Include="VbCodeEnumDefinition.h" />
     <ClInclude Include="VbCodeEnumDefinitionFactory.h" />
     <ClInclude Include="VbCodeEnumMember.h" />
@@ -242,6 +245,7 @@
     <ClInclude Include="VbCodeMember.h" />
     <ClInclude Include="VbCodeMemberExpression.h" />
     <ClInclude Include="VbCodeMissingExpression.h" />
+    <ClInclude Include="VbCodeSelectStatement.h" />
     <ClInclude Include="VbCodeTranslationUnit.h" />
     <ClInclude Include="VbCodeTranslationUnitFactory.h" />
     <ClInclude Include="VbCodeParameter.h" />

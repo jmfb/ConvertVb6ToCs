@@ -20,6 +20,7 @@
 #include "VbCodeEndProgramStatement.h"
 #include "VbCodeExpressionStatement.h"
 #include "VbCodeExpressionFactory.h"
+#include "VbCodeSelectStatement.h"
 #include "VbSelectStatement.h"
 #include "VbCaseStatement.h"
 #include "VbCaseClause.h"
@@ -283,13 +284,54 @@ void VbCodeFunctionFactory::ProcessCallStatement(const Sentence& sentence)
 void VbCodeFunctionFactory::ProcessSelectStatement(const Sentence& sentence)
 {
 	VbSelectStatement selectStatement{ sentence };
-	//TODO:
-	std::cout << "TODO: Select statement" << std::endl;
+	auto statement = std::make_shared<VbCodeSelectStatement>(
+		VbCodeExpressionFactory::CreateExpression(selectStatement.expression));
+	compoundStatements.push(statement);
+	blocks.push(nullptr);
 }
 
 void VbCodeFunctionFactory::ProcessCaseStatement(const Sentence& sentence)
 {
 	VbCaseStatement caseStatement{ sentence };
-	//TODO:
-	std::cout << "TODO: Case statement" << std::endl;
+	VbCaseClause caseClause{ caseStatement.caseClause };
+	if (compoundStatements.empty())
+		throw std::runtime_error("Case could not find matching Select.");
+	blocks.pop();
+	if (!caseClause.caseExpressions)
+		blocks.push(compoundStatements.top()->Else());
+	else
+	{
+		std::vector<VbCodeCaseExpression> expressions;
+		for (auto& caseExpressionSentence : *caseClause.caseExpressions)
+		{
+			VbCaseExpression caseExpression{ caseExpressionSentence };
+			auto expression1 = VbCodeExpressionFactory::CreateExpression(caseExpression.expression1);
+			if (caseExpression.expression2)
+			{
+				expressions.emplace_back(
+					expression1,
+					VbCodeExpressionFactory::CreateExpression(*caseExpression.expression2));
+			}
+			else if (!caseExpression.relationalOp)
+			{
+				expressions.emplace_back(expression1);
+			}
+			else
+			{
+				VbRelationalOp relationalOp{ *caseExpression.relationalOp };
+				auto type = SentenceParser::ToEnum<VbCodeCaseType>(
+					relationalOp.op,
+					{
+						{ ">=", VbCodeCaseType::GreaterThanOrEqual },
+						{ ">", VbCodeCaseType::GreaterThan },
+						{ "<=", VbCodeCaseType::LessThanOrEqual },
+						{ "<", VbCodeCaseType::LessThan },
+						{ "<>", VbCodeCaseType::NotEqualTo },
+						{ "=", VbCodeCaseType::EqualTo }
+					});
+				expressions.emplace_back(type, expression1);
+			}
+		}
+		blocks.push(compoundStatements.top()->Case(expressions));
+	}
 }
