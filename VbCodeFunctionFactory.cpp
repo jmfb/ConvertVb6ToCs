@@ -4,13 +4,16 @@
 #include "VbPropertyStatement.h"
 #include "VbEndStatement.h"
 #include "VbDimStatement.h"
+#include "VbConstStatement.h"
 #include "VbWithStatement.h"
 #include "VbLetStatement.h"
+#include "VbSetStatement.h"
 #include "VbIfStatement.h"
 #include "VbElseIfStatement.h"
 #include "VbElseStatement.h"
 #include "VbEndKeyword.h"
 #include "VbDimDefinition.h"
+#include "VbConstantDefinition.h"
 #include "VbCodeEndType.h"
 #include "VbCodeParameterFactory.h"
 #include "VbCodeTypeFactory.h"
@@ -60,10 +63,14 @@ void VbCodeFunctionFactory::ProcessStatement(const Sentence& sentence)
 		ProcessDimStatement(false, *statement.dimStatement);
 	else if (statement.staticStatement)
 		ProcessDimStatement(true, *statement.staticStatement);
+	else if (statement.constStatement)
+		ProcessConstStatement(*statement.constStatement);
 	else if (statement.withStatement)
 		ProcessWithStatement(*statement.withStatement);
 	else if (statement.letStatement)
 		ProcessLetStatement(*statement.letStatement);
+	else if (statement.setStatement)
+		ProcessSetStatement(*statement.setStatement);
 	else if (statement.ifStatement)
 		ProcessIfStatement(*statement.ifStatement);
 	else if (statement.elseIfStatement)
@@ -225,6 +232,17 @@ void VbCodeFunctionFactory::ProcessDimStatement(bool isStatic, const Sentence& s
 	}
 }
 
+void VbCodeFunctionFactory::ProcessConstStatement(const Sentence& sentence)
+{
+	VbConstStatement constStatement{ sentence };
+	for (auto& constantDefinitionSentence : constStatement.constantDefinitions)
+	{
+		VbConstantDefinition constantDefinition{ constantDefinitionSentence };
+		//TODO: add the constant to the function
+		std::cout << "TODO: Const statement" << std::endl;
+	}
+}
+
 void VbCodeFunctionFactory::ProcessWithStatement(const Sentence& sentence)
 {
 	VbWithStatement withStatement{ sentence };
@@ -239,6 +257,14 @@ void VbCodeFunctionFactory::ProcessLetStatement(const Sentence& sentence)
 	blocks.top()->push_back(std::make_shared<VbCodeLetStatement>(
 		VbCodeExpressionFactory::CreateLValue(letStatement.lValue),
 		VbCodeExpressionFactory::CreateExpression(letStatement.expression)));
+}
+
+void VbCodeFunctionFactory::ProcessSetStatement(const Sentence& sentence)
+{
+	VbSetStatement setStatement{ sentence };
+	blocks.top()->push_back(std::make_shared<VbCodeLetStatement>(	//TODO: Do I need to distinguish let/set?
+		VbCodeExpressionFactory::CreateLValue(setStatement.lValue),
+		VbCodeExpressionFactory::CreateExpression(setStatement.expression)));
 }
 
 void VbCodeFunctionFactory::ProcessIfStatement(const Sentence& sentence)

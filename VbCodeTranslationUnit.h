@@ -104,6 +104,7 @@ public:
 
 	std::string ResolveLibrary(const std::string& value) const
 	{
+		//TODO: check referenced libraries
 		if (value == "Collection")
 			return "VBA";
 		if (value == name)
@@ -111,6 +112,12 @@ public:
 		for (auto& typeDefinition : typeDefinitions)
 			if (value == typeDefinition.name)
 				return library + "." + name;
+		for (auto& enumDefinition : enumDefinitions)
+			if (value == enumDefinition.name)
+				return library + "." + name;
+		//TODO: check other translation units
+		if (value == "eDataFieldType")
+			return library + ".Globals";
 		throw std::runtime_error("Unknown library for: " + value);
 	}
 

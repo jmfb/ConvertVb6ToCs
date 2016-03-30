@@ -25,8 +25,10 @@ private:
 	static VbCodeFunctionAccess ParseAccess(const optional<Token>& token);
 	void ProcessEndStatement(const Sentence& sentence);
 	void ProcessDimStatement(bool isStatic, const Sentence& sentence);
+	void ProcessConstStatement(const Sentence& sentence);
 	void ProcessWithStatement(const Sentence& sentence);
 	void ProcessLetStatement(const Sentence& sentence);
+	void ProcessSetStatement(const Sentence& sentence);
 	void ProcessIfStatement(const Sentence& sentence);
 	void ProcessElseIfStatement(const Sentence& sentence);
 	void ProcessElseStatement(const Sentence& sentence);

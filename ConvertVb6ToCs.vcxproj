@@ -326,6 +326,7 @@
     <ClInclude Include="VbRelationalExpression.h" />
     <ClInclude Include="VbRelationalOp.h" />
     <ClInclude Include="VbSelectStatement.h" />
+    <ClInclude Include="VbSetStatement.h" />
     <ClInclude Include="VbSetting.h" />
     <ClInclude Include="VbSettingBlock.h" />
     <ClInclude Include="VbSettingValue.h" />

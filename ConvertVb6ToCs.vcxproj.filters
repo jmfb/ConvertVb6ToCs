@@ -657,6 +657,9 @@
     <ClInclude Include="VbCodeCaseExpression.h">
       <Filter>VisualBasic Code\Statements</Filter>
     </ClInclude>
+    <ClInclude Include="VbSetStatement.h">
+      <Filter>VisualBasic Sentences\Statements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">
