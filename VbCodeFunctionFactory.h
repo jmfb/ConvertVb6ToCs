@@ -31,6 +31,8 @@ private:
 	void ProcessElseIfStatement(const Sentence& sentence);
 	void ProcessElseStatement(const Sentence& sentence);
 	void ProcessCallStatement(const Sentence& sentence);
+	void ProcessSelectStatement(const Sentence& sentence);
+	void ProcessCaseStatement(const Sentence& sentence);
 
 private:
 	optional<VbCodeFunction> function;

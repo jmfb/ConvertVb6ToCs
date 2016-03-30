@@ -215,6 +215,9 @@
     <ClInclude Include="VbCallStatement.h" />
     <ClInclude Include="VbCallSuffix.h" />
     <ClInclude Include="VbCallTerminal.h" />
+    <ClInclude Include="VbCaseClause.h" />
+    <ClInclude Include="VbCaseExpression.h" />
+    <ClInclude Include="VbCaseStatement.h" />
     <ClInclude Include="VbCharStream.h" />
     <ClInclude Include="VbClassHeader.h" />
     <ClInclude Include="VbCodeBinaryExpression.h" />
@@ -317,6 +320,8 @@
     <ClInclude Include="VbRedimDefinition.h" />
     <ClInclude Include="VbRedimStatement.h" />
     <ClInclude Include="VbRelationalExpression.h" />
+    <ClInclude Include="VbRelationalOp.h" />
+    <ClInclude Include="VbSelectStatement.h" />
     <ClInclude Include="VbSetting.h" />
     <ClInclude Include="VbSettingBlock.h" />
     <ClInclude Include="VbSettingValue.h" />

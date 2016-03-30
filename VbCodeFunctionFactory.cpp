@@ -20,6 +20,11 @@
 #include "VbCodeEndProgramStatement.h"
 #include "VbCodeExpressionStatement.h"
 #include "VbCodeExpressionFactory.h"
+#include "VbSelectStatement.h"
+#include "VbCaseStatement.h"
+#include "VbCaseClause.h"
+#include "VbCaseExpression.h"
+#include "VbRelationalOp.h"
 #include <iostream>
 
 void VbCodeFunctionFactory::AddStatement(const Sentence& sentence)
@@ -66,6 +71,10 @@ void VbCodeFunctionFactory::ProcessStatement(const Sentence& sentence)
 		ProcessElseStatement(*statement.elseStatement);
 	else if (statement.callStatement)
 		ProcessCallStatement(*statement.callStatement);
+	else if (statement.selectStatement)
+		ProcessSelectStatement(*statement.selectStatement);
+	else if (statement.caseStatement)
+		ProcessCaseStatement(*statement.caseStatement);
 	else
 		std::cout << "TODO: misc. function statement" << std::endl;
 }
@@ -269,4 +278,18 @@ void VbCodeFunctionFactory::ProcessCallStatement(const Sentence& sentence)
 {
 	auto expression = VbCodeExpressionFactory::CreateCallStatement(sentence);
 	blocks.top()->push_back(std::make_shared<VbCodeExpressionStatement>(expression));
+}
+
+void VbCodeFunctionFactory::ProcessSelectStatement(const Sentence& sentence)
+{
+	VbSelectStatement selectStatement{ sentence };
+	//TODO:
+	std::cout << "TODO: Select statement" << std::endl;
+}
+
+void VbCodeFunctionFactory::ProcessCaseStatement(const Sentence& sentence)
+{
+	VbCaseStatement caseStatement{ sentence };
+	//TODO:
+	std::cout << "TODO: Case statement" << std::endl;
 }

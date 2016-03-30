@@ -630,6 +630,21 @@
     <ClInclude Include="VbEnumMember.h">
       <Filter>VisualBasic Sentences\Definitions</Filter>
     </ClInclude>
+    <ClInclude Include="VbSelectStatement.h">
+      <Filter>VisualBasic Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCaseStatement.h">
+      <Filter>VisualBasic Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCaseClause.h">
+      <Filter>VisualBasic Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCaseExpression.h">
+      <Filter>VisualBasic Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbRelationalOp.h">
+      <Filter>VisualBasic Sentences</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Grammar.txt">
