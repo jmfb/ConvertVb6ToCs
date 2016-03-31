@@ -80,16 +80,22 @@ public:
 			for (auto& parameter : declare.parameters)
 				ResolveUnqualifiedTypeName(parameter.type);
 		for (auto& function : functions)
-		{
-			if (function.returnValue)
-				ResolveUnqualifiedTypeName(*function.returnValue);
-			for (auto& parameter : function.parameters)
-				ResolveUnqualifiedTypeName(parameter.type);
-			for (auto& variable : function.statics)
-				ResolveUnqualifiedTypeName(variable.type);
-			for (auto& variable : function.variables)
-				ResolveUnqualifiedTypeName(variable.type);
-		}
+			ResolveUnqualifiedTypeNamesInFunction(function);
+		for (auto& property : properties)
+			for (auto& function : property.second)
+				ResolveUnqualifiedTypeNamesInFunction(function);
+	}
+
+	void ResolveUnqualifiedTypeNamesInFunction(VbCodeFunction& function)
+	{
+		if (function.returnValue)
+			ResolveUnqualifiedTypeName(*function.returnValue);
+		for (auto& parameter : function.parameters)
+			ResolveUnqualifiedTypeName(parameter.type);
+		for (auto& variable : function.statics)
+			ResolveUnqualifiedTypeName(variable.type);
+		for (auto& variable : function.variables)
+			ResolveUnqualifiedTypeName(variable.type);
 	}
 
 	void ResolveUnqualifiedTypeName(VbCodeType& type)
@@ -163,7 +169,7 @@ public:
 		for (auto& enumDefinition : enumDefinitions)
 			enumDefinition.WriteCs(writer);
 		for (auto& member : members)
-			member.WriteCs(true, out);
+			member.WriteCs(type == VbCodeTranslationUnitType::Module, out);
 		if (!members.empty())
 			out << std::endl;
 		for (auto& declare : declares)
