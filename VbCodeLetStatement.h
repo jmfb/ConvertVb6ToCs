@@ -10,18 +10,6 @@ public:
 	{
 	}
 
-	void WriteXml(std::ostream& out) const final
-	{
-		out << "<let-statement>";
-		out << "<l-value>";
-		lValue->WriteXml(out);
-		out << "</l-value>";
-		out << "<r-value>";
-		expression->WriteXml(out);
-		out << "</r-value>";
-		out << "</let-statement>";
-	}
-
 	void WriteCs(VbCodeStatementWriter& writer) const final
 	{
 		writer.StartLine();

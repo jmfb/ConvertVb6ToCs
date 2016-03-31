@@ -11,26 +11,6 @@ public:
 		ifBlocks.emplace_back(expression);
 	}
 
-	void WriteXml(std::ostream& out) const final
-	{
-		out << "<if-statement>";
-		ifBlocks[0].WriteXml(out);
-		out << "</if-statement>";
-		for (auto index = 1u; index < ifBlocks.size(); ++index)
-		{
-			out << "<elseif-statement>";
-			ifBlocks[index].WriteXml(out);
-			out << "</elseif-statement>";
-		}
-		if (elseBlock)
-		{
-			out << "<else-statement>";
-			for (auto& statement : *elseBlock)
-				statement->WriteXml(out);
-			out << "</else-statement>";
-		}
-	}
-
 	void WriteCs(VbCodeStatementWriter& writer) const final
 	{
 		writer.StartLine();

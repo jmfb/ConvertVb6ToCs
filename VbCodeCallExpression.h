@@ -12,18 +12,6 @@ public:
 	{
 	}
 
-	void WriteXml(std::ostream& out) const final
-	{
-		out << "<call-expression>";
-		expression->WriteXml(out);
-		out << "<arguments>";
-		for (auto& argument : arguments)
-			argument->WriteXml(out);
-		out << "</arguments>";
-		out << "</call-expression>";
-	}
-
-
 	void WriteCs(VbCodeStatementWriter& writer) const final
 	{
 		expression->WriteCs(writer);

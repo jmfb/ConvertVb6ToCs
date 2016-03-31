@@ -10,12 +10,6 @@ public:
 	{
 	}
 
-	void WriteXml(std::ostream& out) const final
-	{
-		out << "<constant-expression>";
-		value.WriteXml(out);
-		out << "</constant-expression>";
-	}
 	void WriteCs(VbCodeStatementWriter& writer) const final
 	{
 		value.WriteValueCs(writer.out);

@@ -9,13 +9,6 @@ public:
 	{
 	}
 
-	void WriteXml(std::ostream& out) const final
-	{
-		out << "<parenthesis-expression>";
-		expression->WriteXml(out);
-		out << "</parenthesis-expression>";
-	}
-
 	void WriteCs(VbCodeStatementWriter& writer) const final
 	{
 		writer.out << "(";

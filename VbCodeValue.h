@@ -40,37 +40,6 @@ public:
 	{
 	}
 
-	void WriteXml(std::ostream& out) const
-	{
-		out << ToString(type) << " = ";
-		switch (type)
-		{
-		case VbCodeValueType::Boolean:
-			out << (boolValue ? "True" : "False");
-			break;
-		case VbCodeValueType::Byte:
-			out << static_cast<unsigned int>(byteValue);
-			break;
-		case VbCodeValueType::Integer:
-			out << integerValue;
-			break;
-		case VbCodeValueType::Long:
-			out << longValue;
-			break;
-		case VbCodeValueType::Single:
-			out << singleValue;
-			break;
-		case VbCodeValueType::Double:
-			out << doubleValue;
-			break;
-		case VbCodeValueType::String:
-			out << "\"" << String::EscapeXml(stringValue) << "\"";
-			break;
-		default:
-			throw std::runtime_error("Value type not yet supported for WriteXml");
-		}
-	}
-
 	void WriteTypeCs(std::ostream& out) const
 	{
 		switch (type)

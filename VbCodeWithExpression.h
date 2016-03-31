@@ -11,11 +11,6 @@ public:
 	{
 	}
 
-	void WriteXml(std::ostream& out) const final
-	{
-		out << "<with-expression>" << ToString(dot) << member << "</with-expression>";
-	}
-
 	void WriteCs(VbCodeStatementWriter& writer) const final
 	{
 		//TODO: determine if member is a normal vs. dynamic member of current with element

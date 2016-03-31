@@ -28,12 +28,6 @@ public:
 		return &caseBlocks.back().statements;
 	}
 
-	void WriteXml(std::ostream& out) const final
-	{
-		//TODO:
-		std::cout << "TODO: Select.WriteXml" << std::endl;
-	}
-
 	void WriteCs(VbCodeStatementWriter& writer) const final
 	{
 		//TODO:

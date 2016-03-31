@@ -13,15 +13,6 @@ public:
 	{
 	}
 
-	void WriteXml(std::ostream& out) const final
-	{
-		auto name = GetXmlName();
-		out << "<" << name << ">";
-		lhs->WriteXml(out);
-		rhs->WriteXml(out);
-		out << "</" << name << ">";
-	}
-
 	void WriteCs(VbCodeStatementWriter& writer) const final
 	{
 		lhs->WriteCs(writer);

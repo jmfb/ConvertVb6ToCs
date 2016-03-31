@@ -14,14 +14,6 @@ public:
 	{
 	}
 
-	void WriteXml(std::ostream& out) const final
-	{
-		out << "<member-expression>";
-		source->WriteXml(out);
-		out << "<member>" << ToString(dot) << member << "</member>";
-		out << "</member-expression>";
-	}
-
 	void WriteCs(VbCodeStatementWriter& writer) const final
 	{
 		source->WriteCs(writer);

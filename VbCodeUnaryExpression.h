@@ -12,14 +12,6 @@ public:
 	{
 	}
 
-	void WriteXml(std::ostream& out) const final
-	{
-		auto name = GetXmlName();
-		out << "<" << name << ">";
-		expression->WriteXml(out);
-		out << "</" << name << ">";
-	}
-
 	void WriteCs(VbCodeStatementWriter& writer) const final
 	{
 		switch (type)

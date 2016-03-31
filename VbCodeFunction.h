@@ -26,14 +26,6 @@ public:
 	{
 	}
 
-	void WriteXml(std::ostream& out) const
-	{
-		out << "<function name=\"" << name << "\">";
-		for (auto& statement : statements)
-			statement->WriteXml(out);
-		out << "</function>";
-	}
-
 	void WriteCs(VbCodeStatementWriter& writer) const
 	{
 		for (auto& variable : statics)

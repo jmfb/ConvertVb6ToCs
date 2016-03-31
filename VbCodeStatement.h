@@ -17,7 +17,6 @@ public:
 	{
 	}
 
-	virtual void WriteXml(std::ostream& out) const = 0;
 	virtual void WriteCs(VbCodeStatementWriter& writer) const = 0;
 
 	void MatchEnd(VbCodeEndType end) const

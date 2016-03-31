@@ -11,17 +11,6 @@ public:
 	{
 	}
 
-	void WriteXml(std::ostream& out) const final
-	{
-		out << "<with-statement>";
-		out << "<with>";
-		expression->WriteXml(out);
-		out << "</with>";
-		for (auto& statement : statements)
-			statement->WriteXml(out);
-		out << "</with-statement>";
-	}
-
 	void WriteCs(VbCodeStatementWriter& writer) const final
 	{
 		writer.StartLine();
