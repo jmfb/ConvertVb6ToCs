@@ -12,7 +12,7 @@ public:
 	{
 	}
 
-	void WriteCs(VbCodeStatementWriter& writer) const final
+	void WriteCs(VbCodeWriter& writer) const final
 	{
 		switch (type)
 		{

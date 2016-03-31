@@ -10,7 +10,7 @@ public:
 	{
 	}
 
-	void WriteCs(VbCodeStatementWriter& writer) const final
+	void WriteCs(VbCodeWriter& writer) const final
 	{
 		writer.StartLine();
 		expression->WriteCs(writer);

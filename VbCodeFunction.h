@@ -5,7 +5,7 @@
 #include "VbCodeType.h"
 #include "VbCodeVariable.h"
 #include "VbCodeStatement.h"
-#include "VbCodeStatementWriter.h"
+#include "VbCodeWriter.h"
 #include "optional.h"
 #include <string>
 #include <vector>
@@ -26,24 +26,12 @@ public:
 	{
 	}
 
-	void WriteCs(VbCodeStatementWriter& writer) const
+	void WriteCs(VbCodeWriter& writer) const
 	{
 		for (auto& variable : statics)
 			variable.WriteStaticCs(name, writer.out);
-		writer.out << "		";
-		switch (access)
-		{
-		case VbCodeFunctionAccess::Public:
-			writer.out << "public";
-			break;
-		case VbCodeFunctionAccess::Private:
-			writer.out << "private";
-			break;
-		case VbCodeFunctionAccess::Friend:
-			writer.out << "internal";
-			break;
-		}
-		writer.out << " " << (isStatic ? "static " : "");
+		writer.StartLine();
+		writer.out << ToCs(access) << " " << (isStatic ? "static " : "");
 		if (returnValue)
 			returnValue->WriteCs(writer.out);
 		else
@@ -57,11 +45,12 @@ public:
 			first = false;
 			parameter.WriteCs(writer.out);
 		}
-		writer.out << ")" << std::endl
-			<< "		{" << std::endl;
+		writer.out << ")" << std::endl;
+		writer.BeginBlock();
 		if (returnValue)
 		{
-			writer.out << "			var __result__ = default(";
+			writer.StartLine();
+			writer.out << "var __result__ = default(";
 			returnValue->WriteCs(writer.out);
 			writer.out << ");" << std::endl;
 		}
@@ -70,9 +59,52 @@ public:
 		for (auto& statement : statements)
 			statement->WriteCs(writer);
 		if (returnValue)
-			writer.out << "			return __result__;" << std::endl;
-		writer.out << "		}" << std::endl
-			<< std::endl;
+		{
+			writer.StartLine();
+			writer.out << "return __result__;" << std::endl;
+		}
+		writer.EndBlock();
+		writer.out << std::endl;
+	}
+
+	void WritePropertyCs(VbCodeWriter& writer, VbCodeFunctionAccess propertyAccess) const
+	{
+		writer.StartLine();
+		if (access != propertyAccess)
+			writer.out << ToCs(access) << " ";
+		writer.out << (type == VbCodeFunctionType::PropertyGet ? "get" : "set") << std::endl;
+		writer.BeginBlock();
+		if (type == VbCodeFunctionType::PropertyGet)
+		{
+			if (!parameters.empty())
+				throw std::runtime_error("Indexed property get not yet supported.");
+			writer.StartLine();
+			writer.out << "var __result__ = default(";
+			returnValue->WriteCs(writer.out);
+			writer.out << ");" << std::endl;
+		}
+		else
+		{
+			if (parameters.size() > 1)
+				throw std::runtime_error("Indexed property set not yet supported.");
+		}
+		for (auto& statement : statements)
+			statement->WriteCs(writer);
+		if (type == VbCodeFunctionType::PropertyGet)
+		{
+			writer.StartLine();
+			writer.out << "return __result__;" << std::endl;
+		}
+		writer.EndBlock();
+	}
+
+	bool IsSetter() const
+	{
+		return type == VbCodeFunctionType::PropertyLet || type == VbCodeFunctionType::PropertySet;
+	}
+	bool IsGetter() const
+	{
+		return type == VbCodeFunctionType::PropertyGet || type == VbCodeFunctionType::Function;
 	}
 
 	VbCodeFunctionType type;

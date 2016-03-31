@@ -7,10 +7,11 @@
 #include "VbCodeFunction.h"
 #include "VbCodeTranslationUnitType.h"
 #include "VbCodeIdResolver.h"
-#include "VbCodeStatementWriter.h"
+#include "VbCodeWriter.h"
 #include <string>
 #include <vector>
 #include <iostream>
+#include <map>
 
 class VbCodeTranslationUnit : public VbCodeIdResolver
 {
@@ -34,16 +35,17 @@ public:
 		members(members),
 		declares(declares),
 		typeDefinitions(typeDefinitions),
-		enumDefinitions(enumDefinitions),
-		functions(functions)
+		enumDefinitions(enumDefinitions)
 	{
+		for (auto& function : functions)
+			AddFunction(function);
 	}
 
 	std::string Resolve(const std::string& id) const final
 	{
 		if (currentFunction != nullptr)
 		{
-			if (id == currentFunction->name)
+			if (currentFunction->IsGetter() && id == currentFunction->name)
 				return "__result__";
 			for (auto& variable : currentFunction->statics)
 				if (variable.name == id)
@@ -51,6 +53,8 @@ public:
 			for (auto& variable : currentFunction->variables)
 				if (variable.name == id)
 					return id;
+			if (currentFunction->IsSetter() && id == currentFunction->parameters[0].name)
+				return "value";
 		}
 
 		//TODO: module level constants/declares/members/type-definitions/etc.
@@ -59,6 +63,8 @@ public:
 			return "Err()";
 		if (id == "CStr")
 			return "Convert.ToString";
+		if (id == "Trim$")
+			return "Trim";
 		if (id == "ScaleModeConstants")
 			return "Microsoft.VisualBasic.PowerPacks.Printing.Compatibility.VB6.ScaleModeConstants";
 
@@ -149,7 +155,7 @@ public:
 			throw std::runtime_error("Only support generating module and class files.");
 		}
 		out << "	{" << std::endl;
-		VbCodeStatementWriter writer{ out, *this };
+		VbCodeWriter writer{ out, *this };
 		for (auto& constant : constants)
 			constant.WriteCs(out);
 		if (!constants.empty())
@@ -170,8 +176,54 @@ public:
 			function.WriteCs(writer);
 			currentFunction = nullptr;
 		}
+		for (auto& property : properties)
+			WritePropertyCs(writer, property.second);
 		out << "	}" << std::endl
 			<< "}" << std::endl;
+	}
+
+	void AddFunction(const VbCodeFunction& function)
+	{
+		if (function.type == VbCodeFunctionType::Function ||
+			function.type == VbCodeFunctionType::Sub)
+			functions.push_back(function);
+		else
+			properties[function.name].push_back(function);
+	}
+
+	void WritePropertyCs(VbCodeWriter& writer, const std::vector<VbCodeFunction>& functions) const
+	{
+		auto& name = functions.front().name;
+		optional<VbCodeType> type;
+		auto access = VbCodeFunctionAccess::Private;
+		for (auto& function : functions)
+		{
+			if (function.access == VbCodeFunctionAccess::Public)
+				access = VbCodeFunctionAccess::Public;
+			else if (function.access == VbCodeFunctionAccess::Friend && access == VbCodeFunctionAccess::Private)
+				access = VbCodeFunctionAccess::Friend;
+			if (function.type == VbCodeFunctionType::PropertyGet)
+				type = function.returnValue;
+			if (function.isStatic)
+				throw std::runtime_error("Static properties not yet supported.");
+			if (!function.statics.empty())
+				throw std::runtime_error("Static locals in properties not yet supported.");
+		}
+		if (!type)
+			type = functions[0].parameters[0].type;
+		writer.StartLine();
+		writer.out << ToCs(access) << " ";
+		type->WriteCs(writer.out);
+		writer.out << " " << name << std::endl;
+		writer.BeginBlock();
+		for (auto& function : functions)
+		{
+			currentFunction = &function;
+			function.WritePropertyCs(writer, access);
+			currentFunction = nullptr;
+		}
+		writer.EndBlock();
+		writer.out << std::endl;
 	}
 
 	VbCodeTranslationUnitType type;
@@ -184,6 +236,7 @@ public:
 	std::vector<VbCodeTypeDefinition> typeDefinitions;
 	std::vector<VbCodeEnumDefinition> enumDefinitions;
 	std::vector<VbCodeFunction> functions;
+	std::map<std::string, std::vector<VbCodeFunction>> properties;
 
 	mutable const VbCodeFunction* currentFunction = nullptr;
 };

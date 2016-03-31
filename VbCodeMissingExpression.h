@@ -4,7 +4,7 @@
 class VbCodeMissingExpression : public VbCodeExpression
 {
 public:
-	void WriteCs(VbCodeStatementWriter& writer) const final
+	void WriteCs(VbCodeWriter& writer) const final
 	{
 		//TODO: should this always just be null?
 		writer.out << "null";

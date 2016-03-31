@@ -588,9 +588,6 @@
     <ClInclude Include="VbCodeParenthesisExpression.h">
       <Filter>VisualBasic Code\Expressions</Filter>
     </ClInclude>
-    <ClInclude Include="VbCodeStatementWriter.h">
-      <Filter>VisualBasic Code\Statements</Filter>
-    </ClInclude>
     <ClInclude Include="VbCodeIdResolver.h">
       <Filter>VisualBasic Code\Functions</Filter>
     </ClInclude>
@@ -659,6 +656,9 @@
     </ClInclude>
     <ClInclude Include="VbSetStatement.h">
       <Filter>VisualBasic Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeWriter.h">
+      <Filter>VisualBasic Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

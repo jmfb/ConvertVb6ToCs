@@ -14,7 +14,7 @@ public:
 	{
 	}
 
-	void WriteCs(VbCodeStatementWriter& writer) const final
+	void WriteCs(VbCodeWriter& writer) const final
 	{
 		source->WriteCs(writer);
 		if (dot != VbCodeDotType::Dot)

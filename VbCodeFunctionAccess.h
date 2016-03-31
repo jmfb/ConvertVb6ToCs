@@ -18,3 +18,14 @@ inline const char* ToString(VbCodeFunctionAccess value)
 	}
 	throw std::runtime_error("Invalid function access.");
 }
+
+inline const char* ToCs(VbCodeFunctionAccess value)
+{
+	switch (value)
+	{
+	case VbCodeFunctionAccess::Public: return "public";
+	case VbCodeFunctionAccess::Private: return "private";
+	case VbCodeFunctionAccess::Friend: return "internal";
+	}
+	throw std::runtime_error("Invalid function access.");
+}

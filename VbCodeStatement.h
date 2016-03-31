@@ -1,7 +1,7 @@
 #pragma once
 #include "VbCodeEndType.h"
 #include "VbCodeExpression.h"
-#include "VbCodeStatementWriter.h"
+#include "VbCodeWriter.h"
 #include "VbCodeCaseExpression.h"
 #include <memory>
 #include <vector>
@@ -17,7 +17,7 @@ public:
 	{
 	}
 
-	virtual void WriteCs(VbCodeStatementWriter& writer) const = 0;
+	virtual void WriteCs(VbCodeWriter& writer) const = 0;
 
 	void MatchEnd(VbCodeEndType end) const
 	{

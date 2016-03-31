@@ -4,11 +4,11 @@
 #include <string>
 #include <stack>
 
-class VbCodeStatementWriter
+class VbCodeWriter
 {
 public:
-	VbCodeStatementWriter(std::ostream& out, const VbCodeIdResolver& resolver)
-		: out(out), resolver(resolver), indent(3)
+	VbCodeWriter(std::ostream& out, const VbCodeIdResolver& resolver)
+		: out(out), resolver(resolver), indent(2)
 	{
 	}
 

@@ -11,7 +11,7 @@ public:
 	{
 	}
 
-	void WriteCs(VbCodeStatementWriter& writer) const final
+	void WriteCs(VbCodeWriter& writer) const final
 	{
 		//TODO: determine if member is a normal vs. dynamic member of current with element
 		writer.With();

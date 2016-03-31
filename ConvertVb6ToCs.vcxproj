@@ -252,7 +252,7 @@
     <ClInclude Include="VbCodeParameterFactory.h" />
     <ClInclude Include="VbCodeParenthesisExpression.h" />
     <ClInclude Include="VbCodeStatement.h" />
-    <ClInclude Include="VbCodeStatementWriter.h" />
+    <ClInclude Include="VbCodeWriter.h" />
     <ClInclude Include="VbCodeTranslationUnitType.h" />
     <ClInclude Include="VbCodeType.h" />
     <ClInclude Include="VbCodeTypeDefinition.h" />

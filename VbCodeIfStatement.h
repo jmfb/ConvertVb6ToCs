@@ -11,7 +11,7 @@ public:
 		ifBlocks.emplace_back(expression);
 	}
 
-	void WriteCs(VbCodeStatementWriter& writer) const final
+	void WriteCs(VbCodeWriter& writer) const final
 	{
 		writer.StartLine();
 		writer.out << "if (";

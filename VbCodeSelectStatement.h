@@ -28,7 +28,7 @@ public:
 		return &caseBlocks.back().statements;
 	}
 
-	void WriteCs(VbCodeStatementWriter& writer) const final
+	void WriteCs(VbCodeWriter& writer) const final
 	{
 		//TODO:
 		std::cout << "TODO: Select.WriteCs" << std::endl;
