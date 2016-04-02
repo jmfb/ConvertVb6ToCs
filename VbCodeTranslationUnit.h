@@ -50,14 +50,48 @@ public:
 			for (auto& variable : currentFunction->statics)
 				if (variable.name == id)
 					return "__" + currentFunction->name + "_" + id;
+			for (auto& constant : currentFunction->constants)
+				if (constant.name == id)
+					return id;
 			for (auto& variable : currentFunction->variables)
 				if (variable.name == id)
 					return id;
 			if (currentFunction->IsSetter() && id == currentFunction->parameters[0].name)
 				return "value";
+			for (auto& parameter : currentFunction->parameters)
+				if (parameter.name == id)
+					return id;
+			//TODO: check other local function definitions
 		}
 
-		//TODO: module level constants/declares/members/type-definitions/etc.
+		//TODO: check other translation units
+		if (id == "err_Value")
+			return library + ".Globals.eError." + id;
+
+		for (auto& constant : constants)
+			if (constant.name == id)
+				return id;
+		for (auto& member : members)
+			if (member.name == id)
+				return id;
+		for (auto& declare : declares)
+			if (declare.name == id)
+				return id;
+		for (auto& typeDefinition : typeDefinitions)
+			if (typeDefinition.name == id)
+				return id;
+		for (auto& enumDefinition : enumDefinitions)
+		{
+			if (enumDefinition.name == id)
+				return id;
+			for (auto& enumMember : enumDefinition.members)
+				if (enumMember.name == id)
+					return enumDefinition.name + "." + id;
+		}
+		for (auto& function : functions)
+			if (function.name == id)
+				return id;
+		//TODO: other module level definitions
 
 		if (id == "Err")
 			return "Err()";
@@ -68,8 +102,49 @@ public:
 		if (id == "ScaleModeConstants")
 			return "Microsoft.VisualBasic.PowerPacks.Printing.Compatibility.VB6.ScaleModeConstants";
 
+		//TODO: check referenced type libraries (properly)
+		if (IsAdoFieldAttributeEnum(id))
+			return "ADODB.FieldAttributeEnum." + id;
+		if (IsAdoDataTypeEnum(id))
+			return "ADODB.DataTypeEnum." + id;
+
 		//No clue, just return it for now...
-		return id;
+		return "TODO_Resolve(" + id + ")";
+	}
+
+	static bool IsAdoFieldAttributeEnum(const std::string& id)
+	{
+		return id == "adFldIsNullable" || id == "adFldLong";
+	}
+
+	static bool IsAdoDataTypeEnum(const std::string& id)
+	{
+		return id == "adBigInt" ||
+			id == "adBinary" ||
+			id == "adBoolean" ||
+			id == "adChar" ||
+			id == "adCurrency" ||
+			id == "adDate" ||
+			id == "adDBDate" ||
+			id == "adDBTime" ||
+			id == "adDBTimeStamp" ||
+			id == "adDecimal" ||
+			id == "adDouble" ||
+			id == "adInteger" ||
+			id == "adLongVarBinary" ||
+			id == "adLongVarChar" ||
+			id == "adNumeric" ||
+			id == "adSingle" ||
+			id == "adSmallInt" ||
+			id == "adTinyInt" ||
+			id == "adUnsignedBigInt" ||
+			id == "adUnsignedInt" ||
+			id == "adUnsignedSmallInt" ||
+			id == "adUnsignedTinyInt" ||
+			id == "adVarBinary" ||
+			id == "adVarChar" ||
+			id == "adVarNumeric" ||
+			id == "adGUID";
 	}
 
 	void ResolveUnqualifiedTypeNames()
@@ -136,7 +211,7 @@ public:
 	void WriteCs(std::ostream& out) const
 	{
 		out << "using System;" << std::endl
-			<< "using System.Runtime.InteropServices; " << std::endl
+			<< "using System.Runtime.InteropServices;" << std::endl
 			<< "using static Microsoft.VisualBasic.Constants;" << std::endl
 			<< "using static Microsoft.VisualBasic.Information;" << std::endl
 			<< "using static Microsoft.VisualBasic.PowerPacks.Printing.Compatibility.VB6.ScaleModeConstants;" << std::endl
@@ -197,12 +272,12 @@ public:
 			properties[function.name].push_back(function);
 	}
 
-	void WritePropertyCs(VbCodeWriter& writer, const std::vector<VbCodeFunction>& functions) const
+	void WritePropertyCs(VbCodeWriter& writer, const std::vector<VbCodeFunction>& propertyFunctions) const
 	{
-		auto& name = functions.front().name;
+		auto& name = propertyFunctions.front().name;
 		optional<VbCodeType> type;
 		auto access = VbCodeFunctionAccess::Private;
-		for (auto& function : functions)
+		for (auto& function : propertyFunctions)
 		{
 			if (function.access == VbCodeFunctionAccess::Public)
 				access = VbCodeFunctionAccess::Public;
@@ -216,13 +291,13 @@ public:
 				throw std::runtime_error("Static locals in properties not yet supported.");
 		}
 		if (!type)
-			type = functions[0].parameters[0].type;
+			type = propertyFunctions[0].parameters[0].type;
 		writer.StartLine();
 		writer.out << ToCs(access) << " ";
 		type->WriteCs(writer.out);
 		writer.out << " " << name << std::endl;
 		writer.BeginBlock();
-		for (auto& function : functions)
+		for (auto& function : propertyFunctions)
 		{
 			currentFunction = &function;
 			function.WritePropertyCs(writer, access);

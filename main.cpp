@@ -47,8 +47,8 @@ void ProcessVisualBasicSource(const std::string& library, const std::string& fil
 {
 	auto translationUnit = VbCodeTranslationUnitFactory{}.Create(library, ParseVisualBasic(fileName));
 	translationUnit.ResolveUnqualifiedTypeNames();
-	translationUnit.WriteCs(std::cout);
-	//translationUnitmodule.WriteCs(std::ofstream{ fileName + ".cs" });
+	//translationUnit.WriteCs(std::cout);
+	translationUnit.WriteCs(std::ofstream{ fileName + ".cs" });
 }
 
 int main(int argc, char** argv)
