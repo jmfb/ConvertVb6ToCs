@@ -14,13 +14,7 @@
     <ClCompile Include="VbCodeValueFactory.cpp">
       <Filter>VisualBasic Code\Types and Values</Filter>
     </ClCompile>
-    <ClCompile Include="VbCodeParameterFactory.cpp">
-      <Filter>VisualBasic Code</Filter>
-    </ClCompile>
     <ClCompile Include="VbCodeDeclareFactory.cpp">
-      <Filter>VisualBasic Code</Filter>
-    </ClCompile>
-    <ClCompile Include="VbCodeTypeDefinitionFactory.cpp">
       <Filter>VisualBasic Code</Filter>
     </ClCompile>
     <ClCompile Include="VbCodeFunctionFactory.cpp">
@@ -30,7 +24,13 @@
       <Filter>VisualBasic Code\Translation Units</Filter>
     </ClCompile>
     <ClCompile Include="VbCodeEnumDefinitionFactory.cpp">
-      <Filter>VisualBasic Code</Filter>
+      <Filter>VisualBasic Code\Type and Enum Definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="VbCodeTypeDefinitionFactory.cpp">
+      <Filter>VisualBasic Code\Type and Enum Definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="VbCodeParameterFactory.cpp">
+      <Filter>VisualBasic Code\Types and Values</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +93,12 @@
     </Filter>
     <Filter Include="VisualBasic Code\Translation Units">
       <UniqueIdentifier>{b0050705-8bbd-4f81-9930-60f7fce71b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualBasic Code\Type and Enum Definitions">
+      <UniqueIdentifier>{13e0cc2e-1609-4d75-9760-794241c4f102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualBasic Sentences\Translation Unit">
+      <UniqueIdentifier>{08b1571d-602c-44a6-9960-a6ffbae40e02}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -255,9 +261,6 @@
     <ClInclude Include="SentenceParser.h">
       <Filter>Sentences</Filter>
     </ClInclude>
-    <ClInclude Include="VbLine.h">
-      <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
     <ClInclude Include="OptionalSentenceListAccessor.h">
       <Filter>Sentences</Filter>
     </ClInclude>
@@ -273,29 +276,11 @@
     <ClInclude Include="OptionalTokenAccessor.h">
       <Filter>Sentences</Filter>
     </ClInclude>
-    <ClInclude Include="VbTranslationUnit.h">
-      <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
     <ClInclude Include="VbDeclaration.h">
-      <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbLineLabel.h">
-      <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbLiteral.h">
-      <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbAttribute.h">
-      <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbModuleHeader.h">
       <Filter>VisualBasic Sentences</Filter>
     </ClInclude>
     <ClInclude Include="RequiredSentenceListAccessor.h">
       <Filter>Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbTranslationHeader.h">
-      <Filter>VisualBasic Sentences</Filter>
     </ClInclude>
     <ClInclude Include="VbExpression.h">
       <Filter>VisualBasic Sentences\Expressions</Filter>
@@ -396,9 +381,6 @@
     <ClInclude Include="VbRedimDefinition.h">
       <Filter>VisualBasic Sentences\Definitions</Filter>
     </ClInclude>
-    <ClInclude Include="VbSubscript.h">
-      <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
     <ClInclude Include="VbDefineTypeKeyword.h">
       <Filter>VisualBasic Sentences</Filter>
     </ClInclude>
@@ -453,9 +435,6 @@
     <ClInclude Include="VbCodeConstantExpression.h">
       <Filter>VisualBasic Code\Expressions</Filter>
     </ClInclude>
-    <ClInclude Include="VbCodeMember.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
     <ClInclude Include="VbCodeType.h">
       <Filter>VisualBasic Code\Types and Values</Filter>
     </ClInclude>
@@ -483,12 +462,6 @@
     <ClInclude Include="VbCodeDeclare.h">
       <Filter>VisualBasic Code</Filter>
     </ClInclude>
-    <ClInclude Include="VbCodeParameter.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeParameterFactory.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
     <ClInclude Include="VbParameterClause.h">
       <Filter>VisualBasic Sentences</Filter>
     </ClInclude>
@@ -498,23 +471,11 @@
     <ClInclude Include="VbDefaultValue.h">
       <Filter>VisualBasic Sentences</Filter>
     </ClInclude>
-    <ClInclude Include="VbPassBy.h">
-      <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
     <ClInclude Include="VbCodeDeclareFactory.h">
       <Filter>VisualBasic Code</Filter>
     </ClInclude>
     <ClInclude Include="VbDeclareAlias.h">
       <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeTypeDefinition.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeVariable.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeTypeDefinitionFactory.h">
-      <Filter>VisualBasic Code</Filter>
     </ClInclude>
     <ClInclude Include="VbCodeFunction.h">
       <Filter>VisualBasic Code\Functions</Filter>
@@ -591,18 +552,6 @@
     <ClInclude Include="VbCodeIdResolver.h">
       <Filter>VisualBasic Code\Functions</Filter>
     </ClInclude>
-    <ClInclude Include="VbClassHeader.h">
-      <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbSettingBlock.h">
-      <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbSetting.h">
-      <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbSettingValue.h">
-      <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
     <ClInclude Include="VbCodeTranslationUnitFactory.h">
       <Filter>VisualBasic Code\Translation Units</Filter>
     </ClInclude>
@@ -611,15 +560,6 @@
     </ClInclude>
     <ClInclude Include="VbCodeTranslationUnitType.h">
       <Filter>VisualBasic Code\Translation Units</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeEnumDefinition.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeEnumMember.h">
-      <Filter>VisualBasic Code</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCodeEnumDefinitionFactory.h">
-      <Filter>VisualBasic Code</Filter>
     </ClInclude>
     <ClInclude Include="VbEnumStatement.h">
       <Filter>VisualBasic Sentences\Definitions</Filter>
@@ -632,12 +572,6 @@
     </ClInclude>
     <ClInclude Include="VbCaseStatement.h">
       <Filter>VisualBasic Sentences\Statements</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCaseClause.h">
-      <Filter>VisualBasic Sentences</Filter>
-    </ClInclude>
-    <ClInclude Include="VbCaseExpression.h">
-      <Filter>VisualBasic Sentences</Filter>
     </ClInclude>
     <ClInclude Include="VbRelationalOp.h">
       <Filter>VisualBasic Sentences</Filter>
@@ -662,6 +596,78 @@
     </ClInclude>
     <ClInclude Include="EnumParser.h">
       <Filter>Sentences</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeEnumDefinition.h">
+      <Filter>VisualBasic Code\Type and Enum Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeEnumDefinitionFactory.h">
+      <Filter>VisualBasic Code\Type and Enum Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeEnumMember.h">
+      <Filter>VisualBasic Code\Type and Enum Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeTypeDefinition.h">
+      <Filter>VisualBasic Code\Type and Enum Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeTypeDefinitionFactory.h">
+      <Filter>VisualBasic Code\Type and Enum Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeVariable.h">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeMember.h">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeParameter.h">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCodeParameterFactory.h">
+      <Filter>VisualBasic Code\Types and Values</Filter>
+    </ClInclude>
+    <ClInclude Include="VbAttribute.h">
+      <Filter>VisualBasic Sentences\Translation Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="VbClassHeader.h">
+      <Filter>VisualBasic Sentences\Translation Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="VbLine.h">
+      <Filter>VisualBasic Sentences\Translation Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="VbLineLabel.h">
+      <Filter>VisualBasic Sentences\Translation Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="VbModuleHeader.h">
+      <Filter>VisualBasic Sentences\Translation Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="VbSetting.h">
+      <Filter>VisualBasic Sentences\Translation Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="VbSettingBlock.h">
+      <Filter>VisualBasic Sentences\Translation Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="VbSettingValue.h">
+      <Filter>VisualBasic Sentences\Translation Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="VbTranslationHeader.h">
+      <Filter>VisualBasic Sentences\Translation Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="VbTranslationUnit.h">
+      <Filter>VisualBasic Sentences\Translation Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="VbLiteral.h">
+      <Filter>VisualBasic Sentences\Identifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="VbSubscript.h">
+      <Filter>VisualBasic Sentences\Identifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="VbPassBy.h">
+      <Filter>VisualBasic Sentences\Identifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCaseExpression.h">
+      <Filter>VisualBasic Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="VbCaseClause.h">
+      <Filter>VisualBasic Sentences\Statements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
