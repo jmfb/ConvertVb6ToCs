@@ -30,8 +30,106 @@ public:
 
 	void WriteCs(VbCodeWriter& writer) const final
 	{
-		//TODO:
-		std::cout << "TODO: Select.WriteCs" << std::endl;
+		if (CanConvertToSwitch())
+			WriteSwitch(writer);
+		else
+			WriteChainedIfElse(writer);
+	}
+
+	bool CanConvertToSwitch() const
+	{
+		//TODO: check type of select expression to make sure it is valid for switch statements.
+		for (auto& caseBlock : caseBlocks)
+			for (auto& caseExpression : caseBlock.expressions)
+				if (caseExpression.type != VbCodeCaseType::EqualTo)
+					return false;
+		return true;
+	}
+
+	void WriteSwitch(VbCodeWriter& writer) const
+	{
+		writer.StartLine();
+		writer.out << "switch (";
+		expression->WriteCs(writer);
+		writer.out << ")" << std::endl;
+		writer.BeginBlock();
+		writer.PopIndent();
+		for (auto& caseBlock : caseBlocks)
+		{
+			for (auto& caseExpression : caseBlock.expressions)
+			{
+				writer.StartLine();
+				writer.out << "case ";
+				caseExpression.expression1->WriteCs(writer);
+				writer.out << ":" << std::endl;
+			}
+			writer.PushIndent();
+			for (auto& statement : caseBlock.statements)
+				statement->WriteCs(writer);
+			writer.StartLine();
+			writer.out << "break;" << std::endl;
+			writer.PopIndent();
+		}
+		if (elseBlock)
+		{
+			writer.StartLine();
+			writer.out << "default:" << std::endl;
+			writer.PushIndent();
+			for (auto& statement : elseBlock->statements)
+				statement->WriteCs(writer);
+			writer.StartLine();
+			writer.out << "break;" << std::endl;
+			writer.PopIndent();
+		}
+		writer.PushIndent();
+		writer.EndBlock();
+	}
+
+	void WriteChainedIfElse(VbCodeWriter& writer) const
+	{
+		writer.StartLine();
+		auto select = writer.NextSelect();
+		writer.out << "var __select" << select << " = ";
+		expression->WriteCs(writer);
+		writer.out << ";" << std::endl;
+		if (!caseBlocks.empty())
+		{
+			writer.StartLine();
+			writer.out << "if (";
+			caseBlocks[0].WriteIfExpression(writer, select);
+			writer.out << ")" << std::endl;
+			writer.BeginBlock();
+			for (auto& statement : caseBlocks[0].statements)
+				statement->WriteCs(writer);
+			writer.EndBlock();
+			for (auto index = 1u; index < caseBlocks.size(); ++index)
+			{
+				writer.StartLine();
+				writer.out << "else if (";
+				caseBlocks[index].WriteIfExpression(writer, select);
+				writer.out << ")" << std::endl;
+				writer.BeginBlock();
+				for (auto& statement : caseBlocks[0].statements)
+					statement->WriteCs(writer);
+				writer.EndBlock();
+			}
+		}
+		if (!elseBlock)
+			return;
+		if (caseBlocks.empty())
+		{
+			for (auto& statement : elseBlock->statements)
+				statement->WriteCs(writer);
+		}
+		else
+		{
+			writer.StartLine();
+			writer.out << "else" << std::endl;
+			writer.BeginBlock();
+			for (auto& statement : elseBlock->statements)
+				statement->WriteCs(writer);
+			writer.EndBlock();
+		}
 	}
 
 	VbCodeExpressionPtr expression;

@@ -25,3 +25,17 @@ inline VbCodeCaseType ToCaseType(const Token& token)
 			{ "=", VbCodeCaseType::EqualTo }
 		});
 }
+
+inline const char* ToCs(VbCodeCaseType value)
+{
+	switch (value)
+	{
+	case VbCodeCaseType::EqualTo: return "==";
+	case VbCodeCaseType::NotEqualTo: return "!=";
+	case VbCodeCaseType::GreaterThan: return ">";
+	case VbCodeCaseType::GreaterThanOrEqual: return ">=";
+	case VbCodeCaseType::LessThan: return "<";
+	case VbCodeCaseType::LessThanOrEqual: return "<=";
+	}
+	throw std::runtime_error("Invalid case type operator for C#");
+}

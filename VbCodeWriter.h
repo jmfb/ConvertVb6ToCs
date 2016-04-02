@@ -61,6 +61,11 @@ public:
 		out << "__with" << withs.top();
 	}
 
+	int NextSelect()
+	{
+		return nextSelect++;
+	}
+
 public:
 	std::ostream& out;
 
@@ -68,5 +73,6 @@ private:
 	const VbCodeIdResolver& resolver;
 	int indent;
 	int nextWith = 1;
+	int nextSelect = 1;
 	std::stack<int> withs;
 };
