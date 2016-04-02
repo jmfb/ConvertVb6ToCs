@@ -21,8 +21,6 @@ private:
 	void ProcessNextFunction(const Sentence& sentence);
 	void BeginFunction(const Sentence& sentence);
 	void BeginProperty(const Sentence& sentence);
-	static VbCodeFunctionType ParseType(const Token& token);
-	static VbCodeFunctionAccess ParseAccess(const optional<Token>& token);
 	void ProcessEndStatement(const Sentence& sentence);
 	void ProcessDimStatement(bool isStatic, const Sentence& sentence);
 	void ProcessConstStatement(const Sentence& sentence);

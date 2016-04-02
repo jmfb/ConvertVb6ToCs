@@ -1,4 +1,5 @@
 #pragma once
+#include "EnumParser.h"
 #include <stdexcept>
 
 enum class VbCodeFunctionAccess
@@ -28,4 +29,16 @@ inline const char* ToCs(VbCodeFunctionAccess value)
 	case VbCodeFunctionAccess::Friend: return "internal";
 	}
 	throw std::runtime_error("Invalid function access.");
+}
+
+inline VbCodeFunctionAccess ToFunctionAccess(const optional<Token>& token)
+{
+	return EnumParser::Parse(
+		token,
+		{
+			{ "public", VbCodeFunctionAccess::Public },
+			{ "private", VbCodeFunctionAccess::Private },
+			{ "friend", VbCodeFunctionAccess::Friend }
+		},
+		VbCodeFunctionAccess::Private);
 }

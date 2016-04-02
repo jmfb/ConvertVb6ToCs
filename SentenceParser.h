@@ -7,8 +7,6 @@
 #include "RequiredSentenceAccessor.h"
 #include "OptionalSentenceListAccessor.h"
 #include "RequiredSentenceListAccessor.h"
-#include <string>
-#include <map>
 #include <stdexcept>
 #include <cstdlib>
 #include <tuple>
@@ -16,21 +14,6 @@
 class SentenceParser
 {
 public:
-	template <typename Enum>
-	static Enum ToEnum(const Token& token, const std::map<std::string, Enum>& map)
-	{
-		for (auto& entry : map)
-			if (token == entry.first)
-				return entry.second;
-		throw std::runtime_error("Invalid enum value.");
-	}
-
-	template <typename Enum>
-	static Enum ToEnum(const optional<Token>& token, const std::map<std::string, Enum>& map, Enum defaultValue)
-	{
-		return token ? ToEnum(*token, map) : defaultValue;
-	}
-
 	template <typename... Accessors>
 	static auto Parse(const Sentence& sentence, Accessors... accessors)
 		-> std::tuple<decltype(accessors(sentence, 0))...>

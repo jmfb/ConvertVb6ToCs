@@ -1,4 +1,5 @@
 #pragma once
+#include "EnumParser.h"
 #include <stdexcept>
 
 enum class VbCodeValueType
@@ -35,4 +36,23 @@ inline const char* ToString(VbCodeValueType value)
 	case VbCodeValueType::UserObject: return "UserObject";
 	}
 	throw std::runtime_error("Invalid value type.");
+}
+
+inline VbCodeValueType ToValueType(const Token& token)
+{
+	return EnumParser::Parse<VbCodeValueType>(
+		token,
+		{
+			{ "byte", VbCodeValueType::Byte },
+			{ "boolean", VbCodeValueType::Boolean },
+			{ "integer", VbCodeValueType::Integer },
+			{ "long", VbCodeValueType::Long },
+			{ "currency", VbCodeValueType::Currency },
+			{ "single", VbCodeValueType::Single },
+			{ "double", VbCodeValueType::Double },
+			{ "date", VbCodeValueType::Date },
+			{ "string", VbCodeValueType::String },
+			{ "object", VbCodeValueType::Object },
+			{ "variant", VbCodeValueType::Variant }
+		});
 }

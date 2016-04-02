@@ -109,8 +109,8 @@ void VbCodeFunctionFactory::BeginFunction(const Sentence& sentence)
 	VbFunctionStatement functionStatement{ sentence };
 	function = VbCodeFunction
 	{
-		ParseType(functionStatement.type),
-		ParseAccess(functionStatement.access),
+		ToFunctionType(functionStatement.type),
+		ToFunctionAccess(functionStatement.access),
 		functionStatement.isStatic,
 		functionStatement.name.GetValue(),
 		VbCodeParameterFactory::Create(functionStatement.parameterClause),
@@ -124,39 +124,14 @@ void VbCodeFunctionFactory::BeginProperty(const Sentence& sentence)
 	VbPropertyStatement propertyStatement{ sentence };
 	function = VbCodeFunction
 	{
-		ParseType(propertyStatement.type),
-		ParseAccess(propertyStatement.access),
+		ToFunctionType(propertyStatement.type),
+		ToFunctionAccess(propertyStatement.access),
 		propertyStatement.isStatic,
 		propertyStatement.name.GetValue(),
 		VbCodeParameterFactory::Create(propertyStatement.parameterClause),
 		VbCodeTypeFactory::CreateOptional(propertyStatement.asArraySpecifier)
 	};
 	blocks.push(&function->statements);
-}
-
-VbCodeFunctionType VbCodeFunctionFactory::ParseType(const Token& token)
-{
-	return SentenceParser::ToEnum<VbCodeFunctionType>(
-		token,
-		{
-			{ "function", VbCodeFunctionType::Function },
-			{ "sub", VbCodeFunctionType::Sub },
-			{ "get", VbCodeFunctionType::PropertyGet },
-			{ "let", VbCodeFunctionType::PropertyLet },
-			{ "set", VbCodeFunctionType::PropertySet }
-		});
-}
-
-VbCodeFunctionAccess VbCodeFunctionFactory::ParseAccess(const optional<Token>& token)
-{
-	return SentenceParser::ToEnum(
-		token,
-		{
-			{ "public", VbCodeFunctionAccess::Public },
-			{ "private", VbCodeFunctionAccess::Private },
-			{ "friend", VbCodeFunctionAccess::Friend }
-		},
-		VbCodeFunctionAccess::Private);
 }
 
 void VbCodeFunctionFactory::ProcessEndStatement(const Sentence& sentence)
@@ -168,16 +143,7 @@ void VbCodeFunctionFactory::ProcessEndStatement(const Sentence& sentence)
 		return;
 	}
 	VbEndKeyword endKeyword{ *endStatement.keyword };
-	auto type = SentenceParser::ToEnum<VbCodeEndType>(
-		endKeyword.keyword,
-		{
-			{ "if", VbCodeEndType::If },
-			{ "select", VbCodeEndType::Select },
-			{ "with", VbCodeEndType::With },
-			{ "sub", VbCodeEndType::Sub },
-			{ "function", VbCodeEndType::Function },
-			{ "property", VbCodeEndType::Property }
-		});
+	auto type = ToEndType(endKeyword.keyword);
 	switch (type)
 	{
 	case VbCodeEndType::If:
@@ -345,17 +311,7 @@ void VbCodeFunctionFactory::ProcessCaseStatement(const Sentence& sentence)
 			else
 			{
 				VbRelationalOp relationalOp{ *caseExpression.relationalOp };
-				auto type = SentenceParser::ToEnum<VbCodeCaseType>(
-					relationalOp.op,
-					{
-						{ ">=", VbCodeCaseType::GreaterThanOrEqual },
-						{ ">", VbCodeCaseType::GreaterThan },
-						{ "<=", VbCodeCaseType::LessThanOrEqual },
-						{ "<", VbCodeCaseType::LessThan },
-						{ "<>", VbCodeCaseType::NotEqualTo },
-						{ "=", VbCodeCaseType::EqualTo }
-					});
-				expressions.emplace_back(type, expression1);
+				expressions.emplace_back(ToCaseType(relationalOp.op), expression1);
 			}
 		}
 		blocks.push(compoundStatements.top()->Case(expressions));

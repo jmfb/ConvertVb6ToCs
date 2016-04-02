@@ -44,22 +44,5 @@ VbCodeType VbCodeTypeFactory::Create(const Sentence& sentence)
 			throw std::runtime_error("Variable length string is only valid option.");
 		return{ VbCodeValueType::String, VbCodeTypeNameFactory::Create(*simpleType.variableSize) };
 	}
-	return
-	{
-		SentenceParser::ToEnum<VbCodeValueType>(
-			simpleType.type,
-			{
-				{ "byte", VbCodeValueType::Byte },
-				{ "boolean", VbCodeValueType::Boolean },
-				{ "integer", VbCodeValueType::Integer },
-				{ "long", VbCodeValueType::Long },
-				{ "currency", VbCodeValueType::Currency },
-				{ "single", VbCodeValueType::Single },
-				{ "double", VbCodeValueType::Double },
-				{ "date", VbCodeValueType::Date },
-				{ "string", VbCodeValueType::String },
-				{ "object", VbCodeValueType::Object },
-				{ "variant", VbCodeValueType::Variant }
-			})
-	};
+	return{ ToValueType(simpleType.type) };
 }

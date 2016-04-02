@@ -1,4 +1,5 @@
 #pragma once
+#include "EnumParser.h"
 #include <stdexcept>
 
 enum class VbCodeEndType
@@ -25,4 +26,18 @@ inline const char* ToString(VbCodeEndType value)
 	case VbCodeEndType::Property: return "End Property";
 	}
 	throw std::runtime_error("Invalid end type");
+}
+
+inline VbCodeEndType ToEndType(const Token& token)
+{
+	return EnumParser::Parse<VbCodeEndType>(
+		token,
+		{
+			{ "if", VbCodeEndType::If },
+			{ "select", VbCodeEndType::Select },
+			{ "with", VbCodeEndType::With },
+			{ "sub", VbCodeEndType::Sub },
+			{ "function", VbCodeEndType::Function },
+			{ "property", VbCodeEndType::Property }
+		});
 }

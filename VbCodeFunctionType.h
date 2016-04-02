@@ -1,4 +1,5 @@
 #pragma once
+#include "EnumParser.h"
 #include <stdexcept>
 
 enum class VbCodeFunctionType
@@ -21,4 +22,17 @@ inline const char* ToString(VbCodeFunctionType value)
 	case VbCodeFunctionType::PropertySet: return "Property Set";
 	}
 	throw std::runtime_error("Invalid function type.");
+}
+
+inline VbCodeFunctionType ToFunctionType(const Token& token)
+{
+	return EnumParser::Parse<VbCodeFunctionType>(
+		token,
+		{
+			{ "function", VbCodeFunctionType::Function },
+			{ "sub", VbCodeFunctionType::Sub },
+			{ "get", VbCodeFunctionType::PropertyGet },
+			{ "let", VbCodeFunctionType::PropertyLet },
+			{ "set", VbCodeFunctionType::PropertySet }
+		});
 }

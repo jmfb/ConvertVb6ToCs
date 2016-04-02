@@ -32,22 +32,12 @@ public:
 				RequiredToken(),
 				OptionalSentence("qualified-suffix"));
 		if (wsDotSentence)
-			wsDot = SentenceParser::ToEnum<VbCodeDotType>(
-				wsDotSentence->GetNodes()[0]->AsToken(),
-				{
-					{ " .", VbCodeDotType::Dot },
-					{ " !", VbCodeDotType::Bang }
-				});
+			wsDot = ToDotType(*wsDotSentence);
 		if (!qualifiedSuffix)
 			return;
 		for (auto index = 0u; index < qualifiedSuffix->GetNodes().size(); index += 2)
 		{
-			auto dot = SentenceParser::ToEnum<VbCodeDotType>(
-				qualifiedSuffix->GetNodes()[index]->AsSentence().GetNodes()[0]->AsToken(),
-				{
-					{ ".", VbCodeDotType::Dot },
-					{ "!", VbCodeDotType::Bang }
-				});
+			auto dot = ToDotType(qualifiedSuffix->GetNodes()[index]->AsSentence());
 			if ((index + 1) >= qualifiedSuffix->GetNodes().size())
 				throw std::runtime_error("Qualified suffix must be in pairs.");
 			auto part = qualifiedSuffix->GetNodes()[index + 1]->AsToken();

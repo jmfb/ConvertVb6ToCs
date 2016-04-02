@@ -28,5 +28,4 @@ private:
 
 	static std::vector<VbCodeExpressionPtr> CreateExpressionClause(const Sentence& sentence);
 	static std::vector<VbCodeExpressionPtr> CreateExpressionList(const Sentence& sentence);
-	static VbCodeDotType ParseDot(const Sentence& sentence);
 };

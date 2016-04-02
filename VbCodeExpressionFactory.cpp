@@ -51,7 +51,7 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateLValue(const Sentence& senten
 	VbLValue lValue{ sentence };
 	VbCodeExpressionPtr expression;
 	if (lValue.wsDot)
-		expression = std::make_shared<VbCodeWithExpression>(ParseDot(*lValue.wsDot), lValue.id.GetValue());
+		expression = std::make_shared<VbCodeWithExpression>(ToDotType(*lValue.wsDot), lValue.id.GetValue());
 	else if (lValue.id == "me")
 		expression = std::make_shared<VbCodeMeExpression>();
 	else
@@ -63,7 +63,7 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateLValue(const Sentence& senten
 			if (terminal.dot)
 				expression = std::make_shared<VbCodeMemberExpression>(
 					expression,
-					ParseDot(*terminal.dot),
+					ToDotType(*terminal.dot),
 					terminal.id->GetValue());
 			else
 				expression = std::make_shared<VbCodeCallExpression>(
@@ -94,7 +94,7 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateCallStatement(const Sentence&
 			firstTerminal.name.GetValue());
 	else if (callStatement.wsDot)
 		expression = std::make_shared<VbCodeWithExpression>(
-			ParseDot(*callStatement.wsDot),
+			ToDotType(*callStatement.wsDot),
 			firstTerminal.name.GetValue());
 	else
 		expression = std::make_shared<VbCodeIdExpression>(firstTerminal.name.GetValue());
@@ -105,7 +105,7 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateCallStatement(const Sentence&
 		VbCallTerminal nextTerminal{ suffix.second };
 		expression = std::make_shared<VbCodeMemberExpression>(
 			expression,
-			ParseDot(suffix.first),
+			ToDotType(suffix.first),
 			nextTerminal.name.GetValue());
 		if (nextTerminal.expressionClause)
 			expression = std::make_shared<VbCodeCallExpression>(expression, CreateExpressionClause(*nextTerminal.expressionClause));
@@ -151,18 +151,8 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateEqualityExpression(const Sent
 	VbEqualityExpression expression{ sentence };
 	if (!expression.equalityExpression)
 		return CreateRelationalExpression(expression.relationalExpression);
-	auto type = SentenceParser::ToEnum<VbCodeBinaryExpressionType>(
-		*expression.op,
-		{
-			{ "=", VbCodeBinaryExpressionType::EqualTo },
-			{ "<>", VbCodeBinaryExpressionType::NotEqualTo },
-			{ "imp", VbCodeBinaryExpressionType::Implies },
-			{ "eqv", VbCodeBinaryExpressionType::Equivalent },
-			{ "is", VbCodeBinaryExpressionType::Is },
-			{ "like", VbCodeBinaryExpressionType::Like }
-		});
 	return std::make_shared<VbCodeBinaryExpression>(
-		type,
+		ToEqualityOperator(*expression.op),
 		CreateEqualityExpression(*expression.equalityExpression),
 		CreateRelationalExpression(expression.relationalExpression));
 }
@@ -172,16 +162,8 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateRelationalExpression(const Se
 	VbRelationalExpression expression{ sentence };
 	if (!expression.relationalExpression)
 		return CreateAdditiveExpression(expression.additiveExpression);
-	auto type = SentenceParser::ToEnum<VbCodeBinaryExpressionType>(
-		*expression.op,
-		{
-			{ ">=", VbCodeBinaryExpressionType::GreaterThanOrEqual },
-			{ ">", VbCodeBinaryExpressionType::GreaterThan },
-			{ "<=", VbCodeBinaryExpressionType::LessThanOrEqual },
-			{ "<", VbCodeBinaryExpressionType::LessThan }
-		});
 	return std::make_shared<VbCodeBinaryExpression>(
-		type,
+		ToRelationalOperator(*expression.op),
 		CreateRelationalExpression(*expression.relationalExpression),
 		CreateAdditiveExpression(expression.additiveExpression));
 }
@@ -191,15 +173,8 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateAdditiveExpression(const Sent
 	VbAdditiveExpression expression{ sentence };
 	if (!expression.additiveExpression)
 		return CreateMultiplicativeExpression(expression.multiplicativeExpression);
-	auto type = SentenceParser::ToEnum<VbCodeBinaryExpressionType>(
-		*expression.op,
-		{
-			{ "+", VbCodeBinaryExpressionType::Addition },
-			{ "-", VbCodeBinaryExpressionType::Subtraction },
-			{ "&", VbCodeBinaryExpressionType::StringConcatenation }
-		});
 	return std::make_shared<VbCodeBinaryExpression>(
-		type,
+		ToAdditiveOperator(*expression.op),
 		CreateAdditiveExpression(*expression.additiveExpression),
 		CreateMultiplicativeExpression(expression.multiplicativeExpression));
 }
@@ -209,17 +184,8 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateMultiplicativeExpression(cons
 	VbMultiplicativeExpression expression{ sentence };
 	if (!expression.multiplicativeExpression)
 		return CreateUnaryExpression(expression.unaryExpression);
-	auto type = SentenceParser::ToEnum<VbCodeBinaryExpressionType>(
-		*expression.op,
-		{
-			{ "*", VbCodeBinaryExpressionType::Multiplication },
-			{ "/", VbCodeBinaryExpressionType::Division },
-			{ "\\", VbCodeBinaryExpressionType::IntegerDivision },
-			{ "mod", VbCodeBinaryExpressionType::Modulus },
-			{ "^", VbCodeBinaryExpressionType::Exponent }
-		});
 	return std::make_shared<VbCodeBinaryExpression>(
-		type,
+		ToMultiplicativeOperator(*expression.op),
 		CreateMultiplicativeExpression(*expression.multiplicativeExpression),
 		CreateUnaryExpression(expression.unaryExpression));
 }
@@ -245,15 +211,8 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreateUnaryExpression(const Sentenc
 			throw std::runtime_error("Only one argument to Len is supported.");
 		return std::make_shared<VbCodeLenExpression>(expressions[0]);
 	}
-	auto type = SentenceParser::ToEnum<VbCodeUnaryExpressionType>(
-		op,
-		{
-			{ "not", VbCodeUnaryExpressionType::Not },
-			{ "-", VbCodeUnaryExpressionType::Negate },
-			{ "#", VbCodeUnaryExpressionType::FileNumber }
-		});
 	return std::make_shared<VbCodeUnaryExpression>(
-		type,
+		ToUnaryOperator(op),
 		CreateUnaryExpression(*expression.unaryExpression));
 }
 
@@ -265,7 +224,7 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreatePostfixExpression(const Sente
 	if (expression.dot)
 		return std::make_shared<VbCodeMemberExpression>(
 			CreatePostfixExpression(*expression.postfixExpression),
-			ParseDot(*expression.dot),
+			ToDotType(*expression.dot),
 			expression.id->GetValue());
 	return std::make_shared<VbCodeCallExpression>(
 		CreatePostfixExpression(*expression.postfixExpression),
@@ -278,7 +237,7 @@ VbCodeExpressionPtr VbCodeExpressionFactory::CreatePrimaryExpression(const Sente
 	if (expression.literal)
 		return CreateConstantExpression(*expression.literal);
 	if (expression.wsDot)
-		return std::make_shared<VbCodeWithExpression>(ParseDot(*expression.wsDot), expression.id->GetValue());
+		return std::make_shared<VbCodeWithExpression>(ToDotType(*expression.wsDot), expression.id->GetValue());
 	if (expression.expression2)
 		throw std::runtime_error("Not implemented: (expression, expression)");
 	if (expression.expression1)
@@ -325,16 +284,4 @@ std::vector<VbCodeExpressionPtr> VbCodeExpressionFactory::CreateExpressionList(c
 		}
 	}
 	return expressions;
-}
-
-VbCodeDotType VbCodeExpressionFactory::ParseDot(const Sentence& sentence)
-{
-	return SentenceParser::ToEnum<VbCodeDotType>(
-		sentence.GetNodes()[0]->AsToken(),
-		{
-			{ " !", VbCodeDotType::Bang },
-			{ "!", VbCodeDotType::Bang },
-			{ " .", VbCodeDotType::Dot },
-			{ ".", VbCodeDotType::Dot }
-		});
 }
