@@ -204,8 +204,12 @@ void VbCodeFunctionFactory::ProcessConstStatement(const Sentence& sentence)
 	for (auto& constantDefinitionSentence : constStatement.constantDefinitions)
 	{
 		VbConstantDefinition constantDefinition{ constantDefinitionSentence };
-		//TODO: add the constant to the function
-		std::cout << "TODO: Const statement" << std::endl;
+		if (constantDefinition.asSpecifier)
+			throw std::runtime_error("As-specifier on constants not yet supported.");
+		function->constants.emplace_back(
+			false,
+			constantDefinition.name.GetValue(),
+			VbCodeExpressionFactory::CreateExpression(constantDefinition.expression)->EvaluateConstant());
 	}
 }
 

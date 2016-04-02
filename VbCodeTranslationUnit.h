@@ -163,7 +163,7 @@ public:
 		out << "	{" << std::endl;
 		VbCodeWriter writer{ out, *this };
 		for (auto& constant : constants)
-			constant.WriteCs(out);
+			constant.WriteClassCs(out);
 		if (!constants.empty())
 			out << std::endl;
 		for (auto& enumDefinition : enumDefinitions)

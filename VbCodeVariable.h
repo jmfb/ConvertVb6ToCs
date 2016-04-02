@@ -1,5 +1,6 @@
 #pragma once
 #include "VbCodeType.h"
+#include "VbCodeWriter.h"
 #include <string>
 #include <iostream>
 
@@ -18,11 +19,12 @@ public:
 		out << " __" << functionName << "_" << name << ";" << std::endl;
 	}
 
-	void WriteCs(std::ostream& out) const
+	void WriteCs(VbCodeWriter& writer) const
 	{
-		out << "			var " << name << " = default(";
-		type.WriteCs(out);
-		out << ");" << std::endl;
+		writer.StartLine();
+		writer.out << "var " << name << " = default(";
+		type.WriteCs(writer.out);
+		writer.out << ");" << std::endl;
 	}
 
 	std::string name;

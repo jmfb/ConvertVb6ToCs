@@ -5,6 +5,7 @@
 #include "VbCodeType.h"
 #include "VbCodeVariable.h"
 #include "VbCodeStatement.h"
+#include "VbCodeConstant.h"
 #include "VbCodeWriter.h"
 #include "optional.h"
 #include <string>
@@ -54,8 +55,10 @@ public:
 			returnValue->WriteCs(writer.out);
 			writer.out << ");" << std::endl;
 		}
+		for (auto& constant : constants)
+			constant.WriteLocalCs(writer);
 		for (auto& variable : variables)
-			variable.WriteCs(writer.out);
+			variable.WriteCs(writer);
 		for (auto& statement : statements)
 			statement->WriteCs(writer);
 		if (returnValue)
@@ -88,6 +91,10 @@ public:
 			if (parameters.size() > 1)
 				throw std::runtime_error("Indexed property set not yet supported.");
 		}
+		for (auto& constant : constants)
+			constant.WriteLocalCs(writer);
+		for (auto& variable : variables)
+			variable.WriteCs(writer);
 		for (auto& statement : statements)
 			statement->WriteCs(writer);
 		if (type == VbCodeFunctionType::PropertyGet)
@@ -115,5 +122,6 @@ public:
 	optional<VbCodeType> returnValue;
 	std::vector<VbCodeVariable> variables;
 	std::vector<VbCodeVariable> statics;
+	std::vector<VbCodeConstant> constants;
 	std::vector<VbCodeStatementPtr> statements;
 };
