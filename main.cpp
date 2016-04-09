@@ -45,7 +45,13 @@ Sentence ParseVisualBasic(const std::string& fileName)
 
 void ProcessVisualBasicSource(const std::string& library, const std::string& fileName)
 {
+	TypeTable typeTable;
+	typeTable.DefineLibrary(library);
+
 	auto translationUnit = VbCodeTranslationUnitFactory{}.Create(library, ParseVisualBasic(fileName));
+
+	translationUnit.DefineTypes(typeTable);
+
 	translationUnit.ResolveUnqualifiedTypeNames();
 	//translationUnit.WriteCs(std::cout);
 	translationUnit.WriteCs(std::ofstream{ fileName + ".cs" });

@@ -100,6 +100,9 @@
     <Filter Include="VisualBasic Sentences\Translation Unit">
       <UniqueIdentifier>{08b1571d-602c-44a6-9960-a6ffbae40e02}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Type System">
+      <UniqueIdentifier>{ab396e78-4aea-47ce-952a-3933b20edc85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Char.h">
@@ -668,6 +671,9 @@
     </ClInclude>
     <ClInclude Include="VbCaseClause.h">
       <Filter>VisualBasic Sentences\Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeTable.h">
+      <Filter>Type System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

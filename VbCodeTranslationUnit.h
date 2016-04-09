@@ -13,6 +13,8 @@
 #include <iostream>
 #include <map>
 
+#include "TypeTable.h"
+
 class VbCodeTranslationUnit : public VbCodeIdResolver
 {
 public:
@@ -39,6 +41,23 @@ public:
 	{
 		for (auto& function : functions)
 			AddFunction(function);
+	}
+
+	void DefineTypes(TypeTable& table) const
+	{
+		auto libraryHandle = table.GetLibrary(library);
+		auto handle = table.DefineClass(libraryHandle, name);
+		//TODO: add members in a second pass
+		for (auto& typeDefinition : typeDefinitions)
+			table.DefineClass(handle, typeDefinition.name);
+		//TODO: add members in a second pass
+		for (auto& enumDefinition : enumDefinitions)
+		{
+			auto enumHandle = table.DefineEnum(handle, enumDefinition.name);
+			//TODO: define enum members...
+		}
+		//TODO: add declares as functions (2nd pass?)
+		//TODO: add functions (2nd pass?)
 	}
 
 	std::string Resolve(const std::string& id) const final
