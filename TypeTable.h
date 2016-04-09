@@ -1,4 +1,5 @@
 #pragma once
+#include "optional.h"
 #include <string>
 #include <map>
 #include <vector>
@@ -78,12 +79,12 @@ public:
 
 	TypeHandle GetLibrary(const std::string& name) const
 	{
-		for (auto& type : types)
-			if (type.second.scope == 0 &&
-				type.second.name == name &&
-				type.second.category == TypeCategory::Library)
-				return type.first;
-		throw std::runtime_error("Library not defined: " + name);
+		auto type = TryGetType(0, name);
+		if (!type)
+			throw std::runtime_error("Library not defined: " + name);
+		if (type->category != TypeCategory::Library)
+			throw std::runtime_error("WTF? Top level element not a library.");
+		return type->handle;
 	}
 
 private:
@@ -92,18 +93,43 @@ private:
 		const std::string& name,
 		TypeCategory category)
 	{
-		for (auto& type : types)
-			if (type.second.scope == scope && type.second.name == name)
-				if (type.second.category == category)
-					throw std::runtime_error("Redefinition: " + name);
-				else
-					throw std::runtime_error("Redefinition (different type): " + name);
+		if (FindType(scope, name))
+			throw std::runtime_error("Redefinition: " + name);
 		auto handle = nextHandle++;
 		types[handle] = { scope, name, category, handle };
+		typesByScope[scope][name] = handle;
 		return handle;
+	}
+
+	optional<TypeData> TryGetType(TypeHandle scope, const std::string& name) const
+	{
+		auto handle = FindType(scope, name);
+		if (handle)
+			return GetType(*handle);
+		return{};
+	}
+
+	const TypeData& GetType(TypeHandle handle) const
+	{
+		auto iter = types.find(handle);
+		if (iter == types.end())
+			throw std::runtime_error("Type not found.");
+		return iter->second;
+	}
+
+	optional<TypeHandle> FindType(TypeHandle scope, const std::string& name) const
+	{
+		auto scopeTypes = typesByScope.find(scope);
+		if (scopeTypes == typesByScope.end())
+			return{};
+		auto type = scopeTypes->second.find(name);
+		if (type == scopeTypes->second.end())
+			return{};
+		return type->second;
 	}
 
 private:
 	TypeHandle nextHandle = 10;
 	std::map<TypeHandle, TypeData> types;
+	std::map<TypeHandle, std::map<std::string, TypeHandle>> typesByScope;
 };
