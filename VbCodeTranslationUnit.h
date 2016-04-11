@@ -47,15 +47,27 @@ public:
 	{
 		auto libraryHandle = table.GetLibrary(library);
 		auto handle = table.DefineClass(libraryHandle, name);
-		//TODO: add members in a second pass
 		for (auto& typeDefinition : typeDefinitions)
 			table.DefineClass(handle, typeDefinition.name);
-		//TODO: add members in a second pass
 		for (auto& enumDefinition : enumDefinitions)
 		{
 			auto enumHandle = table.DefineEnum(handle, enumDefinition.name);
-			//TODO: define enum members...
+			for (auto& member : enumDefinition.members)
+				table.DefineEnumValue(enumHandle, member.name);
 		}
+	}
+
+	void DefineTypeMembers(TypeTable& table) const
+	{
+		auto libraryHandle = table.GetLibrary(library);
+		auto handle = table.GetClass(libraryHandle, name);
+		for (auto& member : members)
+		{
+			auto memberType = table.ResolveType(handle, member.type);
+			table.DefineMember(handle, member.name, memberType);
+		}
+		//TODO: add members in a second pass
+		//TODO: add type definition members in a second pass
 		//TODO: add declares as functions (2nd pass?)
 		//TODO: add functions (2nd pass?)
 	}

@@ -43,18 +43,33 @@ Sentence ParseVisualBasic(const std::string& fileName)
 	return Parse<VbTokenStream>(visualBasicTransitionTableFileName, fileName);
 }
 
+void ImportAdodb(TypeTable& table)
+{
+	auto library = table.DefineLibrary("ADODB");
+	auto field = table.DefineClass(library, "Field");
+}
+
 void ProcessVisualBasicSource(const std::string& library, const std::string& fileName)
 {
 	TypeTable typeTable;
+	//TODO: import external references
+	ImportAdodb(typeTable);
+
 	typeTable.DefineLibrary(library);
 
 	auto translationUnit = VbCodeTranslationUnitFactory{}.Create(library, ParseVisualBasic(fileName));
 
 	translationUnit.DefineTypes(typeTable);
+	//TODO: define types in all translation units
+	translationUnit.DefineTypeMembers(typeTable);
+	//TODO: define type members in all translation units
 
+	//TODO: remove this once the type and symbol tables are completed
 	translationUnit.ResolveUnqualifiedTypeNames();
 	//translationUnit.WriteCs(std::cout);
 	translationUnit.WriteCs(std::ofstream{ fileName + ".cs" });
+
+	typeTable.Dump();
 }
 
 int main(int argc, char** argv)
