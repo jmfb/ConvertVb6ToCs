@@ -43,16 +43,24 @@ Sentence ParseVisualBasic(const std::string& fileName)
 	return Parse<VbTokenStream>(visualBasicTransitionTableFileName, fileName);
 }
 
+void ImportVba(TypeTable& table)
+{
+	auto library = table.DefineLibrary("VBA");
+	auto collection = table.DefineClass(library, "Collection");
+}
+
 void ImportAdodb(TypeTable& table)
 {
 	auto library = table.DefineLibrary("ADODB");
 	auto field = table.DefineClass(library, "Field");
+	auto eDataFieldType = table.DefineEnum(library, "eDataFieldType");
 }
 
 void ProcessVisualBasicSource(const std::string& library, const std::string& fileName)
 {
 	TypeTable typeTable;
 	//TODO: import external references
+	ImportVba(typeTable);
 	ImportAdodb(typeTable);
 
 	typeTable.DefineLibrary(library);
@@ -69,14 +77,16 @@ void ProcessVisualBasicSource(const std::string& library, const std::string& fil
 	//translationUnit.WriteCs(std::cout);
 	translationUnit.WriteCs(std::ofstream{ fileName + ".cs" });
 
+	std::cout << fileName << std::endl;
 	typeTable.Dump();
+	std::cout << std::endl;
 }
 
 int main(int argc, char** argv)
 {
 	try
 	{
-		//ProcessVisualBasicSource("DSHECommon", R"(C:\Save\Code\tests\DSHECommon\basGlobals.bas)");
+		ProcessVisualBasicSource("DSHECommon", R"(C:\Save\Code\tests\DSHECommon\basGlobals.bas)");
 		ProcessVisualBasicSource("DSHECommon", R"(C:\Save\Code\tests\DSHECommon\CDataField.cls)");
 	}
 	catch (const std::exception& exception)

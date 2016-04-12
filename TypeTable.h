@@ -3,6 +3,7 @@
 #include "optional.h"
 #include <string>
 #include <map>
+#include <set>
 #include <vector>
 
 using TypeHandle = int;
@@ -68,14 +69,18 @@ static const constexpr TypeHandle TypeHandleString = 9;
 static const constexpr TypeHandle TypeHandleVariant = 10;
 static const constexpr TypeHandle TypeHandleObject = 11;
 
-class TypeArgument
+class TypeParameter
 {
 public:
+	TypeParameter() = default;
+	TypeParameter(bool byRef, const std::string& name, TypeHandle type)
+		: byRef(byRef), name(name), type(type)
+	{
+	}
 
-private:
-	bool byRef;
+	bool byRef = false;
 	std::string name;
-	TypeHandle type;
+	TypeHandle type = 0;
 };
 
 class TypeData
@@ -97,7 +102,7 @@ public:
 	TypeHandle handle = 0;
 	TypeHandle resultType = 0;
 	std::map<std::string, TypeHandle> members;
-	std::vector<TypeArgument> arguments;
+	std::vector<TypeParameter> parameters;
 };
 
 class TypeTable
@@ -121,6 +126,25 @@ public:
 		if (type.members.find(memberName) != type.members.end())
 			throw std::runtime_error("Redefinition of member: " + memberName);
 		types[parent].members[memberName] = memberType;
+	}
+
+	void DefineMember(TypeHandle parent, const std::string& memberName, const VbCodeType& codeType)
+	{
+		DefineMember(parent, memberName, ResolveType(parent, codeType));
+	}
+
+	void DefineFunction(
+		TypeHandle parent,
+		const std::string& name,
+		optional<VbCodeType> returnType,
+		const std::vector<VbCodeParameter>& parameters)
+	{
+		auto handle = DefineType(parent, name, TypeCategory::Function);
+		auto& type = types[handle];
+		if (returnType)
+			type.resultType = ResolveType(parent, *returnType);
+		for (auto& parameter : parameters)
+			type.parameters.emplace_back(!parameter.isByVal, parameter.name, ResolveType(parent, parameter.type));
 	}
 
 	TypeHandle DefineEnum(TypeHandle scope, const std::string& name)
@@ -189,14 +213,26 @@ public:
 
 	TypeHandle ResolveNamedType(TypeHandle scope, const VbCodeTypeName& typeName) const
 	{
+		//Fully qualified type name
 		if (!typeName.library.empty())
 			return GetClass(GetLibrary(typeName.library), typeName.name);
+
+		//Check in current scope up to the root scope
 		for (auto parentScope = scope; parentScope != 0; parentScope = types.find(parentScope)->second.scope)
 		{
 			auto type = TryGetType(parentScope, typeName.name);
 			if (type)
 				return type->handle;
 		}
+
+		//Check top level classes of all libraries
+		for (auto library : libraries)
+		{
+			auto type = TryGetType(library, typeName.name);
+			if (type)
+				return type->handle;
+		}
+
 		throw std::runtime_error("Type not defined: " + typeName.name);
 	}
 
@@ -224,6 +260,8 @@ private:
 		auto handle = nextHandle++;
 		types[handle] = { scope, name, category, handle };
 		typesByScope[scope][name] = handle;
+		if (category == TypeCategory::Library)
+			libraries.insert(handle);
 		return handle;
 	}
 
@@ -258,4 +296,5 @@ private:
 	TypeHandle nextHandle = 100;
 	std::map<TypeHandle, TypeData> types;
 	std::map<TypeHandle, std::map<std::string, TypeHandle>> typesByScope;
+	std::set<TypeHandle> libraries;
 };

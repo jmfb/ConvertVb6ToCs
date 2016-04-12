@@ -61,15 +61,21 @@ public:
 	{
 		auto libraryHandle = table.GetLibrary(library);
 		auto handle = table.GetClass(libraryHandle, name);
+		//TODO: constants?
 		for (auto& member : members)
+			table.DefineMember(handle, member.name, member.type);
+		for (auto& typeDefinition : typeDefinitions)
 		{
-			auto memberType = table.ResolveType(handle, member.type);
-			table.DefineMember(handle, member.name, memberType);
+			auto typeHandle = table.GetClass(handle, typeDefinition.name);
+			for (auto& member : typeDefinition.members)
+				table.DefineMember(typeHandle, member.name, member.type);
 		}
-		//TODO: add members in a second pass
-		//TODO: add type definition members in a second pass
-		//TODO: add declares as functions (2nd pass?)
-		//TODO: add functions (2nd pass?)
+		for (auto& declare : declares)
+			table.DefineFunction(handle, declare.name, declare.returnType, declare.parameters);
+		for (auto& function : functions)
+			table.DefineFunction(handle, function.name, function.returnValue, function.parameters);
+		for (auto& property : properties)
+			table.DefineMember(handle, property.first, GetPropertyType(property.second));
 	}
 
 	std::string Resolve(const std::string& id) const final
@@ -306,7 +312,7 @@ public:
 	void WritePropertyCs(VbCodeWriter& writer, const std::vector<VbCodeFunction>& propertyFunctions) const
 	{
 		auto& name = propertyFunctions.front().name;
-		optional<VbCodeType> type;
+		auto type = GetPropertyType(propertyFunctions);
 		auto access = VbCodeFunctionAccess::Private;
 		for (auto& function : propertyFunctions)
 		{
@@ -314,18 +320,14 @@ public:
 				access = VbCodeFunctionAccess::Public;
 			else if (function.access == VbCodeFunctionAccess::Friend && access == VbCodeFunctionAccess::Private)
 				access = VbCodeFunctionAccess::Friend;
-			if (function.type == VbCodeFunctionType::PropertyGet)
-				type = function.returnValue;
 			if (function.isStatic)
 				throw std::runtime_error("Static properties not yet supported.");
 			if (!function.statics.empty())
 				throw std::runtime_error("Static locals in properties not yet supported.");
 		}
-		if (!type)
-			type = propertyFunctions[0].parameters[0].type;
 		writer.StartLine();
 		writer.out << ToCs(access) << " ";
-		type->WriteCs(writer.out);
+		type.WriteCs(writer.out);
 		writer.out << " " << name << std::endl;
 		writer.BeginBlock();
 		for (auto& function : propertyFunctions)
@@ -336,6 +338,17 @@ public:
 		}
 		writer.EndBlock();
 		writer.out << std::endl;
+	}
+
+	static VbCodeType GetPropertyType(const std::vector<VbCodeFunction>& propertyFunctions)
+	{
+		for (auto& function : propertyFunctions)
+			if (function.type == VbCodeFunctionType::PropertyGet && function.returnValue)
+				return *function.returnValue;
+		if (propertyFunctions.empty() ||
+			propertyFunctions[0].parameters.empty())
+			throw std::runtime_error("No clue what the type of that property is.");
+		return propertyFunctions[0].parameters[0].type;
 	}
 
 	VbCodeTranslationUnitType type;
